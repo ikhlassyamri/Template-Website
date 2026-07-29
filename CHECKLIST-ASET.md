@@ -11,7 +11,7 @@ sendiri**. Centang daftar ini sebelum halaman Anda online. Setiap penanda
 - [ ] **Logo** — `[[ LOGO ]]` di navbar. Ganti teks "NamaBrand" atau pasang `<img src="logo.png">`.
 - [ ] **Favicon** — `favicon.png` (32×32 px). Ikon kecil di tab browser. Diatur di `<head>`.
 - [ ] **Gambar / mockup produk** — `[[ GAMBAR PRODUK ]]` di Hero. Ganti `src` gambar placeholder.
-- [ ] **Foto testimoni** — `[[ FOTO TESTIMONI ]]`. Foto wajah pelanggan (opsional, boleh dihapus).
+- [ ] **Gambar testimoni** — `[[ GAMBAR TESTIMONI ]]`. **Screenshot asli** chat WhatsApp / ulasan pelanggan (bukan teks yang diketik ulang).
 - [ ] **Warna brand** — atur `--color-primary` dkk di blok `:root` (lihat README).
 - [ ] **Font** — atur `--font-heading` / `--font-body`; perbarui `<link>` Google Fonts bila diganti.
 
@@ -22,16 +22,17 @@ sendiri**. Centang daftar ini sebelum halaman Anda online. Setiap penanda
 
 ## 2. 🗣️ Bukti Sosial (Data ASLI — jangan dikarang)
 
-- [ ] **Kutipan testimoni asli** + **nama pelanggan** (mis. dari screenshot chat / ulasan marketplace).
-- [ ] **Kota / profesi** pelanggan (memperkuat kredibilitas).
+- [ ] **Screenshot testimoni asli** (foto chat WhatsApp / ulasan marketplace). Section testimoni
+      berupa **gambar**, bukan teks — jadi jangan minta AI mengarang kutipannya.
 - [ ] **Angka pencapaian** di Value Proposition (jumlah pembeli, rating, dll) — pakai data nyata.
+      *Section angka ini opsional; hapus bila belum punya data nyata.*
 
 ---
 
 ## 3. 🔗 Link & Kontak Operasional
 
 - [ ] **Link Checkout / Order (CO)** — `[[ LINK CHECKOUT ]]`. Ganti **SEMUA** `href="#"` pada tombol CTA
-      (ada di: navbar, hero, CTA tengah, CTA akhir, sticky mobile). Ini yang paling penting!
+      (ada di: navbar, hero, CTA tengah, CTA akhir). Ini yang paling penting!
 - [ ] **Nomor WhatsApp CS** — `[[ WHATSAPP ]]`. Format `62812xxxxxxx` (tanpa `+` atau `0` di depan).
 - [ ] **Link Instagram / TikTok / YouTube** — `[[ LINK SOSIAL... ]]` di footer.
 

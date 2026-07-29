@@ -46,7 +46,9 @@ ATURAN KETAT:
 1. HANYA ubah teks yang ditandai AI INSTRUCTION dan teks placeholder di dekatnya.
 2. JANGAN mengubah struktur HTML, tag, class Tailwind, CSS, atau JavaScript.
 3. JANGAN menghapus komentar AI INSTRUCTION (biarkan agar bisa diedit ulang nanti).
-4. JANGAN mengisi/mengarang testimoni — biarkan bagian testimoni apa adanya.
+4. JANGAN mengarang testimoni. Section testimoni memakai GAMBAR screenshot asli —
+   cukup biarkan slot gambarnya, jangan menulis kutipan/nama palsu.
+   Untuk LOGO di navbar: pakai SALAH SATU saja, logo (img) ATAU teks brand — jangan keduanya.
 5. Pertahankan gaya persuasif, ringkas, dan berorientasi manfaat (benefit-driven).
 6. Ikuti batasan panjang yang tertulis di tiap instruksi (mis. "maks 8 kata").
 7. Kembalikan SELURUH file HTML yang sudah terisi, utuh, siap disimpan ulang.
