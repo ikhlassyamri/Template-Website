@@ -94,7 +94,7 @@ tukar urutan? Pindahkan blok `<section>` nya.
 Agar konversi tetap terjaga, hindari mengubah:
 - Posisi grid / flexbox antar elemen
 - Jarak (margin & padding) bawaan
-- Class Tailwind pada layout
+- Class CSS layout (`.container`, `.grid`, `.section-pad`, dll)
 
 Ubah **warna, font, teks, gambar, dan link** — itu sudah lebih dari cukup untuk
 membuat halaman ini terasa custom milik Anda sendiri.
@@ -103,13 +103,15 @@ membuat halaman ini terasa custom milik Anda sendiri.
 
 ## 🛠️ Teknologi
 
-- **HTML5** + **Tailwind CSS** (via CDN — tanpa proses build)
+- **HTML5** + **CSS mandiri** (vanilla, tertanam di file — tanpa framework/CDN)
 - **Vanilla JavaScript** (accordion FAQ + animasi)
-- **CSS Variables** untuk tema
-- 100% statis — bisa di-hosting gratis di GitHub Pages, Netlify, Vercel, atau
-  hosting biasa. Cukup upload `index.html`.
+- **CSS Variables** untuk tema + layout **mobile-first** dengan `clamp()` & media query
+- 100% statis & self-contained — bisa di-hosting gratis di GitHub Pages,
+  Netlify, Vercel, atau hosting biasa. Cukup upload `index.html`.
 
-Butuh internet aktif saat halaman dibuka (untuk memuat Tailwind & font dari CDN).
+**Jalan tanpa internet.** Tampilan & tata letak tidak bergantung pada koneksi.
+Satu-satunya elemen online adalah font Inter dari Google Fonts; bila internet
+mati atau diblokir, halaman otomatis memakai font sistem — **layout tetap utuh**.
 
 ---
 
