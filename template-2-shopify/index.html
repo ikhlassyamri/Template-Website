@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY LANDING PAGE TEMPLATE #2 · "COMMERCE" (Shopify-inspired zebra theme)
+  ============================================================================
+  Single-product landing page, gaya SaaS/commerce modern: latar berselang-seling
+  PUTIH dan HITAM (zebra) agar mata "segar" saat scroll. Cocok untuk software,
+  jasa, kelas, membership, atau produk apa pun.
+
+  100% SELF-CONTAINED: HTML + CSS + JS dalam satu file. TANPA framework/CDN,
+  jadi tetap tampil sempurna & responsif walau dibuka OFFLINE.
+
+  CARA PAKAI (untuk user):
+  1. Ubah TEMA (warna & font) di blok :root pada bagian STYLE di bawah.
+  2. Isi COPYWRITING dengan bantuan AI. Setiap teks diberi komentar berlabel
+     "AI INSTRUCTION" sebagai panduan.
+  3. Ganti ASET (logo, gambar, link checkout). Cari penanda [[ ... ]].
+  4. Sembunyikan bagian yang tidak dipakai: cukup hapus blok SECTION-nya —
+     layout tidak akan rusak karena tiap section mandiri.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama Produk – Janji singkat" (maks 60 karakter) -->
+  <title>Nama Produk Anda – Solusi Utama untuk Bisnis Anda</title>
+
+  <!-- AI INSTRUCTION: Ganti description dengan 1 kalimat manfaat utama (maks 155 karakter) -->
+  <meta name="description" content="Tulis ringkasan manfaat utama produk Anda di sini agar menarik di hasil pencarian." />
+
+  <!-- [[ FAVICON: ganti href dengan file ikon Anda, mis. favicon.png (32x32) ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Inter (opsional, Google Fonts). Bila internet mati, pakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER — SILAKAN UBAH BAGIAN INI SAJA
+       ======================================================================== */
+    :root {
+      /* --- WARNA TOMBOL --- */
+      --btn-on-light:        #000000;  /* Tombol di section TERANG (isi hitam)   */
+      --btn-on-light-hover:  #1f1f1f;
+      --btn-on-dark:         #ffffff;  /* Tombol di section GELAP (isi putih)    */
+      --btn-on-dark-hover:   #e5e5e5;
+      --accent:              #008060;  /* Aksen (hijau Shopify) untuk highlight  */
+
+      /* --- SECTION TERANG (putih) --- */
+      --light-bg:      #ffffff;
+      --light-text:    #1a1a1a;
+      --light-muted:   #616a75;
+      --light-card:    #f6f6f7;
+      --light-border:  #e3e3e5;
+
+      /* --- SECTION GELAP (hitam) --- */
+      --dark-bg:       #050505;
+      --dark-text:     #ffffff;
+      --dark-muted:    #a1a1aa;
+      --dark-card:     #171719;
+      --dark-border:   #2c2c2f;
+
+      /* --- FONT --- */
+      --font-heading: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      /* --- BENTUK --- */
+      --radius-btn:  999px;  /* 999px = pill (khas Shopify). 8px = kotak         */
+      --radius-card: 16px;
+
+      /* --- GAMBAR PRODUK (hero): rasio asli dipertahankan, hanya dibatasi --- */
+      --hero-img-max-w: 60rem;  /* Batas lebar gambar/mockup produk  */
+      --hero-img-max-h: 34rem;  /* Batas tinggi gambar/mockup produk */
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS (mobile-first)       */
+    /* ======================================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { font-family: var(--font-body); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; background: var(--light-bg); }
+    img, svg { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    h1, h2, h3, h4 { font-family: var(--font-heading); line-height: 1.1; font-weight: 800; letter-spacing: -0.025em; }
+
+    /* --- Container fluid + padding aman kiri-kanan --- */
+    .wrap { width: 100%; max-width: 80rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+    @media (min-width: 768px) { .wrap { padding-left: 2.5rem; padding-right: 2.5rem; } }
+    .pad { padding-top: 5rem; padding-bottom: 5rem; }
+    @media (min-width: 768px) { .pad { padding-top: 7rem; padding-bottom: 7rem; } }
+    .narrow { max-width: 48rem; margin-left: auto; margin-right: auto; }
+    .center { text-align: center; }
+
+    /* --- Tema section (zebra) --- */
+    .sec-light { background: var(--light-bg); color: var(--light-text); }
+    .sec-dark  { background: var(--dark-bg);  color: var(--dark-text); }
+    .sec-light .muted { color: var(--light-muted); }
+    .sec-dark  .muted { color: var(--dark-muted); }
+
+    /* --- Tipografi responsif --- */
+    .h1 { font-size: clamp(2.25rem, 6vw, 4rem); }
+    .h2 { font-size: clamp(1.9rem, 4.5vw, 3rem); }
+    .lead { font-size: clamp(1.05rem, 2.2vw, 1.3rem); }
+
+    /* --- Tombol (adaptif terang/gelap) --- */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      font-weight: 600; padding: .9rem 1.75rem; border: 1px solid transparent;
+      border-radius: var(--radius-btn); transition: transform .12s ease, background-color .12s ease, opacity .12s ease; white-space: nowrap; }
+    .btn:hover { transform: translateY(-1px); }
+    .sec-light .btn-primary { background: var(--btn-on-light); color: #fff; }
+    .sec-light .btn-primary:hover { background: var(--btn-on-light-hover); }
+    .sec-dark  .btn-primary { background: var(--btn-on-dark); color: #000; }
+    .sec-dark  .btn-primary:hover { background: var(--btn-on-dark-hover); }
+    /* Tombol garis (outline) untuk navbar dsb */
+    .sec-light .btn-ghost { background: transparent; color: var(--light-text); border-color: var(--light-border); }
+    .sec-light .btn-ghost:hover { background: var(--light-card); }
+    .btn-sm { padding: .6rem 1.15rem; font-size: .92rem; }
+
+    /* --- Input pill (khas Shopify) --- */
+    .field { width: 100%; border-radius: var(--radius-btn); padding: .9rem 1.25rem; font-size: 1rem; border: 1px solid var(--light-border); background: #fff; color: #111; }
+    .sec-dark .field { border-color: var(--dark-border); background: #111114; color: #fff; }
+    .field:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    /* --- Form email + tombol (stack di HP, sejajar di desktop) --- */
+    .signup { display: flex; flex-direction: column; gap: .75rem; max-width: 30rem; }
+    @media (min-width: 560px) { .signup { flex-direction: row; } .signup .field { flex: 1; } .signup .btn { flex-shrink: 0; } }
+    .signup.center { margin-left: auto; margin-right: auto; }
+
+    /* --- Navbar --- */
+    .nav { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--light-bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--light-border); }
+    .nav-inner { height: 4.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em; }
+    .brand-logo { height: 1.9rem; width: auto; }
+
+    /* --- Hero image (rasio asli, dibatasi ukuran) --- */
+    .hero-img { margin: 0 auto; width: auto; height: auto; max-width: min(100%, var(--hero-img-max-w)); max-height: var(--hero-img-max-h); border-radius: var(--radius-card); border: 1px solid var(--light-border); box-shadow: 0 30px 60px -20px rgba(0,0,0,.35); }
+
+    /* --- Social proof (deretan logo monokrom) --- */
+    .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.75rem 2.75rem; }
+    .logos img, .logos .logo-ph { height: 1.9rem; width: auto; opacity: .55; filter: grayscale(1); font-weight: 800; letter-spacing: .04em; color: var(--light-muted); font-size: 1.15rem; }
+
+    /* --- Grid umum --- */
+    .grid { display: grid; gap: 1.5rem; }
+    .g1 { grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .g2 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } }
+
+    /* --- Kartu fitur (gambar atas, teks bawah) --- */
+    .card { border-radius: var(--radius-card); overflow: hidden; }
+    .sec-dark .card  { background: var(--dark-card);  border: 1px solid var(--dark-border); }
+    .sec-light .card { background: var(--light-card); border: 1px solid var(--light-border); }
+    .card-media { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #2a2a2e; }
+    .card-body { padding: 1.5rem 1.6rem 1.8rem; }
+    .card-body h3 { font-size: 1.3rem; margin-bottom: .5rem; }
+
+    /* --- Kutipan besar (testimonial) --- */
+    .quote { font-size: clamp(1.6rem, 3.6vw, 2.6rem); font-weight: 700; font-style: italic; letter-spacing: -0.02em; line-height: 1.25; }
+    .quote-by { margin-top: 1.5rem; font-style: normal; font-weight: 600; font-size: 1rem; }
+
+    /* --- Daftar benefit (ikon outline kiri) --- */
+    .benefit { display: flex; gap: 1rem; align-items: flex-start; }
+    .benefit .ico { flex-shrink: 0; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--light-border); }
+    .benefit .ico svg { width: 1.4rem; height: 1.4rem; stroke: var(--light-text); fill: none; stroke-width: 1.8; }
+    .benefit h3 { font-size: 1.1rem; margin-bottom: .25rem; }
+
+    /* --- FAQ accordion --- */
+    .faq { display: flex; flex-direction: column; gap: .75rem; }
+    .faq-item { border: 1px solid var(--dark-border); border-radius: var(--radius-card); overflow: hidden; }
+    .faq-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-align: left; padding: 1.25rem 1.5rem; background: none; border: none; color: inherit; font-weight: 600; font-size: 1.05rem; }
+    .faq-icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; transition: transform .25s ease; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .faq-answer p { padding: 0 1.5rem 1.3rem; color: var(--dark-muted); }
+    .faq-item[data-open="true"] .faq-answer { max-height: 400px; }
+    .faq-item[data-open="true"] .faq-icon { transform: rotate(45deg); }
+
+    /* --- Footer --- */
+    .footer-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 640px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .footer-col h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--dark-muted); margin-bottom: 1rem; }
+    .footer-col a { display: block; padding: .3rem 0; color: var(--dark-text); opacity: .85; }
+    .footer-col a:hover { opacity: 1; text-decoration: underline; }
+    .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--dark-border); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
+    .locale { border-radius: var(--radius-btn); padding: .55rem 1rem; background: var(--dark-card); color: var(--dark-text); border: 1px solid var(--dark-border); }
+
+    /* --- Utility spasi --- */
+    .mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}
+    .mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.in { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       1. HEADER / NAVBAR (section terang)
+       ====================================================================== -->
+  <header class="nav sec-light">
+    <div class="wrap nav-inner">
+      <!-- [[ LOGO: pakai SALAH SATU — teks brand ATAU <img>. Jangan dua-duanya ]] -->
+      <!-- AI INSTRUCTION: Nama brand (teks). Untuk logo gambar, ganti dengan:
+           <img src="logo.png" alt="Nama Brand" class="brand-logo" /> lalu hapus teksnya. -->
+      <a href="#" class="brand">NamaBrand</a>
+
+      <!-- AI INSTRUCTION: Tombol navbar 1-2 kata, mis. "Mulai Gratis" / "Beli Sekarang".
+           [[ LINK CHECKOUT ]] ganti href. -->
+      <a href="#" class="btn btn-primary btn-sm">Mulai Gratis</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ====================================================================
+         2. HERO (section terang)
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap pad center reveal">
+        <!-- AI INSTRUCTION: HEADLINE (H1) — janji besar & jelas, maks 8-10 kata -->
+        <h1 class="h1 narrow">Tulis Janji Terbesar Produk Anda di Sini</h1>
+
+        <!-- AI INSTRUCTION: Sub-headline 1-2 kalimat, perjelas untuk siapa & manfaatnya -->
+        <p class="lead muted narrow mt-6">Satu kalimat pengantar yang menjelaskan bagaimana produk Anda menyelesaikan masalah utama pelanggan, tanpa ribet.</p>
+
+        <!-- Form email + CTA (khas Shopify). Email OPSIONAL — boleh dihapus untuk produk beli-langsung. -->
+        <div class="signup center mt-8">
+          <!-- AI INSTRUCTION: Placeholder input, mis. "Masukkan email Anda" (opsional) -->
+          <input class="field" type="email" placeholder="Masukkan email Anda" aria-label="Email" />
+          <!-- [[ LINK CHECKOUT ]] · AI INSTRUCTION: Teks tombol berorientasi aksi -->
+          <a href="#" class="btn btn-primary">Mulai Sekarang</a>
+        </div>
+        <!-- AI INSTRUCTION: Disclaimer kecil, mis. "Gratis 14 hari · Tanpa kartu kredit" -->
+        <p class="muted mt-4" style="font-size:.9rem;">Teks penenang singkat · mis. garansi atau akses instan</p>
+
+        <!-- [[ GAMBAR PRODUK: ganti src dengan mockup/screenshot produk Anda ]] -->
+        <div class="mt-12">
+          <img class="hero-img" src="https://placehold.co/1200x680/f6f6f7/1a1a1a?text=Mockup+atau+Screenshot+Produk" alt="Tampilan produk Anda" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         3. SOCIAL PROOF — deretan logo (section terang)
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap center reveal" style="padding-bottom:4rem;">
+        <!-- AI INSTRUCTION: Kalimat social proof, mis. "Dipercaya ribuan bisnis di Indonesia" -->
+        <p class="muted" style="font-weight:600;">Dipercaya oleh banyak pelanggan &amp; media</p>
+        <!-- [[ LOGO KLIEN/MEDIA: ganti tiap <span> dengan <img src="logo-klien.png"> (opsional) ]] -->
+        <div class="logos mt-8">
+          <span class="logo-ph">LOGO</span>
+          <span class="logo-ph">LOGO</span>
+          <span class="logo-ph">LOGO</span>
+          <span class="logo-ph">LOGO</span>
+          <span class="logo-ph">LOGO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         4. FITUR UTAMA (section gelap)
+         ==================================================================== -->
+    <section class="sec-dark">
+      <div class="wrap pad reveal">
+        <div class="narrow center">
+          <!-- AI INSTRUCTION: Judul section fitur, mis. "Semua yang Anda butuhkan" -->
+          <h2 class="h2">Semua yang Anda Butuhkan dalam Satu Produk</h2>
+          <!-- AI INSTRUCTION: 1 kalimat pengantar fitur -->
+          <p class="lead muted mt-4">Ringkas keunggulan utama yang membuat produk Anda layak dipilih.</p>
+        </div>
+
+        <div class="grid g1 g3 mt-12">
+          <!-- KARTU FITUR (duplikat/kurangi <article> sesuai jumlah fitur) -->
+          <article class="card">
+            <!-- [[ GAMBAR FITUR 1 ]] -->
+            <img class="card-media" src="https://placehold.co/480x300/171719/a1a1aa?text=Visual+Fitur" alt="Visual fitur" />
+            <div class="card-body">
+              <!-- AI INSTRUCTION: Judul fitur 1 (manfaat) -->
+              <h3>Judul Fitur / Manfaat #1</h3>
+              <!-- AI INSTRUCTION: 1-2 kalimat penjelasan fitur 1 -->
+              <p class="muted">Jelaskan apa yang membuat fitur ini berharga bagi pelanggan Anda.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <!-- [[ GAMBAR FITUR 2 ]] -->
+            <img class="card-media" src="https://placehold.co/480x300/171719/a1a1aa?text=Visual+Fitur" alt="Visual fitur" />
+            <div class="card-body">
+              <h3>Judul Fitur / Manfaat #2</h3>
+              <p class="muted">Jelaskan apa yang membuat fitur ini berharga bagi pelanggan Anda.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <!-- [[ GAMBAR FITUR 3 ]] -->
+            <img class="card-media" src="https://placehold.co/480x300/171719/a1a1aa?text=Visual+Fitur" alt="Visual fitur" />
+            <div class="card-body">
+              <h3>Judul Fitur / Manfaat #3</h3>
+              <p class="muted">Jelaskan apa yang membuat fitur ini berharga bagi pelanggan Anda.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. KUTIPAN / TESTIMONIAL (section gelap)
+         ==================================================================== -->
+    <section class="sec-dark">
+      <div class="wrap narrow center reveal" style="padding-bottom:6rem;">
+        <!-- AI INSTRUCTION: [KUTIPAN TESTIMONI ASLI pelanggan — jangan dikarang] -->
+        <p class="quote">"Tempel satu kutipan testimoni asli yang paling kuat di sini, biarkan apa adanya agar terdengar jujur."</p>
+        <!-- AI INSTRUCTION: Nama + keterangan pemberi testimoni (asli) -->
+        <p class="quote-by muted">— Nama Pelanggan, Jabatan / Perusahaan</p>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         6. CTA TENGAH (section terang)
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap pad center narrow reveal">
+        <!-- AI INSTRUCTION: Headline ajakan tengah, maks 8 kata -->
+        <h2 class="h2">Siap Membawa Bisnis Anda ke Level Berikutnya?</h2>
+        <div class="signup center mt-8">
+          <input class="field" type="email" placeholder="Masukkan email Anda" aria-label="Email" />
+          <!-- [[ LINK CHECKOUT ]] -->
+          <a href="#" class="btn btn-primary">Mulai Sekarang</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         7. DAFTAR BENEFIT (ikon outline) — section terang
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap reveal" style="padding-bottom:6rem;">
+        <div class="narrow center">
+          <!-- AI INSTRUCTION: Judul, mis. "Kenapa memilih kami" -->
+          <h2 class="h2">Kenapa Memilih Kami</h2>
+        </div>
+        <div class="grid g1 g2 mt-12">
+          <!-- BENEFIT (duplikat/kurangi; ganti ikon SVG sesuai kebutuhan) -->
+          <div class="benefit">
+            <span class="ico"><svg viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1M4 13a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1v-5H4Zm16 0h-1v5h1a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2Zm-1 5a4 4 0 0 1-4 4h-1"/></svg></span>
+            <div>
+              <!-- AI INSTRUCTION: Judul benefit 1 -->
+              <h3>Dukungan 24/7</h3>
+              <!-- AI INSTRUCTION: Penjelasan singkat benefit 1 -->
+              <p class="muted">Jelaskan keunggulan layanan/dukungan yang Anda tawarkan.</p>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <span class="ico"><svg viewBox="0 0 24 24"><path d="m3 8 9-5 9 5-9 5-9-5Zm0 0v8l9 5 9-5V8"/></svg></span>
+            <div>
+              <h3>Judul Benefit 2</h3>
+              <p class="muted">Jelaskan keunggulan kedua produk/layanan Anda.</p>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <span class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 1 5.4-5.4l-2.3 2.3-2-2 2.3-2.3Z"/></svg></span>
+            <div>
+              <h3>Judul Benefit 3</h3>
+              <p class="muted">Jelaskan keunggulan ketiga produk/layanan Anda.</p>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <span class="ico"><svg viewBox="0 0 24 24"><path d="M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm13 9v-1a4 4 0 0 0-3-3.9M16 4.1a4 4 0 0 1 0 7.8"/></svg></span>
+            <div>
+              <h3>Judul Benefit 4</h3>
+              <p class="muted">Jelaskan keunggulan keempat produk/layanan Anda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         8. FAQ (section gelap)
+         ==================================================================== -->
+    <section class="sec-dark">
+      <div class="wrap pad reveal" style="max-width:52rem;">
+        <div class="center">
+          <!-- AI INSTRUCTION: Judul FAQ -->
+          <h2 class="h2">Pertanyaan yang Sering Diajukan</h2>
+        </div>
+        <div class="faq mt-12">
+          <!-- ITEM FAQ (duplikat sesuai jumlah pertanyaan) -->
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <!-- AI INSTRUCTION: Pertanyaan 1 -->
+              <span>Tulis pertanyaan pertama di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><!-- AI INSTRUCTION: Jawaban 1 --><p>Tulis jawaban yang jelas dan meyakinkan.</p></div>
+          </div>
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <span>Tulis pertanyaan kedua di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Tulis jawaban untuk pertanyaan kedua.</p></div>
+          </div>
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <span>Tulis pertanyaan ketiga di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Tulis jawaban untuk pertanyaan ketiga.</p></div>
+          </div>
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <span>Tulis pertanyaan keempat di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Tulis jawaban untuk pertanyaan keempat.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         9. CTA AKHIR (section terang)
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap pad center narrow reveal">
+        <!-- AI INSTRUCTION: Headline penutup, maks 8 kata -->
+        <h2 class="h2">Mulai Hari Ini Juga</h2>
+        <!-- AI INSTRUCTION: 1 kalimat urgensi/penutup (jujur) -->
+        <p class="lead muted mt-4">Tambahkan alasan untuk bertindak sekarang: bonus, harga promo, atau kuota terbatas yang nyata.</p>
+        <div class="signup center mt-8">
+          <input class="field" type="email" placeholder="Masukkan email Anda" aria-label="Email" />
+          <!-- [[ LINK CHECKOUT ]] -->
+          <a href="#" class="btn btn-primary">Mulai Sekarang</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       10. FOOTER (section gelap)
+       ====================================================================== -->
+  <footer class="sec-dark">
+    <div class="wrap" style="padding-top:4rem; padding-bottom:3rem;">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <!-- AI INSTRUCTION: Nama brand + 1 kalimat tagline -->
+          <a href="#" class="brand" style="font-size:1.25rem;">NamaBrand</a>
+          <p class="muted mt-4" style="max-width:22rem;">Tagline singkat brand Anda di sini.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Produk</h4>
+          <!-- [[ LINK: ganti href sesuai kebutuhan ]] -->
+          <a href="#">Fitur</a>
+          <a href="#">Harga</a>
+          <a href="#">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Ikuti Kami</h4>
+          <!-- [[ LINK SOSMED ]] -->
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <!-- AI INSTRUCTION: Nama brand + tahun -->
+        <p class="muted" style="font-size:.9rem;">© 2026 NamaBrand. Semua hak dilindungi.</p>
+        <!-- Pemilih bahasa/wilayah (khas Shopify) -->
+        <select class="locale" aria-label="Pilih bahasa">
+          <option>Indonesia (IDR Rp)</option>
+          <option>English (USD $)</option>
+        </select>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ accordion (tunggal)
+    document.querySelectorAll('.faq-trigger').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.faq-item');
+        var open = item.getAttribute('data-open') === 'true';
+        document.querySelectorAll('.faq-item').forEach(function (i) { i.setAttribute('data-open', 'false'); });
+        item.setAttribute('data-open', open ? 'false' : 'true');
+      });
+    });
+    // Animasi reveal
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+  </script>
+</body>
+</html>
