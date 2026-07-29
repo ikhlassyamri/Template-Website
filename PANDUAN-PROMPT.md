@@ -66,8 +66,10 @@ ATURAN EMAS (WAJIB PATUHI):
    aktifkan <img>. JANGAN dua-duanya (biar tidak dobel/ikon rusak).
 5. DATA NYATA SAJA: bagian angka statistik (mis. jumlah pembeli/rating) HANYA diisi bila
    saya beri data nyata di brief. Jika tidak ada, HAPUS blok grid statistik itu.
-6. GANTI ASET & LINK sesuai brief: gambar produk, link checkout di SEMUA tombol CTA,
-   link sosmed, dan link WhatsApp (format wa.me/62...?text=... dengan pesan ter-encode).
+6. LINK CTA: HANYA tombol CTA TERAKHIR (di bagian harga) yang diisi link checkout asli
+   pada href. Tombol CTA lain (navbar, hero, tengah) sudah di-set href="#cta-akhir" agar
+   scroll ke harga — JANGAN diubah jadi link checkout. Ganti juga src gambar produk, link
+   sosmed, dan link WhatsApp (format wa.me/62...?text=... dengan pesan ter-encode).
 7. Kembalikan SELURUH file index.html yang sudah terisi, utuh & siap simpan.
 
 BRIEF SAYA:

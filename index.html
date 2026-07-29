@@ -108,6 +108,8 @@
 
     /* --- Section & pemisah --- */
     section { position: relative; }
+    /* Beri jarak agar target scroll (mis. #cta-akhir) tak tertutup navbar sticky */
+    #cta-akhir { scroll-margin-top: 5rem; }
     .section-pad { padding: 5rem 0; }
     .bg-elevated { background-color: var(--color-bg-elevated); }
     .eyebrow { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1.25rem; }
@@ -257,7 +259,8 @@
         NamaBrand
       </a>
 
-      <!-- AI INSTRUCTION: Tombol CTA navbar — 1-2 kata aksi, mis. "Beli Sekarang" -->
+      <!-- AI INSTRUCTION: Tombol CTA navbar — 1-2 kata aksi, mis. "Beli Sekarang".
+           href="#cta-akhir" = scroll ke bagian harga; biarkan apa adanya. -->
       <a href="#cta-akhir" class="btn-cta btn-sm">Beli Sekarang</a>
     </div>
   </header>
@@ -282,9 +285,10 @@
 
         <!-- CTA utama + micro-trust -->
         <div class="mt-8" style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
-          <!-- [[ LINK CHECKOUT: ganti href="#" dengan link Checkout/Order (CO) Anda ]] -->
+          <!-- SCROLL-KE-HARGA: href="#cta-akhir" membuat tombol ini meluncur ke bagian
+               harga saat diklik. JANGAN ganti dengan link checkout — biarkan #cta-akhir. -->
           <!-- AI INSTRUCTION: Teks tombol berorientasi hasil, mis. "Dapatkan Akses Sekarang" -->
-          <a href="#" class="btn-cta btn-lg">Tombol Aksi Utama (CTA)</a>
+          <a href="#cta-akhir" class="btn-cta btn-lg">Tombol Aksi Utama (CTA)</a>
           <!-- AI INSTRUCTION: Micro-copy penenang di bawah tombol, mis. "Garansi 7 hari uang kembali · Akses instan" -->
           <p class="text-muted" style="font-size:.9rem;">Teks penenang singkat · mis. garansi atau akses instan</p>
         </div>
@@ -380,8 +384,8 @@
       <div class="container container-mid center reveal" style="padding:3.5rem 1.5rem;">
         <!-- AI INSTRUCTION: 1 kalimat ajakan setelah pembaca lihat fitur -->
         <p style="font-size:clamp(1.25rem,3vw,1.5rem); font-weight:700;">Siap merasakan hasilnya sendiri?</p>
-        <!-- [[ LINK CHECKOUT ]] -->
-        <a href="#" class="btn-cta btn-lg mt-6">Tombol Aksi (CTA)</a>
+        <!-- SCROLL-KE-HARGA: biarkan href="#cta-akhir" (bukan link checkout). -->
+        <a href="#cta-akhir" class="btn-cta btn-lg mt-6">Tombol Aksi (CTA)</a>
       </div>
     </section>
 
@@ -530,7 +534,7 @@
           <span class="price-new">Rp00.000</span>
         </div>
 
-        <!-- [[ LINK CHECKOUT ]] -->
+        <!-- [[ LINK CHECKOUT: HANYA tombol INI yang diisi link checkout asli pada href ]] -->
         <a href="#" class="btn-cta btn-lg mt-8">Tombol Aksi Utama (CTA)</a>
 
         <!-- N.B / Nota Bene -->

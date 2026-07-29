@@ -31,8 +31,9 @@ sendiri**. Centang daftar ini sebelum halaman Anda online. Setiap penanda
 
 ## 3. 🔗 Link & Kontak Operasional
 
-- [ ] **Link Checkout / Order (CO)** — `[[ LINK CHECKOUT ]]`. Ganti **SEMUA** `href="#"` pada tombol CTA
-      (ada di: navbar, hero, CTA tengah, CTA akhir). Ini yang paling penting!
+- [ ] **Link Checkout / Order (CO)** — `[[ LINK CHECKOUT ]]`. Isi pada **tombol CTA TERAKHIR** (di bagian
+      harga) saja. Tombol lain (navbar, hero, CTA tengah) sengaja `href="#cta-akhir"` = scroll ke harga.
+      Ini yang paling penting!
 - [ ] **Nomor WhatsApp CS** — `[[ WHATSAPP ]]`. Format `62812xxxxxxx` (tanpa `+` atau `0` di depan).
 - [ ] **Link Instagram / TikTok / YouTube** — `[[ LINK SOSIAL... ]]` di footer.
 
