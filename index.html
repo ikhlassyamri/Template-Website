@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY LANDING PAGE TEMPLATE  ·  "SPOTLIGHT"  (Netflix-inspired dark theme)
+  ============================================================================
+  Single-product, high-converting landing page.
+  Cocok untuk: ebook, produk fisik, software/SaaS, kelas online, jasa — apapun
+  yang menjual SATU produk unggulan.
+
+  CARA PAKAI (untuk user):
+  1. Ubah TEMA (warna & font) di blok :root pada bagian <style> di bawah.
+  2. Isi COPYWRITING dengan bantuan AI. Setiap teks punya komentar
+     <!-- AI INSTRUCTION: ... --> sebagai panduan. Baca juga PANDUAN-PROMPT.md.
+  3. Ganti ASET (logo, gambar, link checkout). Cari penanda [[ ... ]].
+  4. Sembunyikan section yang tidak dipakai: cukup hapus <section> nya —
+     layout tidak akan rusak karena tiap section mandiri.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama Produk – Janji singkat" (maks 60 karakter, baik untuk SEO) -->
+  <title>Nama Produk Anda – Solusi Utama untuk Target Anda</title>
+
+  <!-- AI INSTRUCTION: Ganti description dengan 1 kalimat ringkas berisi manfaat utama produk (maks 155 karakter) -->
+  <meta name="description" content="Tulis ringkasan manfaat utama produk Anda di sini agar muncul menarik di hasil pencarian Google." />
+
+  <!-- [[ FAVICON: ganti href dengan file ikon Anda, mis. favicon.png (32x32) ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Inter (bisa diganti user lewat CSS variable --font-heading / --font-body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN (untuk kemudahan template 1-file, tanpa build step) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER — SILAKAN UBAH BAGIAN INI SAJA
+       Ubah warna & font seluruh website hanya dari sini. Layout tidak tersentuh.
+       Tips: kirim blok ini ke AI, mis. "ubah warna utama jadi hijau emerald
+       dan font judul yang cocok untuk brand kopi".
+       ======================================================================== */
+    :root {
+      /* --- WARNA (isi dengan kode HEX) --- */
+      --color-primary:        #E50914;   /* Warna tombol CTA (default: merah) */
+      --color-primary-hover:  #F6121D;   /* Warna tombol saat disentuh mouse   */
+      --color-bg:             #000000;   /* Latar utama (gelap)                */
+      --color-bg-elevated:    #0d0d0d;   /* Latar section berselang-seling     */
+      --color-bg-card:        #161616;   /* Latar kartu fitur/testimoni        */
+      --color-text:           #ffffff;   /* Warna teks judul/utama             */
+      --color-text-muted:     #a3a3a3;   /* Warna teks paragraf/abu-abu        */
+      --color-border:         #262626;   /* Warna garis tepi kartu             */
+
+      /* --- EFEK CAHAYA NEON (pemisah & aksen, ala Netflix) --- */
+      --glow-a:               #7f5bff;   /* Ungu */
+      --glow-b:               #ff2fb0;   /* Pink */
+
+      /* --- FONT --- */
+      --font-heading: 'Inter', system-ui, sans-serif;  /* Font judul  */
+      --font-body:    'Inter', system-ui, sans-serif;  /* Font isi    */
+
+      /* --- BENTUK --- */
+      --radius-button: 10px;  /* 999px = tombol bulat penuh (pill)  */
+      --radius-card:   18px;  /* Kelengkungan sudut kartu           */
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+    /* ======================================================================== */
+
+    /* Hubungkan CSS variables ke Tailwind agar class seperti bg-brand jalan */
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, .font-heading { font-family: var(--font-heading); }
+
+    .bg-brand        { background-color: var(--color-primary); }
+    .bg-brand:hover  { background-color: var(--color-primary-hover); }
+    .text-brand      { color: var(--color-primary); }
+    .bg-elevated     { background-color: var(--color-bg-elevated); }
+    .bg-card         { background-color: var(--color-bg-card); }
+    .text-muted      { color: var(--color-text-muted); }
+    .border-soft     { border-color: var(--color-border); }
+    .radius-btn      { border-radius: var(--radius-button); }
+    .radius-card     { border-radius: var(--radius-card); }
+
+    /* Tombol CTA utama */
+    .btn-cta {
+      background-color: var(--color-primary);
+      color: #fff;
+      border-radius: var(--radius-button);
+      transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 30px -8px color-mix(in srgb, var(--color-primary) 70%, transparent);
+    }
+    .btn-cta:hover { background-color: var(--color-primary-hover); transform: translateY(-2px); }
+    .btn-cta:active { transform: translateY(0); }
+
+    /* Garis pemisah bercahaya (neon glow divider) — dekoratif */
+    .glow-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--glow-a), var(--glow-b), transparent);
+      box-shadow: 0 0 24px 2px color-mix(in srgb, var(--glow-b) 45%, transparent);
+      opacity: .55;
+    }
+
+    /* Cahaya latar radial di belakang hero */
+    .hero-glow::before {
+      content: "";
+      position: absolute;
+      inset: -20% 0 auto 0;
+      height: 70%;
+      background: radial-gradient(60% 60% at 50% 0%,
+        color-mix(in srgb, var(--glow-a) 28%, transparent), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Tepi kartu dengan aksen gradien saat hover */
+    .card-glow {
+      position: relative;
+      border: 1px solid var(--color-border);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .card-glow:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--glow-a) 60%, var(--color-border)); }
+
+    /* FAQ accordion */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .faq-item[open-state="true"] .faq-answer { max-height: 400px; }
+    .faq-item[open-state="true"] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform .25s ease; }
+
+    /* Animasi masuk lembut */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.in { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased">
+
+  <!-- ======================================================================
+       NAVBAR (opsional — hapus <header> ini bila tidak butuh)
+       ====================================================================== -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-black/60 border-b border-soft">
+    <nav class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <!-- [[ LOGO: ganti teks/gambar berikut dengan logo brand Anda ]] -->
+      <!-- AI INSTRUCTION: Ganti dengan nama brand (teks) ATAU biarkan user pasang <img src="logo.png"> -->
+      <a href="#" class="text-xl font-extrabold tracking-tight">NamaBrand</a>
+
+      <!-- AI INSTRUCTION: Tombol CTA navbar — 1-2 kata aksi, mis. "Beli Sekarang" -->
+      <a href="#cta-akhir" class="btn-cta text-sm font-semibold px-5 py-2.5">Beli Sekarang</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ====================================================================
+         1. HERO SECTION
+         ==================================================================== -->
+    <section class="hero-glow relative overflow-hidden">
+      <div class="relative z-10 max-w-4xl mx-auto px-5 pt-20 pb-16 md:pt-28 md:pb-24 text-center reveal">
+
+        <!-- AI INSTRUCTION: Label kecil di atas judul — kategori/hook singkat (maks 5 kata), mis. "EBOOK PANDUAN DIET 2026" -->
+        <span class="inline-block text-xs font-semibold tracking-widest uppercase text-brand mb-5">
+          Label Kategori Produk
+        </span>
+
+        <!-- AI INSTRUCTION: HEADLINE (H1) — janji terbesar / solusi utama, punchy, maks 8-10 kata -->
+        <h1 class="text-4xl md:text-6xl font-black leading-[1.1] tracking-tight">
+          Tulis Janji Terbesar atau Solusi Utama Produk Anda di Sini
+        </h1>
+
+        <!-- AI INSTRUCTION: SUB-HEADLINE (pengantar) — perjelas headline & sebut untuk siapa, 1-2 kalimat -->
+        <p class="mt-6 text-lg md:text-xl text-muted max-w-2xl mx-auto">
+          Satu kalimat pengantar yang menjelaskan bagaimana produk Anda menyelesaikan masalah utama pembaca, tanpa ribet.
+        </p>
+
+        <!-- CTA utama + micro-trust -->
+        <div class="mt-9 flex flex-col items-center gap-3">
+          <!-- [[ LINK CHECKOUT: ganti href="#" dengan link Checkout/Order (CO) Anda ]] -->
+          <!-- AI INSTRUCTION: Teks tombol berorientasi hasil, mis. "Dapatkan Akses Sekarang" -->
+          <a href="#" class="btn-cta text-base md:text-lg font-bold px-8 py-4 w-full sm:w-auto">
+            Tombol Aksi Utama (CTA)
+          </a>
+          <!-- AI INSTRUCTION: Micro-copy penenang di bawah tombol, mis. "Garansi 7 hari uang kembali · Akses instan" -->
+          <p class="text-sm text-muted">Teks penenang singkat · mis. garansi atau akses instan</p>
+        </div>
+
+        <!-- [[ GAMBAR PRODUK: ganti src dengan foto/mockup produk Anda ]] -->
+        <!-- AI INSTRUCTION: Biarkan gambar apa adanya; user yang mengganti. Alt = deskripsi produk -->
+        <div class="mt-14 relative">
+          <div class="glow-divider absolute -top-4 left-1/2 -translate-x-1/2 w-2/3"></div>
+          <img
+            src="https://placehold.co/1000x560/141414/E50914?text=Foto+atau+Mockup+Produk"
+            alt="Foto produk Anda"
+            class="mx-auto radius-card border border-soft shadow-2xl w-full max-w-3xl"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         2. VALUE PROPOSITION (momen "aha!")
+         ==================================================================== -->
+    <section class="bg-elevated">
+      <div class="glow-divider"></div>
+      <div class="max-w-4xl mx-auto px-5 py-20 md:py-24 text-center reveal">
+        <!-- AI INSTRUCTION: Judul value — inti transformasi yang didapat pembeli, maks 8 kata -->
+        <h2 class="text-3xl md:text-5xl font-black tracking-tight">
+          Inti Nilai / Transformasi yang Didapat Pembeli
+        </h2>
+        <!-- AI INSTRUCTION: 2-3 kalimat memperkuat "kenapa produk ini penting" & rasa sakit yang dipecahkan -->
+        <p class="mt-6 text-lg text-muted max-w-2xl mx-auto">
+          Jelaskan di sini momen "aha!" produk Anda. Ceritakan perubahan dari kondisi menyebalkan (sebelum) menjadi kondisi ideal (sesudah) yang pembaca inginkan.
+        </p>
+
+        <!-- Statistik/angka bukti (opsional — hapus grid ini bila tak ada data) -->
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <!-- AI INSTRUCTION: 3 angka pencapaian singkat. Format: [ANGKA] + [keterangan] -->
+          <div class="bg-card radius-card border border-soft p-6">
+            <p class="text-4xl font-black text-brand">1.000+</p>
+            <p class="mt-1 text-sm text-muted">Keterangan angka pertama</p>
+          </div>
+          <div class="bg-card radius-card border border-soft p-6">
+            <p class="text-4xl font-black text-brand">4.9/5</p>
+            <p class="mt-1 text-sm text-muted">Keterangan angka kedua</p>
+          </div>
+          <div class="bg-card radius-card border border-soft p-6">
+            <p class="text-4xl font-black text-brand">24 Jam</p>
+            <p class="mt-1 text-sm text-muted">Keterangan angka ketiga</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         3. FEATURES (3-4 kartu — apa saja isi/keunggulan produk)
+         ==================================================================== -->
+    <section class="max-w-6xl mx-auto px-5 py-20 md:py-24">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <!-- AI INSTRUCTION: Judul section fitur, mis. "Apa Saja yang Anda Dapatkan" -->
+        <h2 class="text-3xl md:text-5xl font-black tracking-tight">Apa yang Anda Dapatkan</h2>
+        <!-- AI INSTRUCTION: 1 kalimat pengantar fitur -->
+        <p class="mt-4 text-lg text-muted">Ringkas keunggulan utama yang membuat produk Anda layak dibeli.</p>
+      </div>
+
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- KARTU FITUR (duplikat/kurangi <article> ini sesuai jumlah fitur) -->
+        <article class="card-glow bg-card radius-card p-7 relative overflow-hidden reveal">
+          <!-- AI INSTRUCTION: Judul fitur 1 — manfaat, bukan sekadar fitur teknis -->
+          <h3 class="text-xl font-bold">Judul Fitur / Manfaat #1</h3>
+          <!-- AI INSTRUCTION: 1-2 kalimat menjelaskan fitur 1 & manfaatnya bagi pembeli -->
+          <p class="mt-3 text-muted">Jelaskan apa yang membuat fitur ini berharga bagi target market Anda.</p>
+          <!-- Ikon dekoratif pojok kanan bawah (ala Netflix) — ganti emoji sesuka hati -->
+          <span class="absolute bottom-3 right-4 text-5xl opacity-20 select-none">✨</span>
+        </article>
+
+        <article class="card-glow bg-card radius-card p-7 relative overflow-hidden reveal">
+          <!-- AI INSTRUCTION: Judul fitur 2 -->
+          <h3 class="text-xl font-bold">Judul Fitur / Manfaat #2</h3>
+          <!-- AI INSTRUCTION: Penjelasan fitur 2 -->
+          <p class="mt-3 text-muted">Jelaskan apa yang membuat fitur ini berharga bagi target market Anda.</p>
+          <span class="absolute bottom-3 right-4 text-5xl opacity-20 select-none">⚡</span>
+        </article>
+
+        <article class="card-glow bg-card radius-card p-7 relative overflow-hidden reveal">
+          <!-- AI INSTRUCTION: Judul fitur 3 -->
+          <h3 class="text-xl font-bold">Judul Fitur / Manfaat #3</h3>
+          <!-- AI INSTRUCTION: Penjelasan fitur 3 -->
+          <p class="mt-3 text-muted">Jelaskan apa yang membuat fitur ini berharga bagi target market Anda.</p>
+          <span class="absolute bottom-3 right-4 text-5xl opacity-20 select-none">🎯</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CTA TENGAH (dorongan pertama setelah fitur)
+         ==================================================================== -->
+    <section class="bg-elevated">
+      <div class="glow-divider"></div>
+      <div class="max-w-3xl mx-auto px-5 py-14 text-center reveal">
+        <!-- AI INSTRUCTION: 1 kalimat ajakan setelah pembaca lihat fitur -->
+        <p class="text-xl md:text-2xl font-bold">Siap merasakan hasilnya sendiri?</p>
+        <!-- [[ LINK CHECKOUT ]] -->
+        <a href="#" class="btn-cta inline-block mt-6 text-base md:text-lg font-bold px-8 py-4">Tombol Aksi (CTA)</a>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         4. TESTIMONIAL (bukti sosial — DATA ASLI, jangan mengarang)
+         PENTING: isi dengan testimoni nyata dari pelanggan Anda.
+         ==================================================================== -->
+    <section class="max-w-6xl mx-auto px-5 py-20 md:py-24">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <!-- AI INSTRUCTION: Judul section testimoni, mis. "Kata Mereka yang Sudah Mencoba" -->
+        <h2 class="text-3xl md:text-5xl font-black tracking-tight">Kata Mereka yang Sudah Mencoba</h2>
+      </div>
+
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- KARTU TESTIMONI (duplikat sesuai jumlah testimoni asli) -->
+        <figure class="bg-card radius-card border border-soft p-7 reveal">
+          <!-- Bintang (opsional) -->
+          <div class="text-brand text-lg mb-3">★★★★★</div>
+          <!-- AI INSTRUCTION: [ISI DENGAN TESTIMONI ASLI PELANGGAN — jangan dikarang] -->
+          <blockquote class="text-muted">"Tempel kutipan testimoni asli dari pelanggan di sini. Biarkan apa adanya agar terdengar jujur."</blockquote>
+          <figcaption class="mt-5 flex items-center gap-3">
+            <!-- [[ FOTO TESTIMONI: ganti src dengan foto pelanggan ]] -->
+            <img src="https://placehold.co/48x48/262626/ffffff?text=%20" alt="Foto pelanggan" class="w-11 h-11 rounded-full object-cover" />
+            <div>
+              <!-- AI INSTRUCTION: Nama pelanggan asli -->
+              <p class="font-semibold text-sm">Nama Pelanggan</p>
+              <!-- AI INSTRUCTION: Keterangan singkat (kota / profesi) -->
+              <p class="text-xs text-muted">Kota / Profesi</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="bg-card radius-card border border-soft p-7 reveal">
+          <div class="text-brand text-lg mb-3">★★★★★</div>
+          <blockquote class="text-muted">"Tempel kutipan testimoni asli kedua di sini."</blockquote>
+          <figcaption class="mt-5 flex items-center gap-3">
+            <img src="https://placehold.co/48x48/262626/ffffff?text=%20" alt="Foto pelanggan" class="w-11 h-11 rounded-full object-cover" />
+            <div>
+              <p class="font-semibold text-sm">Nama Pelanggan</p>
+              <p class="text-xs text-muted">Kota / Profesi</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="bg-card radius-card border border-soft p-7 reveal">
+          <div class="text-brand text-lg mb-3">★★★★★</div>
+          <blockquote class="text-muted">"Tempel kutipan testimoni asli ketiga di sini."</blockquote>
+          <figcaption class="mt-5 flex items-center gap-3">
+            <img src="https://placehold.co/48x48/262626/ffffff?text=%20" alt="Foto pelanggan" class="w-11 h-11 rounded-full object-cover" />
+            <div>
+              <p class="font-semibold text-sm">Nama Pelanggan</p>
+              <p class="text-xs text-muted">Kota / Profesi</p>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. COCOK UNTUK SIAPA (checklist)
+         ==================================================================== -->
+    <section class="bg-elevated">
+      <div class="glow-divider"></div>
+      <div class="max-w-4xl mx-auto px-5 py-20 md:py-24 reveal">
+        <div class="text-center max-w-2xl mx-auto">
+          <!-- AI INSTRUCTION: Judul, mis. "Produk Ini Cocok untuk Anda Jika..." -->
+          <h2 class="text-3xl md:text-5xl font-black tracking-tight">Cocok untuk Anda Jika…</h2>
+        </div>
+
+        <ul class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+          <!-- ITEM CHECKLIST (duplikat/kurangi <li> ini) -->
+          <!-- AI INSTRUCTION: Poin profil pembeli ideal / masalah yang mereka rasakan -->
+          <li class="flex items-start gap-3 bg-card radius-card border border-soft p-5">
+            <span class="text-brand text-xl leading-none">✓</span>
+            <span class="text-muted">Tulis satu ciri / kondisi pembeli ideal di sini.</span>
+          </li>
+          <li class="flex items-start gap-3 bg-card radius-card border border-soft p-5">
+            <span class="text-brand text-xl leading-none">✓</span>
+            <span class="text-muted">Tulis ciri kedua pembeli ideal.</span>
+          </li>
+          <li class="flex items-start gap-3 bg-card radius-card border border-soft p-5">
+            <span class="text-brand text-xl leading-none">✓</span>
+            <span class="text-muted">Tulis ciri ketiga pembeli ideal.</span>
+          </li>
+          <li class="flex items-start gap-3 bg-card radius-card border border-soft p-5">
+            <span class="text-brand text-xl leading-none">✓</span>
+            <span class="text-muted">Tulis ciri keempat pembeli ideal.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         6. FAQ (accordion)
+         ==================================================================== -->
+    <section class="max-w-3xl mx-auto px-5 py-20 md:py-24">
+      <div class="text-center reveal">
+        <!-- AI INSTRUCTION: Judul FAQ, mis. "Pertanyaan yang Sering Diajukan" -->
+        <h2 class="text-3xl md:text-5xl font-black tracking-tight">Pertanyaan yang Sering Diajukan</h2>
+      </div>
+
+      <div class="mt-12 space-y-3" id="faq-list">
+        <!-- ITEM FAQ (duplikat blok .faq-item ini sesuai jumlah pertanyaan) -->
+        <div class="faq-item bg-card radius-card border border-soft overflow-hidden" open-state="false">
+          <button type="button" class="faq-trigger w-full flex items-center justify-between gap-4 text-left px-6 py-5">
+            <!-- AI INSTRUCTION: Pertanyaan 1 (keberatan umum calon pembeli) -->
+            <span class="font-semibold">Tulis pertanyaan pertama di sini?</span>
+            <span class="faq-icon text-brand text-2xl leading-none shrink-0">+</span>
+          </button>
+          <div class="faq-answer px-6">
+            <!-- AI INSTRUCTION: Jawaban 1 yang menenangkan keberatan -->
+            <p class="pb-5 text-muted">Tulis jawaban yang jelas dan meyakinkan untuk pertanyaan di atas.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-card radius-card border border-soft overflow-hidden" open-state="false">
+          <button type="button" class="faq-trigger w-full flex items-center justify-between gap-4 text-left px-6 py-5">
+            <span class="font-semibold">Tulis pertanyaan kedua di sini?</span>
+            <span class="faq-icon text-brand text-2xl leading-none shrink-0">+</span>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-muted">Tulis jawaban untuk pertanyaan kedua.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-card radius-card border border-soft overflow-hidden" open-state="false">
+          <button type="button" class="faq-trigger w-full flex items-center justify-between gap-4 text-left px-6 py-5">
+            <span class="font-semibold">Tulis pertanyaan ketiga di sini?</span>
+            <span class="faq-icon text-brand text-2xl leading-none shrink-0">+</span>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-muted">Tulis jawaban untuk pertanyaan ketiga.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-card radius-card border border-soft overflow-hidden" open-state="false">
+          <button type="button" class="faq-trigger w-full flex items-center justify-between gap-4 text-left px-6 py-5">
+            <span class="font-semibold">Tulis pertanyaan keempat di sini?</span>
+            <span class="faq-icon text-brand text-2xl leading-none shrink-0">+</span>
+          </button>
+          <div class="faq-answer px-6">
+            <p class="pb-5 text-muted">Tulis jawaban untuk pertanyaan keempat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         7. CTA AKHIR + N.B (urgency + penutup)
+         ==================================================================== -->
+    <section id="cta-akhir" class="relative overflow-hidden hero-glow">
+      <div class="glow-divider"></div>
+      <div class="relative z-10 max-w-3xl mx-auto px-5 py-24 text-center reveal">
+        <!-- AI INSTRUCTION: Headline penutup penuh urgensi, maks 10 kata -->
+        <h2 class="text-3xl md:text-5xl font-black tracking-tight">Ajakan Terakhir yang Penuh Urgensi</h2>
+        <!-- AI INSTRUCTION: 1-2 kalimat urgensi/kelangkaan (stok terbatas, harga naik, bonus) — jujur, jangan palsu -->
+        <p class="mt-5 text-lg text-muted max-w-xl mx-auto">Tambahkan alasan untuk bertindak sekarang: bonus terbatas, harga promo, atau kuota terbatas yang benar-benar nyata.</p>
+
+        <!-- Harga (opsional) -->
+        <div class="mt-8 flex items-center justify-center gap-3">
+          <!-- AI INSTRUCTION: Harga coret (opsional) -->
+          <span class="text-xl text-muted line-through">Rp000.000</span>
+          <!-- AI INSTRUCTION: Harga jual -->
+          <span class="text-4xl font-black">Rp00.000</span>
+        </div>
+
+        <!-- [[ LINK CHECKOUT ]] -->
+        <a href="#" class="btn-cta inline-block mt-8 text-lg font-bold px-10 py-4">Tombol Aksi Utama (CTA)</a>
+
+        <!-- N.B / Nota Bene -->
+        <!-- AI INSTRUCTION: Catatan penutup (P.S.) — tegaskan garansi / hilangkan risiko terakhir -->
+        <p class="mt-8 text-sm text-muted max-w-xl mx-auto">
+          <strong class="text-white">N.B:</strong> Tulis catatan penutup di sini — mis. garansi uang kembali agar pembeli merasa 100% aman.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="border-t border-soft bg-elevated">
+    <div class="max-w-6xl mx-auto px-5 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <!-- AI INSTRUCTION: Nama brand + tahun -->
+      <p class="text-sm text-muted">© 2026 NamaBrand. Semua hak dilindungi.</p>
+      <div class="flex items-center gap-5 text-sm text-muted">
+        <!-- [[ LINK SOSIAL MEDIA & LEGAL: ganti href ]] -->
+        <a href="#" class="hover:text-white transition">Instagram</a>
+        <a href="#" class="hover:text-white transition">TikTok</a>
+        <a href="#" class="hover:text-white transition">Kebijakan Privasi</a>
+        <a href="#" class="hover:text-white transition">Syarat &amp; Ketentuan</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       STICKY BOTTOM CTA (hanya tampil di HP)
+       ====================================================================== -->
+  <div class="sm:hidden fixed bottom-0 inset-x-0 z-50 p-3 bg-black/90 backdrop-blur border-t border-soft">
+    <!-- [[ LINK CHECKOUT ]] -->
+    <!-- AI INSTRUCTION: Teks tombol pendek, mis. "Beli Sekarang" -->
+    <a href="#" class="btn-cta flex items-center justify-center text-base font-bold py-3.5">Beli Sekarang</a>
+  </div>
+
+  <!-- ======================================================================
+       FLOATING WHATSAPP (opsional — hapus <a> ini bila tak dipakai)
+       ====================================================================== -->
+  <!-- [[ WHATSAPP: ganti nomor 62812XXXXXXX dengan nomor CS Anda (format 62...) ]] -->
+  <a href="https://wa.me/62812XXXXXXX" target="_blank" rel="noopener"
+     class="fixed z-40 right-4 bottom-20 sm:bottom-6 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:scale-105 transition"
+     aria-label="Chat WhatsApp">
+    <svg viewBox="0 0 32 32" class="w-7 h-7 fill-white" aria-hidden="true">
+      <path d="M16.003 3C9.383 3 4 8.383 4 15c0 2.113.553 4.176 1.602 5.996L4 29l8.2-1.57A11.9 11.9 0 0016.003 27C22.62 27 28 21.617 28 15S22.62 3 16.003 3zm0 21.8c-1.79 0-3.55-.48-5.086-1.39l-.365-.216-4.87.932.93-4.75-.238-.377A9.77 9.77 0 016.2 15c0-5.4 4.402-9.8 9.803-9.8 5.4 0 9.797 4.4 9.797 9.8 0 5.4-4.397 9.8-9.797 9.8zm5.383-7.34c-.295-.148-1.744-.86-2.014-.96-.27-.098-.467-.147-.664.148-.196.295-.762.96-.934 1.156-.172.196-.344.22-.639.073-.295-.148-1.245-.459-2.372-1.463-.877-.782-1.47-1.748-1.642-2.043-.172-.295-.018-.454.13-.6.134-.132.295-.344.443-.516.148-.172.197-.295.295-.492.098-.196.05-.369-.025-.516-.074-.148-.664-1.6-.91-2.19-.24-.576-.483-.498-.664-.508l-.566-.01c-.196 0-.516.074-.787.369-.27.295-1.033 1.01-1.033 2.46 0 1.45 1.058 2.852 1.205 3.049.148.196 2.082 3.178 5.045 4.457.705.304 1.256.486 1.685.623.708.225 1.352.193 1.862.117.568-.085 1.744-.713 1.99-1.402.246-.688.246-1.279.172-1.402-.074-.123-.27-.196-.565-.344z"/>
+    </svg>
+  </a>
+
+  <!-- ======================================================================
+       JAVASCRIPT (vanilla) — FAQ accordion + animasi reveal
+       ====================================================================== -->
+  <script>
+    // Sinkronkan warna Tailwind CDN dengan CSS variables (opsional, aman diabaikan)
+    // FAQ accordion
+    document.querySelectorAll('.faq-trigger').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.faq-item');
+        var isOpen = item.getAttribute('open-state') === 'true';
+        // Tutup semua (perilaku accordion tunggal). Hapus loop ini bila ingin banyak terbuka.
+        document.querySelectorAll('.faq-item').forEach(function (i) { i.setAttribute('open-state', 'false'); });
+        item.setAttribute('open-state', isOpen ? 'false' : 'true');
+      });
+    });
+
+    // Animasi reveal saat elemen masuk layar
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+  </script>
+</body>
+</html>
