@@ -69,6 +69,12 @@
       /* --- BENTUK --- */
       --radius-button: 10px;  /* 999px = tombol bulat penuh (pill)  */
       --radius-card:   18px;  /* Kelengkungan sudut kartu           */
+
+      /* --- GAMBAR PRODUK (hero) — tampil apa adanya (rasio asli), hanya dibatasi --- */
+      /* Gambar tidak dipotong & tidak ada ruang kosong; sekadar diperkecil bila     */
+      /* melebihi batas ini, sehingga ukurannya konsisten dan tak memenuhi layar.    */
+      --hero-img-max-w: 26rem;  /* Batas LEBAR maksimal gambar produk  */
+      --hero-img-max-h: 30rem;  /* Batas TINGGI maksimal gambar produk */
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
@@ -110,7 +116,9 @@
     section { position: relative; }
     /* Beri jarak agar target scroll (mis. #cta-akhir) tak tertutup navbar sticky */
     #cta-akhir { scroll-margin-top: 5rem; }
-    .section-pad { padding: 5rem 0; }
+    /* Hanya atur padding VERTIKAL — biarkan padding kiri-kanan .container tetap jalan
+       (kalau pakai shorthand "5rem 0", padding samping .container ikut jadi 0 = mepet tepi). */
+    .section-pad { padding-top: 5rem; padding-bottom: 5rem; }
     .bg-elevated { background-color: var(--color-bg-elevated); }
     .eyebrow { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1.25rem; }
 
@@ -185,9 +193,17 @@
     /* --- Logo navbar (bila pakai gambar logo/foto profil, bukan teks) --- */
     .brand-logo { height: 2rem; width: auto; border-radius: 6px; display: block; }
 
-    /* --- Hero image (ukuran ideal & proporsional, tidak kegedean) --- */
-    /* Ubah --hero-img-max untuk memperbesar/memperkecil gambar produk.       */
-    .hero-img { margin: 0 auto; max-width: 26rem; width: 100%; border-radius: var(--radius-card); border: 1px solid var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,.7); }
+    /* --- Gambar produk (hero): rasio ASLI dipertahankan, hanya dibatasi ukurannya --- */
+    /* Tidak dipotong, tidak ada ruang kosong. Atur batas lewat --hero-img-max-* di :root */
+    .hero-img {
+      display: block; margin: 0 auto;
+      width: auto; height: auto;
+      max-width: min(100%, var(--hero-img-max-w));
+      max-height: var(--hero-img-max-h);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,.7);
+    }
 
     /* --- Checklist "cocok untuk siapa" --- */
     .check-item { display: flex; align-items: flex-start; gap: .75rem; }
@@ -214,7 +230,7 @@
 
     /* --- Footer --- */
     .footer { border-top: 1px solid var(--color-border); }
-    .footer-inner { padding: 2.5rem 0; display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
+    .footer-inner { padding-top: 2.5rem; padding-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
     .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; font-size: .9rem; color: var(--color-text-muted); }
     .footer-links a { display: inline-flex; align-items: center; gap: .4rem; }
     .footer-links a img { height: 1.15em; width: auto; display: block; }
@@ -298,7 +314,7 @@
         <div class="mt-14" style="position:relative;">
           <div class="glow-divider mx-auto" style="position:absolute; top:-1rem; left:50%; transform:translateX(-50%); width:66%;"></div>
           <img class="hero-img"
-            src="https://placehold.co/1000x560/141414/E50914?text=Foto+atau+Mockup+Produk"
+            src="https://placehold.co/800x1000/141414/E50914?text=Foto+atau+Mockup+Produk"
             alt="Foto produk Anda" />
         </div>
       </div>
