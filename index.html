@@ -92,7 +92,8 @@
     h1, h2, h3, h4 { font-family: var(--font-heading); line-height: 1.15; font-weight: 900; letter-spacing: -0.02em; }
 
     /* --- Container responsif: fluid + margin aman kiri-kanan di HP --- */
-    .container { width: 100%; max-width: 72rem; margin: 0 auto; padding: 0 1.25rem; }
+    .container { width: 100%; max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+    @media (min-width: 640px) { .container { padding: 0 2rem; } }
     .container-narrow { max-width: 48rem; }
     .container-mid { max-width: 56rem; }
 
@@ -179,16 +180,22 @@
     /* --- Statistik --- */
     .stat-num { font-size: 2.25rem; font-weight: 900; color: var(--color-primary); }
 
-    /* --- Hero image --- */
-    .hero-img { margin: 0 auto; max-width: 48rem; width: 100%; border-radius: var(--radius-card); border: 1px solid var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,.7); }
+    /* --- Logo navbar (bila pakai gambar logo/foto profil, bukan teks) --- */
+    .brand-logo { height: 2rem; width: auto; border-radius: 6px; display: block; }
+
+    /* --- Hero image (ukuran ideal & proporsional, tidak kegedean) --- */
+    /* Ubah --hero-img-max untuk memperbesar/memperkecil gambar produk.       */
+    .hero-img { margin: 0 auto; max-width: 26rem; width: 100%; border-radius: var(--radius-card); border: 1px solid var(--color-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,.7); }
 
     /* --- Checklist "cocok untuk siapa" --- */
     .check-item { display: flex; align-items: flex-start; gap: .75rem; }
     .check-mark { color: var(--color-primary); font-size: 1.25rem; line-height: 1.3; }
 
-    /* --- Testimoni --- */
-    .stars { color: var(--color-primary); font-size: 1.1rem; margin-bottom: .75rem; }
-    .avatar { width: 2.75rem; height: 2.75rem; border-radius: 999px; object-fit: cover; }
+    /* --- Testimoni berbasis GAMBAR (screenshot chat/ulasan asli) --- */
+    /* Bingkai minimalis: kartu tipis membungkus gambar screenshot yang diupload */
+    .testi-card { padding: .5rem; }
+    .testi-img { width: 100%; height: auto; border-radius: 12px; display: block; }
+    .testi-name { margin-top: .6rem; text-align: center; font-size: .85rem; color: var(--color-text-muted); }
 
     /* --- FAQ accordion --- */
     .faq-item { background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
@@ -207,6 +214,8 @@
     .footer { border-top: 1px solid var(--color-border); }
     .footer-inner { padding: 2.5rem 0; display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
     .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; font-size: .9rem; color: var(--color-text-muted); }
+    .footer-links a { display: inline-flex; align-items: center; gap: .4rem; }
+    .footer-links a img { height: 1.15em; width: auto; display: block; }
     .footer-links a:hover { color: #fff; }
     @media (min-width: 640px) { .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; } }
 
@@ -236,9 +245,17 @@
        ====================================================================== -->
   <header class="nav">
     <div class="container nav-inner">
-      <!-- [[ LOGO: ganti teks/gambar berikut dengan logo brand Anda ]] -->
-      <!-- AI INSTRUCTION: Ganti dengan nama brand (teks) ATAU biarkan user pasang <img src="logo.png"> -->
-      <a href="#" class="brand">NamaBrand</a>
+      <!-- [[ LOGO / FOTO PROFIL: ini tempat logo atau foto profil brand Anda ]] -->
+      <!-- AI INSTRUCTION: Pakai SALAH SATU saja — JANGAN dua-duanya:
+           (A) LOGO/FOTO  : aktifkan baris <img> di bawah & pastikan file logo.png ADA,
+                            lalu HAPUS teks "NamaBrand".
+           (B) TEKS BRAND : biarkan teks "NamaBrand" & ganti dengan nama brand.
+           Menaruh img + teks sekaligus (seperti kesalahan umum) bikin ikon rusak
+           + nama dobel. -->
+      <a href="#" class="brand" aria-label="Beranda">
+        <!-- <img src="logo.png" alt="Nama Brand" class="brand-logo" /> -->
+        NamaBrand
+      </a>
 
       <!-- AI INSTRUCTION: Tombol CTA navbar — 1-2 kata aksi, mis. "Beli Sekarang" -->
       <a href="#cta-akhir" class="btn-cta btn-sm">Beli Sekarang</a>
@@ -360,7 +377,7 @@
          ==================================================================== -->
     <section class="bg-elevated">
       <div class="glow-divider"></div>
-      <div class="container container-mid center reveal" style="padding:3.5rem 1.25rem;">
+      <div class="container container-mid center reveal" style="padding:3.5rem 1.5rem;">
         <!-- AI INSTRUCTION: 1 kalimat ajakan setelah pembaca lihat fitur -->
         <p style="font-size:clamp(1.25rem,3vw,1.5rem); font-weight:700;">Siap merasakan hasilnya sendiri?</p>
         <!-- [[ LINK CHECKOUT ]] -->
@@ -369,55 +386,38 @@
     </section>
 
     <!-- ====================================================================
-         4. TESTIMONIAL (bukti sosial — DATA ASLI, jangan mengarang)
-         PENTING: isi dengan testimoni nyata dari pelanggan Anda.
+         4. TESTIMONIAL (bukti sosial — GAMBAR/SCREENSHOT ASLI)
+         PENTING: testimoni = GAMBAR screenshot chat/ulasan asli yang diupload.
+         JANGAN mengarang teks testimoni. Cukup ganti src gambarnya.
          ==================================================================== -->
     <section class="container section-pad">
       <div class="center mx-auto reveal" style="max-width:36rem;">
         <!-- AI INSTRUCTION: Judul section testimoni, mis. "Kata Mereka yang Sudah Mencoba" -->
         <h2 class="h2">Kata Mereka yang Sudah Mencoba</h2>
+        <!-- AI INSTRUCTION: 1 kalimat pengantar (opsional), mis. "Bukti nyata dari pembeli asli." -->
+        <p class="lead mt-4">Screenshot asli dari mereka yang sudah membuktikan.</p>
       </div>
 
       <div class="grid grid-1 sm-2 lg-3 mt-14">
-        <!-- KARTU TESTIMONI (duplikat sesuai jumlah testimoni asli) -->
-        <figure class="card reveal">
-          <div class="stars">★★★★★</div>
-          <!-- AI INSTRUCTION: [ISI DENGAN TESTIMONI ASLI PELANGGAN — jangan dikarang] -->
-          <blockquote class="text-muted">"Tempel kutipan testimoni asli dari pelanggan di sini. Biarkan apa adanya agar terdengar jujur."</blockquote>
-          <figcaption class="mt-5" style="display:flex; align-items:center; gap:.75rem;">
-            <!-- [[ FOTO TESTIMONI: ganti src dengan foto pelanggan ]] -->
-            <img class="avatar" src="https://placehold.co/48x48/262626/ffffff?text=%20" alt="Foto pelanggan" />
-            <div>
-              <!-- AI INSTRUCTION: Nama pelanggan asli -->
-              <p style="font-weight:600; font-size:.9rem;">Nama Pelanggan</p>
-              <!-- AI INSTRUCTION: Keterangan singkat (kota / profesi) -->
-              <p class="text-muted" style="font-size:.8rem;">Kota / Profesi</p>
-            </div>
-          </figcaption>
+        <!-- KARTU TESTIMONI GAMBAR (duplikat/kurangi <figure> ini sesuai jumlah screenshot).
+             AI INSTRUCTION: JANGAN menulis/mengarang testimoni. Hanya ganti src="" dengan
+             file screenshot asli (mis. testi1.jpg). Nama di bawah OPSIONAL — boleh dihapus. -->
+        <figure class="card testi-card reveal">
+          <!-- [[ GAMBAR TESTIMONI 1: ganti src dengan screenshot asli, mis. testi1.jpg ]] -->
+          <img class="testi-img" src="https://placehold.co/600x800/161616/a3a3a3?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          <!-- <figcaption class="testi-name">— Nama Pelanggan</figcaption> -->
         </figure>
 
-        <figure class="card reveal">
-          <div class="stars">★★★★★</div>
-          <blockquote class="text-muted">"Tempel kutipan testimoni asli kedua di sini."</blockquote>
-          <figcaption class="mt-5" style="display:flex; align-items:center; gap:.75rem;">
-            <img class="avatar" src="https://placehold.co/48x48/262626/ffffff?text=%20" alt="Foto pelanggan" />
-            <div>
-              <p style="font-weight:600; font-size:.9rem;">Nama Pelanggan</p>
-              <p class="text-muted" style="font-size:.8rem;">Kota / Profesi</p>
-            </div>
-          </figcaption>
+        <figure class="card testi-card reveal">
+          <!-- [[ GAMBAR TESTIMONI 2 ]] -->
+          <img class="testi-img" src="https://placehold.co/600x800/161616/a3a3a3?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          <!-- <figcaption class="testi-name">— Nama Pelanggan</figcaption> -->
         </figure>
 
-        <figure class="card reveal">
-          <div class="stars">★★★★★</div>
-          <blockquote class="text-muted">"Tempel kutipan testimoni asli ketiga di sini."</blockquote>
-          <figcaption class="mt-5" style="display:flex; align-items:center; gap:.75rem;">
-            <img class="avatar" src="https://placehold.co/48x48/262626/ffffff?text=%20" alt="Foto pelanggan" />
-            <div>
-              <p style="font-weight:600; font-size:.9rem;">Nama Pelanggan</p>
-              <p class="text-muted" style="font-size:.8rem;">Kota / Profesi</p>
-            </div>
-          </figcaption>
+        <figure class="card testi-card reveal">
+          <!-- [[ GAMBAR TESTIMONI 3 ]] -->
+          <img class="testi-img" src="https://placehold.co/600x800/161616/a3a3a3?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          <!-- <figcaption class="testi-name">— Nama Pelanggan</figcaption> -->
         </figure>
       </div>
     </section>
@@ -516,7 +516,7 @@
          ==================================================================== -->
     <section id="cta-akhir" class="hero-glow">
       <div class="glow-divider"></div>
-      <div class="container container-mid center reveal" style="position:relative; z-index:1; padding:6rem 1.25rem;">
+      <div class="container container-mid center reveal" style="position:relative; z-index:1; padding:6rem 1.5rem;">
         <!-- AI INSTRUCTION: Headline penutup penuh urgensi, maks 10 kata -->
         <h2 class="h2">Ajakan Terakhir yang Penuh Urgensi</h2>
         <!-- AI INSTRUCTION: 1-2 kalimat urgensi/kelangkaan (stok terbatas, harga naik, bonus) — jujur, jangan palsu -->
