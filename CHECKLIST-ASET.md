@@ -33,8 +33,7 @@ sendiri**. Centang daftar ini sebelum halaman Anda online. Setiap penanda
 - [ ] **Link Checkout / Order (CO)** — `[[ LINK CHECKOUT ]]`. Ganti **SEMUA** `href="#"` pada tombol CTA
       (ada di: navbar, hero, CTA tengah, CTA akhir, sticky mobile). Ini yang paling penting!
 - [ ] **Nomor WhatsApp CS** — `[[ WHATSAPP ]]`. Format `62812xxxxxxx` (tanpa `+` atau `0` di depan).
-- [ ] **Link Instagram / TikTok** — `[[ LINK SOSIAL... ]]` di footer.
-- [ ] **Link Kebijakan Privasi & Syarat/Ketentuan** — di footer. Wajib jika mau iklan di Meta/Google Ads.
+- [ ] **Link Instagram / TikTok / YouTube** — `[[ LINK SOSIAL... ]]` di footer.
 
 ---
 
