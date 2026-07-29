@@ -1,89 +1,103 @@
-# 🤖 PANDUAN PROMPT — Cara Menyuruh AI Mengisi Landing Page
+# 🤖 PANDUAN PROMPT — Isi Landing Page Otomatis dengan AI
 
-File ini berisi prompt **siap salin-tempel** untuk menyuruh AI (Claude, ChatGPT,
-Gemini, dll) mengisi copywriting `index.html` Anda secara otomatis.
+Konsep template ini: **Produk + `index.html` = Copywriting relevan otomatis.**
 
-Alurnya: **Isi brief → tempel prompt + isi file `index.html` → terima hasil.**
-
----
-
-## 🧾 LANGKAH 1 — Isi "Brief" Bisnis Anda
-
-Lengkapi data di bawah ini dulu. Ini "bahan bakar" agar hasil AI tidak ngawur.
-
-```
-- Nama Produk/Layanan   :
-- Jenis produk          : (ebook / fisik / software / kelas / jasa)
-- Target market spesifik : (mis. "ibu rumah tangga sibuk", "mahasiswa IT")
-- Masalah utama yang dipecahkan :
-- 3–4 fitur / isi utama produk  :
-- Keunggulan dibanding lain     :
-- Harga jual            :
-- Harga coret (opsional):
-- Garansi (jika ada)    :
-- Alasan beli sekarang / urgensi (jika ada) :
-- Nada bahasa           : (santai / profesional / semangat / mewah)
-```
-
-> ⚠️ **Testimoni JANGAN dikarang oleh AI.** Isi sendiri dengan testimoni asli
-> pelanggan Anda. Etika bisnis + rawan komplain.
+Anda tidak perlu menyusun copywriting sendiri. Cukup **upload file produk** (mis.
+ebook PDF) + **`index.html`**, lalu AI (Claude/ChatGPT/Gemini) akan:
+1. Membaca produk Anda untuk paham isi & manfaatnya.
+2. Membaca petunjuk `<!-- AI INSTRUCTION -->` di dalam `index.html`.
+3. Mengisi semua teks sesuai struktur high-converting template — tanpa merusak desain.
 
 ---
 
-## 📋 LANGKAH 2 — Prompt Utama (Isi Semua Copywriting)
+## 🧾 LANGKAH 1 — Siapkan "Brief" (hal yang AI tidak bisa tebak dari file)
 
-Salin prompt di bawah, ganti bagian `[...]`, lalu tempel **beserta seluruh isi
-file `index.html`**.
+AI bisa baca isi produk, tapi **tidak tahu** harga, link, dan aset Anda. Isi ini dulu:
+
+```
+- Nama produk            :
+- Target market spesifik : (mis. "mahasiswa yang ingin cuan tambahan")
+- Gaya bahasa            : (santai / semi-formal / formal — panggilan "saya–kamu" / "saya–Anda")
+- Harga normal (coret)   : Rp
+- Harga spesial          : Rp
+- Garansi (jika ada)     :
+- Urgensi/alasan beli sekarang (jika ada) :
+
+[LINK]
+- Link Checkout (semua tombol CTA) :
+- Instagram / TikTok / YouTube     :
+
+[WHATSAPP]
+- Nomor (format 62...)   :
+- Pesan awal chat        : (mis. "Halo, saya mau beli [produk]")
+
+[NAMA FILE ASET yang akan Anda upload ke repo]
+- Logo/profil            : logo.png   (kosongkan jika mau pakai teks brand saja)
+- Gambar produk          : produk.png
+- Screenshot testimoni   : testi1.jpg, testi2.jpg, testi3.jpg
+```
+
+---
+
+## 📋 LANGKAH 2 — MEGA-PROMPT (upload produk + index.html, lalu tempel ini)
+
+> Lampirkan **file produk** (ebook/PDF/dll) **dan** file **`index.html`**, lalu tempel prompt di bawah.
 
 ```text
-Bertindaklah sebagai copywriter direct-response profesional berbahasa Indonesia.
+Kamu adalah Copywriter direct-response + editor HTML profesional berbahasa Indonesia.
 
-Saya punya template landing page HTML "AI-Ready". Di dalamnya ada banyak komentar
-penanda <!-- AI INSTRUCTION: ... -->. Tugas Anda: ISI teks tepat SETELAH setiap
-komentar itu sesuai instruksinya.
+Saya melampirkan DUA hal:
+1. FILE PRODUK saya (untuk kamu pahami isinya).
+2. File index.html — template landing page "AI-Ready".
 
-ATURAN KETAT:
-1. HANYA ubah teks yang ditandai AI INSTRUCTION dan teks placeholder di dekatnya.
-2. JANGAN mengubah struktur HTML, tag, class Tailwind, CSS, atau JavaScript.
-3. JANGAN menghapus komentar AI INSTRUCTION (biarkan agar bisa diedit ulang nanti).
-4. JANGAN mengarang testimoni. Section testimoni memakai GAMBAR screenshot asli —
-   cukup biarkan slot gambarnya, jangan menulis kutipan/nama palsu.
-   Untuk LOGO di navbar: pakai SALAH SATU saja, logo (img) ATAU teks brand — jangan keduanya.
-5. Pertahankan gaya persuasif, ringkas, dan berorientasi manfaat (benefit-driven).
-6. Ikuti batasan panjang yang tertulis di tiap instruksi (mis. "maks 8 kata").
-7. Kembalikan SELURUH file HTML yang sudah terisi, utuh, siap disimpan ulang.
+TUGASMU:
+Analisa file produk saya, lalu ISI semua teks di index.html tepat SETELAH setiap
+komentar <!-- AI INSTRUCTION: ... --> sesuai instruksinya, agar menjadi landing page
+yang menjual untuk produk saya.
 
-BRIEF BISNIS SAYA:
+ATURAN EMAS (WAJIB PATUHI):
+1. IKUTI KOMENTAR: sumber kebenaran struktur ada di komentar AI INSTRUCTION di dalam
+   index.html. Hormati batas panjang yang tertulis (mis. "maks 8 kata").
+2. JANGAN UBAH DESAIN: dilarang mengubah struktur HTML, tag, class, CSS/<style>, atau
+   JavaScript. Hanya ganti teks dan atribut (src="", href=""). Jangan tambah framework.
+3. TESTIMONI = GAMBAR: bagian testimoni memakai screenshot asli. Cukup ganti src gambar
+   dengan nama file testimoni saya. DILARANG KERAS menulis/mengarang kutipan & nama.
+4. LOGO PILIH SATU: untuk logo di navbar, pilih SALAH SATU — ganti teks brand ATAU
+   aktifkan <img>. JANGAN dua-duanya (biar tidak dobel/ikon rusak).
+5. DATA NYATA SAJA: bagian angka statistik (mis. jumlah pembeli/rating) HANYA diisi bila
+   saya beri data nyata di brief. Jika tidak ada, HAPUS blok grid statistik itu.
+6. GANTI ASET & LINK sesuai brief: gambar produk, link checkout di SEMUA tombol CTA,
+   link sosmed, dan link WhatsApp (format wa.me/62...?text=... dengan pesan ter-encode).
+7. Kembalikan SELURUH file index.html yang sudah terisi, utuh & siap simpan.
+
+BRIEF SAYA:
 [TEMPEL HASIL LANGKAH 1 DI SINI]
-
-Berikut file index.html yang harus diisi:
-[TEMPEL SELURUH ISI index.html DI SINI]
 ```
+
+Selesai — simpan hasilnya sebagai `index.html`, lalu upload beserta aset (logo, gambar
+produk, screenshot testimoni) ke repo/hosting Anda.
 
 ---
 
-## 🎨 LANGKAH 3 (Opsional) — Ganti Tema Warna & Font
+## 🎨 (Opsional) Ganti Tema Warna & Font
 
 ```text
-Pada file HTML ini, ubah HANYA blok CSS variables di dalam :root (bagian
-"PENGATURAN USER"). Jangan sentuh kode lain.
+Pada index.html ini, ubah HANYA blok CSS variables di dalam :root (bagian "PENGATURAN
+USER"). Jangan sentuh kode lain.
 
-Permintaan tema saya:
-- Warna utama / tombol : [mis. hijau emerald / biru / ungu]
-- Nuansa latar         : [mis. hitam pekat / navy gelap / abu gelap]
-- Karakter font        : [mis. tegas & modern / elegan / santai]
-- Bentuk tombol        : [kotak tegas / agak membulat / bulat penuh]
+Tema saya:
+- Warna utama/tombol : [mis. hijau emerald]
+- Nuansa latar       : [mis. hitam pekat / navy gelap]
+- Karakter font      : [mis. tegas modern / elegan / santai]
+- Bentuk tombol      : [kotak / agak membulat / bulat penuh]
 
-Pilihkan kode HEX yang harmonis dan nama Google Font yang sesuai, lalu kembalikan
-blok :root yang sudah diperbarui. Jika mengganti font, ingatkan saya untuk
-memperbarui <link> Google Fonts di <head>.
+Pilihkan kode HEX harmonis + nama Google Font yang cocok, kembalikan blok :root yang
+sudah diperbarui. Jika ganti font, ingatkan saya memperbarui <link> Google Fonts di <head>.
 ```
 
 ---
 
-## ✍️ LANGKAH 4 (Opsional) — Edit Satu Bagian Saja
-
-Kalau cuma mau memperbaiki satu section (mis. FAQ), tak perlu kirim semua:
+## ✍️ (Opsional) Revisi Satu Bagian Saja
 
 ```text
 Tolong tulis ulang HANYA bagian ini agar lebih persuasif untuk [produk saya].
@@ -96,10 +110,10 @@ Pertahankan struktur HTML & komentar AI INSTRUCTION, ganti teksnya saja:
 
 ## ✅ Setelah Menerima Hasil
 
-1. Simpan hasil AI menimpa `index.html` (atau copy-paste bagian yang berubah).
-2. Buka di browser untuk cek.
-3. Ganti aset & link manual — lihat `CHECKLIST-ASET.md`.
-4. Belum pas? Ulangi dengan permintaan revisi spesifik ("buat headline lebih
-   berani", "tambahkan angka di value proposition", dst).
+1. Simpan hasil AI menimpa `index.html`.
+2. Upload aset (logo, produk, screenshot testimoni) ke folder yang sama.
+3. Buka di browser (HP & desktop) untuk cek.
+4. Klik semua tombol CTA & WhatsApp — pastikan link benar.
+5. Belum pas? Minta revisi spesifik ("headline lebih berani", dst).
 
-Selamat! Halaman Anda kini terasa custom tanpa harus menulis kode. 🚀
+Lihat juga `CHECKLIST-ASET.md` untuk daftar bahan yang perlu disiapkan. 🚀
