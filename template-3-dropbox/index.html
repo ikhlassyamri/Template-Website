@@ -143,7 +143,11 @@
     .feature-row { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
     .feature-row + .feature-row { margin-top: 4.5rem; }
     .feature-row .col { width: 100%; }
-    .feature-img { width: 100%; border-radius: var(--radius-card); background: var(--light-card); aspect-ratio: 4 / 3; object-fit: cover; }
+    /* Visual fitur = ILUSTRASI VEKTOR (inline SVG), bukan foto produk. */
+    .feature-visual { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-card);
+      background: color-mix(in srgb, var(--brand) 8%, var(--light-card)); display: grid; place-items: center; overflow: hidden; }
+    .feature-visual svg { width: 46%; height: 46%; stroke: var(--brand); fill: none; stroke-width: 1.6;
+      stroke-linecap: round; stroke-linejoin: round; opacity: .92; }
     @media (min-width: 768px) {
       .feature-row { flex-direction: row; gap: 4rem; }
       .feature-row.reverse { flex-direction: row-reverse; }
@@ -163,7 +167,7 @@
     .testi-img { width: 100%; height: auto; border-radius: 18px; display: block; pointer-events: none; }
 
     /* --- Slider testimoni (geser manual kanan-kiri) --- */
-    .testi-slider { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    .testi-slider { display: flex; align-items: center; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch; padding: .25rem .25rem 1rem; cursor: grab; scrollbar-width: thin;
       scrollbar-color: var(--dark-border) transparent; }
     .testi-slider:active { cursor: grabbing; }
@@ -285,8 +289,13 @@
           <!-- BARIS FITUR 1 (gambar kanan) -->
           <div class="feature-row reverse reveal">
             <div class="col">
-              <!-- [[ GAMBAR FITUR 1 ]] -->
-              <img class="feature-img" src="https://placehold.co/640x480/F4F1EC/6b6b6b?text=Visual+Fitur+1" alt="Visual fitur 1" />
+              <!-- AI INSTRUCTION (VISUAL FITUR): Ini ILUSTRASI VEKTOR (inline SVG), BUKAN foto produk.
+                   KHUSUS di sini kamu BOLEH mengganti isi <svg> di bawah dengan ilustrasi/line-art
+                   sederhana yang RELEVAN dengan poin fitur ini (pakai stroke, tanpa fill).
+                   DILARANG memasukkan foto/mockup/screenshot produk di slot ini. -->
+              <div class="feature-visual">
+                <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="24" y="14" width="52" height="72" rx="6"/><path d="M34 32h32M34 44h32M34 56h20"/><circle cx="70" cy="70" r="12"/><path d="m64 70 4 4 8-8"/></svg>
+              </div>
             </div>
             <div class="col">
               <span class="ico"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
@@ -302,8 +311,12 @@
           <!-- BARIS FITUR 2 (gambar kiri) -->
           <div class="feature-row reveal">
             <div class="col">
-              <!-- [[ GAMBAR FITUR 2 ]] -->
-              <img class="feature-img" src="https://placehold.co/640x480/F4F1EC/6b6b6b?text=Visual+Fitur+2" alt="Visual fitur 2" />
+              <!-- AI INSTRUCTION (VISUAL FITUR): Ini ILUSTRASI VEKTOR (inline SVG), BUKAN foto produk.
+                   KHUSUS di sini kamu BOLEH mengganti isi <svg> dengan ilustrasi/line-art sederhana
+                   yang RELEVAN dengan poin fitur ini. DILARANG memakai foto/mockup produk di slot ini. -->
+              <div class="feature-visual">
+                <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 82h64"/><path d="M28 82V60M46 82V44M64 82V52M82 82V30"/><path d="m24 40 18-12 14 8 22-18"/><path d="M72 18h10v10"/></svg>
+              </div>
             </div>
             <div class="col">
               <span class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg></span>
