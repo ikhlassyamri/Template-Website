@@ -160,7 +160,23 @@
 
     /* --- Testimoni gambar (kartu gelap, bingkai minimalis) --- */
     .card-dark { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: var(--radius-card); padding: .6rem; }
-    .testi-img { width: 100%; height: auto; border-radius: 18px; display: block; }
+    .testi-img { width: 100%; height: auto; border-radius: 18px; display: block; pointer-events: none; }
+
+    /* --- Slider testimoni (geser manual kanan-kiri) --- */
+    .testi-slider { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding: .25rem .25rem 1rem; cursor: grab; scrollbar-width: thin;
+      scrollbar-color: var(--dark-border) transparent; }
+    .testi-slider:active { cursor: grabbing; }
+    .testi-slider > .card-dark { scroll-snap-align: center; flex: 0 0 82%; }
+    @media (min-width: 640px) { .testi-slider > .card-dark { flex: 0 0 47%; } }
+    @media (min-width: 900px) { .testi-slider > .card-dark { flex: 0 0 31.5%; } }
+    .testi-slider::-webkit-scrollbar { height: 6px; }
+    .testi-slider::-webkit-scrollbar-thumb { background: var(--dark-border); border-radius: 999px; }
+    /* Petunjuk geser */
+    .slide-hint { display: inline-flex; align-items: center; gap: .5rem; color: var(--dark-muted); font-size: .9rem; font-weight: 600; }
+    .slide-hint .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--dark-muted); opacity: .5; }
+    @keyframes hintNudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(6px)} }
+    @media (prefers-reduced-motion: no-preference) { .slide-hint .swipe { animation: hintNudge 1.4s ease-in-out infinite; } }
 
     /* --- FAQ --- */
     .faq { display: flex; flex-direction: column; gap: .75rem; }
@@ -309,20 +325,28 @@
         <div class="narrow center reveal">
           <!-- AI INSTRUCTION: Judul section testimoni -->
           <h2 class="h2">Kata Mereka yang Sudah Mencoba</h2>
+          <!-- Petunjuk geser (biarkan; menunjukkan slider bisa digeser) -->
+          <p class="slide-hint mt-4"><span>&larr;</span> Geser untuk lihat lainnya <span class="swipe">&rarr;</span></p>
         </div>
-        <div class="grid g1 g3 mt-14">
-          <!-- KARTU TESTIMONI GAMBAR (duplikat/kurangi; hanya ganti src="" screenshot asli) -->
-          <figure class="card-dark reveal">
+
+        <!-- SLIDER TESTIMONI (geser manual: swipe di HP, tarik/drag di desktop).
+             Duplikat/kurangi <figure> sesuai jumlah screenshot; hanya ganti src="". -->
+        <div class="testi-slider mt-10" id="testiSlider">
+          <figure class="card-dark">
             <!-- [[ GAMBAR TESTIMONI 1: ganti src dengan screenshot asli, mis. testi1.jpg ]] -->
-            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni+1" alt="Screenshot testimoni pelanggan" />
           </figure>
-          <figure class="card-dark reveal">
+          <figure class="card-dark">
             <!-- [[ GAMBAR TESTIMONI 2 ]] -->
-            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni+2" alt="Screenshot testimoni pelanggan" />
           </figure>
-          <figure class="card-dark reveal">
+          <figure class="card-dark">
             <!-- [[ GAMBAR TESTIMONI 3 ]] -->
-            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni+3" alt="Screenshot testimoni pelanggan" />
+          </figure>
+          <figure class="card-dark">
+            <!-- [[ GAMBAR TESTIMONI 4 ]] -->
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni+4" alt="Screenshot testimoni pelanggan" />
           </figure>
         </div>
       </div>
@@ -492,6 +516,26 @@
     } else {
       document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
     }
+
+    // Slider testimoni: swipe otomatis di HP; drag pakai mouse di desktop.
+    (function () {
+      var s = document.getElementById('testiSlider');
+      if (!s) return;
+      var down = false, startX = 0, startScroll = 0, moved = 0;
+      s.addEventListener('pointerdown', function (e) {
+        down = true; moved = 0; startX = e.clientX; startScroll = s.scrollLeft;
+        s.setPointerCapture(e.pointerId);
+      });
+      s.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        var dx = e.clientX - startX; moved = Math.abs(dx);
+        s.scrollLeft = startScroll - dx;
+      });
+      function end() { down = false; }
+      s.addEventListener('pointerup', end);
+      s.addEventListener('pointercancel', end);
+      s.addEventListener('pointerleave', end);
+    })();
   </script>
 </body>
 </html>
