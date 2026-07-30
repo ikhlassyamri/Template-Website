@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY BIO / LINK-IN-BIO TEMPLATE · "GRAND LINE" (tema Monkey D. Luffy)
+  ============================================================================
+  Halaman "link in bio" (seperti Linktree): foto profil bulat, nama, bio singkat,
+  dan daftar tombol tautan. Bertema One Piece / Luffy: langit-laut, merah-kuning,
+  topi jerami. Cocok untuk taut semua link penting di satu halaman.
+
+  100% SELF-CONTAINED: HTML + CSS + JS satu file, tanpa framework/CDN, jalan OFFLINE.
+
+  CARA PAKAI:
+  1. Ubah TEMA (warna & font) di blok :root pada bagian STYLE di bawah.
+  2. Isi teks & tautan dengan bantuan AI (komentar "AI INSTRUCTION" jadi panduan).
+  3. Ganti ASET (foto profil, link). Cari penanda [[ ... ]].
+  4. Tambah/kurangi tombol: cukup duplikat/hapus blok <a class="link"> ... </a>.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama / @username" -->
+  <title>Monkey D. Luffy – Link in Bio</title>
+  <!-- AI INSTRUCTION: 1 kalimat deskripsi singkat (maks 150 karakter) -->
+  <meta name="description" content="Semua tautan penting dalam satu halaman." />
+
+  <!-- [[ FAVICON: ganti href dengan ikon Anda, mis. favicon.png ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Luckiest Guy (nama, komik) + Poppins (isi). Bila offline, pakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER — SILAKAN UBAH BAGIAN INI SAJA
+       ======================================================================== */
+    :root {
+      /* --- WARNA TEMA (One Piece / Luffy) --- */
+      --red:       #E12A2A;   /* Merah baju Luffy (aksen/bayangan)  */
+      --yellow:    #FFD028;   /* Kuning topi/sabuk (tombol unggulan) */
+      --sky:       #58BFF2;   /* Biru langit (latar atas)           */
+      --sea:       #0E5FA6;   /* Biru laut (latar bawah)            */
+      --ink:       #17293a;   /* Teks gelap di atas tombol putih    */
+      --btn-bg:    #ffffff;   /* Latar tombol                       */
+      --btn-text:  #17293a;   /* Teks tombol                        */
+
+      /* --- FONT --- */
+      --font-name: 'Luckiest Guy', system-ui, sans-serif;  /* Nama besar (komik)  */
+      --font-body: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      /* --- BENTUK --- */
+      --radius-btn: 16px;
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+    /* ======================================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body); color: #fff; min-height: 100vh;
+      background: linear-gradient(180deg, var(--sky) 0%, var(--sea) 60%, #093f70 100%);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    /* Matahari lembut di pojok atas + ombak dekoratif */
+    body::before { content: ""; position: fixed; top: -12%; right: -10%; width: 55vw; height: 55vw; max-width: 320px; max-height: 320px;
+      background: radial-gradient(circle, rgba(255,224,130,.6), transparent 70%); pointer-events: none; z-index: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .page { position: relative; z-index: 1; width: 100%; max-width: 30rem; padding: 2.5rem 1.25rem 3rem; text-align: center; }
+
+    /* --- Profil --- */
+    .avatar-wrap { position: relative; width: 8rem; margin: 0 auto; }
+    .avatar { width: 8rem; height: 8rem; border-radius: 50%; object-fit: cover; border: 5px solid #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25); background: #eaf6ff; }
+    /* Topi jerami kecil di atas avatar (dekoratif) */
+    .hat { position: absolute; top: -1.4rem; left: 50%; transform: translateX(-50%) rotate(-8deg); font-size: 2.6rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+
+    .name { font-family: var(--font-name); font-size: clamp(2rem, 8vw, 2.8rem); letter-spacing: 1px; margin-top: 1.1rem;
+      color: #fff; -webkit-text-stroke: 2px var(--ink); text-shadow: 3px 3px 0 var(--red); }
+    .handle { font-weight: 700; opacity: .95; margin-top: .1rem; }
+    .bio { margin-top: .9rem; font-size: .98rem; opacity: .95; line-height: 1.5; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+
+    /* --- Tombol tautan --- */
+    .links { margin-top: 1.8rem; display: flex; flex-direction: column; gap: .9rem; }
+    .link { position: relative; display: block; background: var(--btn-bg); color: var(--btn-text);
+      border-radius: var(--radius-btn); padding: 1rem 1.1rem; box-shadow: 0 6px 0 rgba(0,0,0,.18);
+      transition: transform .12s ease, box-shadow .12s ease; }
+    .link:hover { transform: translateY(-2px); box-shadow: 0 9px 0 rgba(0,0,0,.18); }
+    .link:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+    .link .t { font-weight: 700; font-size: 1.05rem; }
+    .link .s { font-size: .85rem; color: #5b6b78; margin-top: .1rem; }
+    /* Varian tombol unggulan (kuning) */
+    .link.feature { background: var(--yellow); }
+    .link.feature .s { color: #7a5c00; }
+    /* Badge kecil di pojok kanan atas tombol */
+    .badge { position: absolute; top: -.55rem; right: .8rem; background: var(--red); color: #fff;
+      font-size: .65rem; font-weight: 800; letter-spacing: .04em; padding: .2rem .55rem; border-radius: 999px; text-transform: uppercase; }
+
+    /* --- Sosial (opsional) --- */
+    .socials { margin-top: 1.6rem; display: flex; justify-content: center; gap: .75rem; }
+    .socials a { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: rgba(255,255,255,.18);
+      display: grid; place-items: center; transition: background .12s ease; }
+    .socials a:hover { background: rgba(255,255,255,.32); }
+    .socials svg { width: 1.35rem; height: 1.35rem; fill: #fff; }
+
+    .foot { margin-top: 2rem; font-size: .8rem; opacity: .8; }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <!-- ====================================================================
+         PROFIL
+         ==================================================================== -->
+    <div class="avatar-wrap">
+      <!-- Topi jerami dekoratif (ganti/hapus emoji sesuai selera) -->
+      <span class="hat" aria-hidden="true">👒</span>
+      <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
+      <!-- AI INSTRUCTION: biarkan; user yang mengganti foto. Alt = nama. -->
+      <img class="avatar" src="https://placehold.co/200x200/E12A2A/ffffff?text=Foto" alt="Foto profil" />
+    </div>
+
+    <!-- AI INSTRUCTION: Nama tampilan (boleh pakai emoji), mis. "Monkey D. Luffy" -->
+    <h1 class="name">Monkey D. Luffy</h1>
+    <!-- AI INSTRUCTION: Username/handle, mis. "@mugiwara" -->
+    <p class="handle">@mugiwara</p>
+    <!-- AI INSTRUCTION: Bio singkat 1-2 kalimat (boleh emoji), mis. ajakan cek link di bawah -->
+    <p class="bio">Aku bakal jadi Raja Bajak Laut! Semua tautan pentingku ada di bawah 👇</p>
+
+    <!-- ====================================================================
+         TOMBOL TAUTAN (duplikat/kurangi blok <a class="link"> sesuai kebutuhan)
+         ==================================================================== -->
+    <div class="links">
+      <!-- TOMBOL 1 (unggulan/kuning + badge). [[ LINK: ganti href="#" ]] -->
+      <a href="#" class="link feature">
+        <span class="badge">Utama</span>
+        <!-- AI INSTRUCTION: Judul tombol 1 -->
+        <div class="t">Link 1</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tombol 1 (opsional) -->
+        <div class="s">Keterangan singkat tautan pertama</div>
+      </a>
+
+      <!-- TOMBOL 2. [[ LINK: ganti href="#" ]] -->
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tombol 2 -->
+        <div class="t">Link 2</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tombol 2 (opsional) -->
+        <div class="s">Keterangan singkat tautan kedua</div>
+      </a>
+
+      <!-- TOMBOL 3. [[ LINK: ganti href="#" ]] -->
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tombol 3 -->
+        <div class="t">Link 3</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tombol 3 (opsional) -->
+        <div class="s">Keterangan singkat tautan ketiga</div>
+      </a>
+    </div>
+
+    <!-- ====================================================================
+         SOSIAL (opsional — hapus blok ini bila tak dipakai)
+         [[ LINK SOSMED: ganti href ]]
+         ==================================================================== -->
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.8-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.5 3c.3 2 1.5 3.6 3.5 3.9V10c-1.4 0-2.7-.4-3.9-1.1v6.3a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.2a2.6 2.6 0 1 0 1.8 2.4V3h3.4Z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 8.2s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C16.5 4.6 12 4.6 12 4.6s-4.5 0-7.8.3c-.5 0-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 10 .8 11.9v1.8c0 1.9.2 3.7.2 3.7s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.5 0 7.8-.3c.5 0 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.8c0-1.9-.2-3.6-.2-3.6ZM9.7 15.3V8.9l5.8 3.2-5.8 3.2Z"/></svg></a>
+    </div>
+
+    <!-- AI INSTRUCTION: Footer kecil (mis. nama brand + tahun) -->
+    <p class="foot">⛵ Dibuat dengan semangat petualangan</p>
+  </main>
+</body>
+</html>
