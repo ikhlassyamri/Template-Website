@@ -67,8 +67,8 @@
       --radius-pill:  999px;
       --radius-card:  1.75rem;
 
-      /* --- GAMBAR HERO (lingkaran) --- */
-      --hero-circle:  min(74vw, 22rem);
+      /* --- GAMBAR HERO (bentuk asli, tinggi dibatasi) --- */
+      --hero-media-h: 22rem;  /* Batas tinggi gambar hero; lebar ikut rasio asli */
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS (mobile-first)       */
@@ -119,8 +119,8 @@
     .brand-logo { height: 1.9rem; width: auto; }
 
     /* --- Hero lingkaran + teks dinamis --- */
-    .hero-circle { width: var(--hero-circle); aspect-ratio: 1; border-radius: 50%; overflow: hidden; margin: 0 auto; background: #111; }
-    .hero-circle img { width: 100%; height: 100%; object-fit: cover; }
+    /* Gambar hero: tampil sesuai BENTUK ASLI (tidak dipotong), hanya tinggi dibatasi */
+    .hero-media { display: block; margin: 0 auto; width: auto; height: auto; max-width: min(100%, 40rem); max-height: var(--hero-media-h); border-radius: var(--radius-card); }
     .rotate { color: var(--brand); display: inline-block; transition: opacity .3s ease, transform .3s ease; }
 
     /* --- Daftar fitur --- */
@@ -221,10 +221,8 @@
          ==================================================================== -->
     <section data-bg="#000000">
       <div class="wrap pad center reveal">
-        <!-- [[ GAMBAR HERO: ganti src dengan foto/mockup produk (akan dibingkai lingkaran) ]] -->
-        <div class="hero-circle">
-          <img src="https://placehold.co/600x600/111111/1DB954?text=Produk" alt="Tampilan produk Anda" />
-        </div>
+        <!-- [[ GAMBAR HERO: ganti src dengan foto/mockup produk. Tampil sesuai bentuk asli gambar; tinggi dibatasi. ]] -->
+        <img class="hero-media" src="https://placehold.co/520x680/111111/1DB954?text=Produk" alt="Tampilan produk Anda" />
 
         <!-- AI INSTRUCTION: HEADLINE (H1) ultra-bold. Biarkan <span id="rotateWord"> untuk kata berganti;
              ganti kata-katanya di <script> paling bawah (array rotateWords). Maks 6-8 kata total. -->
