@@ -191,6 +191,15 @@
     .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--dark-border); display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
     .locale { border-radius: var(--radius-btn); padding: .55rem 1rem; background: var(--dark-card); color: var(--dark-text); border: 1px solid var(--dark-border); }
 
+    /* --- Testimoni gambar (bingkai minimalis) --- */
+    .testi-card { padding: .5rem; }
+    .testi-img { width: 100%; height: auto; border-radius: 12px; display: block; }
+
+    /* --- Floating WhatsApp --- */
+    .wa-float { position: fixed; z-index: 40; right: 1rem; bottom: 1.5rem; width: 3.5rem; height: 3.5rem; border-radius: 999px; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,.35); transition: transform .15s ease; }
+    .wa-float:hover { transform: scale(1.05); }
+    .wa-float svg { width: 1.75rem; height: 1.75rem; fill: #fff; }
+
     /* --- Utility spasi --- */
     .mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}
     .mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}
@@ -294,14 +303,31 @@
     </section>
 
     <!-- ====================================================================
-         5. KUTIPAN / TESTIMONIAL (section gelap)
+         5. TESTIMONIAL (section gelap) — GAMBAR/SCREENSHOT ASLI
+         PENTING: testimoni = GAMBAR screenshot chat/ulasan asli. Jangan mengarang.
          ==================================================================== -->
     <section class="sec-dark">
-      <div class="wrap narrow center reveal" style="padding-bottom:6rem;">
-        <!-- AI INSTRUCTION: [KUTIPAN TESTIMONI ASLI pelanggan — jangan dikarang] -->
-        <p class="quote">"Tempel satu kutipan testimoni asli yang paling kuat di sini, biarkan apa adanya agar terdengar jujur."</p>
-        <!-- AI INSTRUCTION: Nama + keterangan pemberi testimoni (asli) -->
-        <p class="quote-by muted">— Nama Pelanggan, Jabatan / Perusahaan</p>
+      <div class="wrap pad reveal">
+        <div class="narrow center">
+          <!-- AI INSTRUCTION: Judul section testimoni -->
+          <h2 class="h2">Kata Mereka yang Sudah Mencoba</h2>
+        </div>
+        <div class="grid g1 g3 mt-12">
+          <!-- KARTU TESTIMONI GAMBAR (duplikat/kurangi sesuai jumlah screenshot).
+               AI INSTRUCTION: JANGAN mengarang. Hanya ganti src="" dengan file screenshot asli. -->
+          <figure class="card testi-card">
+            <!-- [[ GAMBAR TESTIMONI 1: ganti src dengan screenshot asli, mis. testi1.jpg ]] -->
+            <img class="testi-img" src="https://placehold.co/600x800/171719/a1a1aa?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          </figure>
+          <figure class="card testi-card">
+            <!-- [[ GAMBAR TESTIMONI 2 ]] -->
+            <img class="testi-img" src="https://placehold.co/600x800/171719/a1a1aa?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          </figure>
+          <figure class="card testi-card">
+            <!-- [[ GAMBAR TESTIMONI 3 ]] -->
+            <img class="testi-img" src="https://placehold.co/600x800/171719/a1a1aa?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -477,6 +503,16 @@
       </div>
     </div>
   </footer>
+
+  <!-- ======================================================================
+       FLOATING WHATSAPP (opsional — hapus <a> ini bila tak dipakai)
+       [[ WHATSAPP: ganti nomor 62812XXXXXXX dengan nomor CS Anda (format 62...) ]]
+       ====================================================================== -->
+  <a href="https://wa.me/62812XXXXXXX" target="_blank" rel="noopener" class="wa-float" aria-label="Chat WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16.003 3C9.383 3 4 8.383 4 15c0 2.113.553 4.176 1.602 5.996L4 29l8.2-1.57A11.9 11.9 0 0016.003 27C22.62 27 28 21.617 28 15S22.62 3 16.003 3zm0 21.8c-1.79 0-3.55-.48-5.086-1.39l-.365-.216-4.87.932.93-4.75-.238-.377A9.77 9.77 0 016.2 15c0-5.4 4.402-9.8 9.803-9.8 5.4 0 9.797 4.4 9.797 9.8 0 5.4-4.397 9.8-9.797 9.8zm5.383-7.34c-.295-.148-1.744-.86-2.014-.96-.27-.098-.467-.147-.664.148-.196.295-.762.96-.934 1.156-.172.196-.344.22-.639.073-.295-.148-1.245-.459-2.372-1.463-.877-.782-1.47-1.748-1.642-2.043-.172-.295-.018-.454.13-.6.134-.132.295-.344.443-.516.148-.172.197-.295.295-.492.098-.196.05-.369-.025-.516-.074-.148-.664-1.6-.91-2.19-.24-.576-.483-.498-.664-.508l-.566-.01c-.196 0-.516.074-.787.369-.27.295-1.033 1.01-1.033 2.46 0 1.45 1.058 2.852 1.205 3.049.148.196 2.082 3.178 5.045 4.457.705.304 1.256.486 1.685.623.708.225 1.352.193 1.862.117.568-.085 1.744-.713 1.99-1.402.246-.688.246-1.279.172-1.402-.074-.123-.27-.196-.565-.344z"/>
+    </svg>
+  </a>
 
   <script>
     // FAQ accordion (tunggal)

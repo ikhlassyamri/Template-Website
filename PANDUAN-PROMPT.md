@@ -1,5 +1,10 @@
 # 🤖 PANDUAN PROMPT — Isi Landing Page Otomatis dengan AI
 
+> ✅ **SATU PROMPT UNTUK SEMUA TEMPLATE.** Prompt di bawah berlaku untuk **semua
+> template** (1, 2, dan seterusnya) tanpa perlu diubah. Semua template mengikuti
+> konvensi yang sama (komentar `AI INSTRUCTION`, penanda `[[ ]]`, testimoni gambar,
+> tombol scroll-ke-harga, dll), jadi desainnya boleh beda-beda — prompt tetap sama.
+
 Konsep template ini: **Produk + `index.html` = Copywriting relevan otomatis.**
 
 Anda tidak perlu menyusun copywriting sendiri. Cukup **upload file produk** (mis.
@@ -60,16 +65,16 @@ ATURAN EMAS (WAJIB PATUHI):
    index.html. Hormati batas panjang yang tertulis (mis. "maks 8 kata").
 2. JANGAN UBAH DESAIN: dilarang mengubah struktur HTML, tag, class, CSS/<style>, atau
    JavaScript. Hanya ganti teks dan atribut (src="", href=""). Jangan tambah framework.
-3. TESTIMONI = GAMBAR: bagian testimoni memakai screenshot asli. Cukup ganti src gambar
-   dengan nama file testimoni saya. DILARANG KERAS menulis/mengarang kutipan & nama.
+3. TESTIMONI = GAMBAR: JIKA ADA bagian testimoni, ia memakai screenshot asli. Cukup ganti
+   src gambar dengan nama file testimoni saya. DILARANG KERAS menulis/mengarang kutipan & nama.
 4. LOGO PILIH SATU: untuk logo di navbar, pilih SALAH SATU — ganti teks brand ATAU
    aktifkan <img>. JANGAN dua-duanya (biar tidak dobel/ikon rusak).
-5. DATA NYATA SAJA: bagian angka statistik (mis. jumlah pembeli/rating) HANYA diisi bila
-   saya beri data nyata di brief. Jika tidak ada, HAPUS blok grid statistik itu.
+5. DATA NYATA SAJA: JIKA ADA bagian angka statistik (jumlah pembeli/rating), isi HANYA bila
+   saya beri data nyata di brief. Jika tidak ada datanya, HAPUS blok statistik itu.
 6. LINK CTA: HANYA tombol CTA TERAKHIR (di bagian harga) yang diisi link checkout asli
    pada href. Tombol CTA lain (navbar, hero, tengah) sudah di-set href="#cta-akhir" agar
    scroll ke harga — JANGAN diubah jadi link checkout. Ganti juga src gambar produk, link
-   sosmed, dan link WhatsApp (format wa.me/62...?text=... dengan pesan ter-encode).
+   sosmed, dan (JIKA ADA tombol WhatsApp) link WhatsApp format wa.me/62...?text=... ter-encode.
 7. Kembalikan SELURUH file index.html yang sudah terisi, utuh & siap simpan.
 
 BRIEF SAYA:
