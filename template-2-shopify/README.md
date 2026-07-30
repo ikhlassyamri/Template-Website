@@ -36,12 +36,14 @@ ATURAN EMAS:
    dan atribut src="" / href="". Jangan tambah framework apa pun.
 3. TESTIMONI: bagian kutipan besar diisi SATU testimoni ASLI pelanggan. Jangan mengarang.
 4. LOGO: pilih SALAH SATU — teks brand ATAU <img>. Jangan dua-duanya.
-5. Isi link checkout pada href SEMUA tombol CTA (navbar, hero, tengah, akhir). Field email
-   bersifat opsional (boleh dibiarkan atau dihapus untuk produk beli-langsung).
-6. Ganti link sosmed di footer. Kembalikan SELURUH isi index.html yang sudah terisi & utuh.
+5. LINK CTA: isi link checkout HANYA pada tombol CTA TERAKHIR (di bagian harga). Tombol
+   lain (navbar, hero, tengah) biarkan href="#cta-akhir" agar scroll ke harga — jangan diubah.
+6. Isi harga normal (coret) & harga spesial di bagian harga. Ganti link sosmed di footer.
+   Kembalikan SELURUH isi index.html yang sudah terisi & utuh.
 
 DATA SAYA:
 - Nama produk / target market / gaya bahasa :
+- Harga normal (coret) / harga spesial :
 - Link Checkout :
 - Instagram / TikTok / YouTube (link penuh) :
 - Nama file logo / gambar produk / gambar fitur :
