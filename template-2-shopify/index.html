@@ -164,6 +164,9 @@
     .sec-dark .card  { background: var(--dark-card);  border: 1px solid var(--dark-border); }
     .sec-light .card { background: var(--light-card); border: 1px solid var(--light-border); }
     .card-media { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #2a2a2e; }
+    /* Visual fitur = ILUSTRASI VEKTOR (inline SVG), bukan foto produk. */
+    .card-visual { width: 100%; aspect-ratio: 16 / 10; display: grid; place-items: center; background: color-mix(in srgb, #ffffff 5%, var(--dark-card)); }
+    .card-visual svg { width: 34%; height: 34%; stroke: #ffffff; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
     .card-body { padding: 1.5rem 1.6rem 1.8rem; }
     .card-body h3 { font-size: 1.3rem; margin-bottom: .5rem; }
 
@@ -276,8 +279,9 @@
         <div class="grid g1 g3 mt-12">
           <!-- KARTU FITUR (duplikat/kurangi <article> sesuai jumlah fitur) -->
           <article class="card">
-            <!-- [[ GAMBAR FITUR 1 ]] -->
-            <img class="card-media" src="https://placehold.co/480x300/171719/a1a1aa?text=Visual+Fitur" alt="Visual fitur" />
+            <!-- AI INSTRUCTION (VISUAL FITUR): ilustrasi vektor inline SVG, BUKAN foto produk.
+                 Boleh ganti isi <svg> dengan ilustrasi yang RELEVAN dengan poin fitur; dilarang foto produk. -->
+            <div class="card-visual"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="20" y="30" width="44" height="44" rx="6"/><rect x="36" y="20" width="44" height="44" rx="6"/></svg></div>
             <div class="card-body">
               <!-- AI INSTRUCTION: Judul fitur 1 (manfaat) -->
               <h3>Judul Fitur / Manfaat #1</h3>
@@ -287,8 +291,9 @@
           </article>
 
           <article class="card">
-            <!-- [[ GAMBAR FITUR 2 ]] -->
-            <img class="card-media" src="https://placehold.co/480x300/171719/a1a1aa?text=Visual+Fitur" alt="Visual fitur" />
+            <!-- AI INSTRUCTION (VISUAL FITUR): ilustrasi vektor inline SVG, BUKAN foto produk.
+                 Boleh ganti isi <svg> dengan ilustrasi yang RELEVAN; dilarang foto produk. -->
+            <div class="card-visual"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M54 12 26 56h20l-4 32 30-44H52l2-32Z"/></svg></div>
             <div class="card-body">
               <h3>Judul Fitur / Manfaat #2</h3>
               <p class="muted">Jelaskan apa yang membuat fitur ini berharga bagi pelanggan Anda.</p>
@@ -296,8 +301,9 @@
           </article>
 
           <article class="card">
-            <!-- [[ GAMBAR FITUR 3 ]] -->
-            <img class="card-media" src="https://placehold.co/480x300/171719/a1a1aa?text=Visual+Fitur" alt="Visual fitur" />
+            <!-- AI INSTRUCTION (VISUAL FITUR): ilustrasi vektor inline SVG, BUKAN foto produk.
+                 Boleh ganti isi <svg> dengan ilustrasi yang RELEVAN; dilarang foto produk. -->
+            <div class="card-visual"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="18"/><circle cx="50" cy="50" r="3"/></svg></div>
             <div class="card-body">
               <h3>Judul Fitur / Manfaat #3</h3>
               <p class="muted">Jelaskan apa yang membuat fitur ini berharga bagi pelanggan Anda.</p>

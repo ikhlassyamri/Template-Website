@@ -27,6 +27,12 @@ hanya *konvensi/mekanika* di bawah ini. Setiap template baru HARUS mematuhi kont
     pada elemen ber-`.container`). Pakai `padding-top/bottom` saja untuk jarak vertikal.
 12. **Gambar produk hero** — pertahankan rasio asli, batasi via `--hero-img-max-w/-h`
     (bukan crop, bukan ruang kosong).
+13. **Visual fitur = ilustrasi vektor** — slot visual di bagian fitur memakai **inline SVG**
+    (bukan `<img src>`), supaya AI tidak menaruh foto produk di sana. Komentar `AI INSTRUCTION`
+    memberi izin lokal mengganti isi `<svg>` dengan ilustrasi relevan & melarang foto produk.
+14. **Testimoni ukuran bebas** — kartu/slot testimoni harus memeluk tinggi gambarnya
+    (mis. `align-items:center` pada slider), agar screenshot ukuran apa pun tetap rapi
+    tanpa ruang kosong.
 
 ## Cara menambah template baru (3, 4, 5, …)
 
