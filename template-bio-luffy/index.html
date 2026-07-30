@@ -29,10 +29,10 @@
   <!-- [[ FAVICON: ganti href dengan ikon Anda, mis. favicon.png ]] -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <!-- Font: Luckiest Guy (nama, komik) + Poppins (isi). Bila offline, pakai font sistem. -->
+  <!-- Font: Poppins. Bila offline, pakai font sistem. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     /* ========================================================================
@@ -49,7 +49,6 @@
       --btn-text:  #17293a;   /* Teks tombol                        */
 
       /* --- FONT --- */
-      --font-name: 'Luckiest Guy', system-ui, sans-serif;  /* Nama besar (komik)  */
       --font-body: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
       /* --- BENTUK --- */
@@ -79,13 +78,14 @@
     .avatar-wrap { position: relative; width: 8rem; margin: 0 auto; }
     .avatar { width: 8rem; height: 8rem; border-radius: 50%; object-fit: cover; border: 5px solid #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.25); background: #eaf6ff; }
-    /* Topi jerami kecil di atas avatar (dekoratif) */
-    .hat { position: absolute; top: -1.4rem; left: 50%; transform: translateX(-50%) rotate(-8deg); font-size: 2.6rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+    /* Topi jerami (SVG) di atas avatar — ala Luffy: jerami cokelat + pita merah */
+    .hat { position: absolute; top: -2rem; left: 50%; transform: translateX(-50%) rotate(-7deg); width: 6.5rem; z-index: 2; filter: drop-shadow(0 3px 3px rgba(0,0,0,.25)); }
+    .hat svg { width: 100%; height: auto; display: block; }
 
-    .name { font-family: var(--font-name); font-size: clamp(2rem, 8vw, 2.8rem); letter-spacing: 1px; margin-top: 1.1rem;
-      color: #fff; -webkit-text-stroke: 2px var(--ink); text-shadow: 3px 3px 0 var(--red); }
-    .handle { font-weight: 700; opacity: .95; margin-top: .1rem; }
-    .bio { margin-top: .9rem; font-size: .98rem; opacity: .95; line-height: 1.5; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    /* Nama: satu baris, bersih & modern (bisa "@username" atau nama biasa) */
+    .name { font-weight: 800; font-size: clamp(1.7rem, 6vw, 2.4rem); margin-top: 1.2rem; color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,.22); }
+    .bio { margin-top: .8rem; font-size: .98rem; opacity: .95; line-height: 1.5; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
 
     /* --- Tombol tautan --- */
     .links { margin-top: 1.8rem; display: flex; flex-direction: column; gap: .9rem; }
@@ -120,17 +120,21 @@
          PROFIL
          ==================================================================== -->
     <div class="avatar-wrap">
-      <!-- Topi jerami dekoratif (ganti/hapus emoji sesuai selera) -->
-      <span class="hat" aria-hidden="true">👒</span>
+      <!-- Topi jerami (SVG dekoratif) — hapus <span class="hat"> ini bila tak dipakai -->
+      <span class="hat" aria-hidden="true">
+        <svg viewBox="0 0 120 66">
+          <ellipse cx="60" cy="46" rx="56" ry="16" fill="#e7c069" stroke="#b07d24" stroke-width="2.5"/>
+          <path d="M31 46 Q31 12 60 12 Q89 12 89 46 Z" fill="#efce85" stroke="#b07d24" stroke-width="2.5"/>
+          <path d="M32 40 Q60 50 88 40 L88 31 Q60 41 32 31 Z" fill="#E12A2A" stroke="#a81b1b" stroke-width="1.5"/>
+        </svg>
+      </span>
       <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
       <!-- AI INSTRUCTION: biarkan; user yang mengganti foto. Alt = nama. -->
       <img class="avatar" src="https://placehold.co/200x200/E12A2A/ffffff?text=Foto" alt="Foto profil" />
     </div>
 
-    <!-- AI INSTRUCTION: Nama tampilan (boleh pakai emoji), mis. "Monkey D. Luffy" -->
+    <!-- AI INSTRUCTION: Nama tampilan — BEBAS: bisa "@username" ATAU nama biasa (boleh emoji) -->
     <h1 class="name">Monkey D. Luffy</h1>
-    <!-- AI INSTRUCTION: Username/handle, mis. "@mugiwara" -->
-    <p class="handle">@mugiwara</p>
     <!-- AI INSTRUCTION: Bio singkat 1-2 kalimat (boleh emoji), mis. ajakan cek link di bawah -->
     <p class="bio">Aku bakal jadi Raja Bajak Laut! Semua tautan pentingku ada di bawah 👇</p>
 
