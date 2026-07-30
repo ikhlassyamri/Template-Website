@@ -92,6 +92,11 @@
     .wrap { width: 100%; max-width: 80rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
     @media (min-width: 768px) { .wrap { padding-left: 2.5rem; padding-right: 2.5rem; } }
     .pad { padding-top: 5rem; padding-bottom: 5rem; }
+    /* Jarak agar target scroll (#cta-akhir) tak tertutup navbar sticky */
+    #cta-akhir { scroll-margin-top: 5rem; }
+    /* Harga */
+    .price-old { font-size: 1.35rem; color: var(--light-muted); text-decoration: line-through; }
+    .price-new { font-size: clamp(2.25rem, 6vw, 3rem); font-weight: 900; letter-spacing: -0.02em; }
     @media (min-width: 768px) { .pad { padding-top: 7rem; padding-bottom: 7rem; } }
     .narrow { max-width: 48rem; margin-left: auto; margin-right: auto; }
     .center { text-align: center; }
@@ -209,9 +214,9 @@
            <img src="logo.png" alt="Nama Brand" class="brand-logo" /> lalu hapus teksnya. -->
       <a href="#" class="brand">NamaBrand</a>
 
-      <!-- AI INSTRUCTION: Tombol navbar 1-2 kata, mis. "Mulai Gratis" / "Beli Sekarang".
-           [[ LINK CHECKOUT ]] ganti href. -->
-      <a href="#" class="btn btn-primary btn-sm">Mulai Gratis</a>
+      <!-- AI INSTRUCTION: Tombol navbar 1-2 kata, mis. "Beli Sekarang".
+           href="#cta-akhir" = scroll ke bagian harga; biarkan apa adanya. -->
+      <a href="#cta-akhir" class="btn btn-primary btn-sm">Beli Sekarang</a>
     </div>
   </header>
 
@@ -227,14 +232,12 @@
         <!-- AI INSTRUCTION: Sub-headline 1-2 kalimat, perjelas untuk siapa & manfaatnya -->
         <p class="lead muted narrow mt-6">Satu kalimat pengantar yang menjelaskan bagaimana produk Anda menyelesaikan masalah utama pelanggan, tanpa ribet.</p>
 
-        <!-- Form email + CTA (khas Shopify). Email OPSIONAL — boleh dihapus untuk produk beli-langsung. -->
-        <div class="signup center mt-8">
-          <!-- AI INSTRUCTION: Placeholder input, mis. "Masukkan email Anda" (opsional) -->
-          <input class="field" type="email" placeholder="Masukkan email Anda" aria-label="Email" />
-          <!-- [[ LINK CHECKOUT ]] · AI INSTRUCTION: Teks tombol berorientasi aksi -->
-          <a href="#" class="btn btn-primary">Mulai Sekarang</a>
+        <!-- CTA hero. SCROLL-KE-HARGA: href="#cta-akhir" meluncur ke bagian harga; biarkan. -->
+        <div class="mt-8">
+          <!-- AI INSTRUCTION: Teks tombol berorientasi hasil, mis. "Lihat Harga & Beli" -->
+          <a href="#cta-akhir" class="btn btn-primary" style="font-size:1.05rem; padding:1rem 2.25rem;">Beli Sekarang</a>
         </div>
-        <!-- AI INSTRUCTION: Disclaimer kecil, mis. "Gratis 14 hari · Tanpa kartu kredit" -->
+        <!-- AI INSTRUCTION: Micro-copy penenang, mis. "Garansi 7 hari · Akses instan" -->
         <p class="muted mt-4" style="font-size:.9rem;">Teks penenang singkat · mis. garansi atau akses instan</p>
 
         <!-- [[ GAMBAR PRODUK: ganti src dengan mockup/screenshot produk Anda ]] -->
@@ -245,25 +248,7 @@
     </section>
 
     <!-- ====================================================================
-         3. SOCIAL PROOF — deretan logo (section terang)
-         ==================================================================== -->
-    <section class="sec-light">
-      <div class="wrap center reveal" style="padding-bottom:4rem;">
-        <!-- AI INSTRUCTION: Kalimat social proof, mis. "Dipercaya ribuan bisnis di Indonesia" -->
-        <p class="muted" style="font-weight:600;">Dipercaya oleh banyak pelanggan &amp; media</p>
-        <!-- [[ LOGO KLIEN/MEDIA: ganti tiap <span> dengan <img src="logo-klien.png"> (opsional) ]] -->
-        <div class="logos mt-8">
-          <span class="logo-ph">LOGO</span>
-          <span class="logo-ph">LOGO</span>
-          <span class="logo-ph">LOGO</span>
-          <span class="logo-ph">LOGO</span>
-          <span class="logo-ph">LOGO</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         4. FITUR UTAMA (section gelap)
+         3. FITUR UTAMA (section gelap)
          ==================================================================== -->
     <section class="sec-dark">
       <div class="wrap pad reveal">
@@ -326,11 +311,10 @@
     <section class="sec-light">
       <div class="wrap pad center narrow reveal">
         <!-- AI INSTRUCTION: Headline ajakan tengah, maks 8 kata -->
-        <h2 class="h2">Siap Membawa Bisnis Anda ke Level Berikutnya?</h2>
-        <div class="signup center mt-8">
-          <input class="field" type="email" placeholder="Masukkan email Anda" aria-label="Email" />
-          <!-- [[ LINK CHECKOUT ]] -->
-          <a href="#" class="btn btn-primary">Mulai Sekarang</a>
+        <h2 class="h2">Siap Merasakan Hasilnya Sendiri?</h2>
+        <!-- SCROLL-KE-HARGA: biarkan href="#cta-akhir". -->
+        <div class="mt-8">
+          <a href="#cta-akhir" class="btn btn-primary" style="font-size:1.05rem; padding:1rem 2.25rem;">Beli Sekarang</a>
         </div>
       </div>
     </section>
@@ -428,19 +412,30 @@
     </section>
 
     <!-- ====================================================================
-         9. CTA AKHIR (section terang)
+         9. HARGA + CTA AKHIR (section terang) — target scroll semua tombol atas
          ==================================================================== -->
-    <section class="sec-light">
+    <section id="cta-akhir" class="sec-light">
       <div class="wrap pad center narrow reveal">
         <!-- AI INSTRUCTION: Headline penutup, maks 8 kata -->
-        <h2 class="h2">Mulai Hari Ini Juga</h2>
+        <h2 class="h2">Ambil Penawaran Ini Sekarang</h2>
         <!-- AI INSTRUCTION: 1 kalimat urgensi/penutup (jujur) -->
         <p class="lead muted mt-4">Tambahkan alasan untuk bertindak sekarang: bonus, harga promo, atau kuota terbatas yang nyata.</p>
-        <div class="signup center mt-8">
-          <input class="field" type="email" placeholder="Masukkan email Anda" aria-label="Email" />
-          <!-- [[ LINK CHECKOUT ]] -->
-          <a href="#" class="btn btn-primary">Mulai Sekarang</a>
+
+        <!-- HARGA -->
+        <div class="mt-8" style="display:flex; align-items:center; justify-content:center; gap:.75rem;">
+          <!-- AI INSTRUCTION: Harga normal (coret) -->
+          <span class="price-old">Rp000.000</span>
+          <!-- AI INSTRUCTION: Harga spesial -->
+          <span class="price-new">Rp00.000</span>
         </div>
+
+        <!-- [[ LINK CHECKOUT: HANYA tombol INI yang diisi link checkout asli pada href ]] -->
+        <div class="mt-8">
+          <a href="#" class="btn btn-primary" style="font-size:1.1rem; padding:1.1rem 2.5rem;">Beli Sekarang</a>
+        </div>
+
+        <!-- AI INSTRUCTION: Catatan penutup (N.B) — tegaskan garansi / hilangkan risiko -->
+        <p class="muted mt-8" style="font-size:.9rem;"><strong style="color:var(--light-text);">N.B:</strong> Tulis catatan penutup di sini — mis. garansi uang kembali agar pembeli merasa aman.</p>
       </div>
     </section>
   </main>
