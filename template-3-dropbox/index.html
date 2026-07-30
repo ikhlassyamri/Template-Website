@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY LANDING PAGE TEMPLATE #3 · "AIRY" (Dropbox-inspired, clean & airy)
+  ============================================================================
+  Single-product landing page: banyak ruang kosong (whitespace), tipografi tebal
+  membulat, transisi latar krem -> putih -> hitam. Aksen biru cerah.
+  Cocok untuk software, jasa, kelas, membership, atau produk apa pun.
+
+  100% SELF-CONTAINED: HTML + CSS + JS dalam satu file. TANPA framework/CDN,
+  jadi tetap tampil sempurna & responsif walau dibuka OFFLINE.
+
+  CARA PAKAI (untuk user):
+  1. Ubah TEMA (warna & font) di blok :root pada bagian STYLE di bawah.
+  2. Isi COPYWRITING dengan bantuan AI (lihat PANDUAN-PROMPT.md di folder induk repo).
+  3. Ganti ASET (logo, gambar, link checkout). Cari penanda [[ ... ]].
+  4. Sembunyikan bagian yang tak dipakai: cukup hapus blok SECTION-nya.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama Produk – Janji singkat" (maks 60 karakter) -->
+  <title>Nama Produk Anda – Solusi Utama untuk Anda</title>
+
+  <!-- AI INSTRUCTION: Ganti description dengan 1 kalimat manfaat utama (maks 155 karakter) -->
+  <meta name="description" content="Tulis ringkasan manfaat utama produk Anda di sini agar menarik di hasil pencarian." />
+
+  <!-- [[ FAVICON: ganti href dengan file ikon Anda, mis. favicon.png (32x32) ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Poppins (opsional, Google Fonts). Bila internet mati, pakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER — SILAKAN UBAH BAGIAN INI SAJA
+       ======================================================================== */
+    :root {
+      /* --- WARNA AKSEN & TOMBOL --- */
+      --brand:        #0061FF;  /* Biru cerah (tombol utama) */
+      --brand-hover:  #0049c4;
+
+      /* --- SECTION KREM (hero) --- */
+      --cream-bg:     #FAF7F2;
+
+      /* --- SECTION TERANG (putih) --- */
+      --light-bg:     #ffffff;
+      --light-text:   #1a1614;
+      --light-muted:  #6b6b6b;
+      --light-card:   #F4F1EC;
+      --light-border: #e7e3db;
+
+      /* --- SECTION GELAP (hitam) --- */
+      --dark-bg:      #0e0e0f;
+      --dark-text:    #ffffff;
+      --dark-muted:   #a7a7ad;
+      --dark-card:    #1b1b1e;
+      --dark-border:  #2d2d31;
+
+      /* --- FONT --- */
+      --font-heading: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --font-body:    'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      /* --- BENTUK (Dropbox = sudut membulat) --- */
+      --radius-btn:   10px;
+      --radius-card:  24px;
+      --section-round: clamp(1.75rem, 5vw, 3rem); /* Lengkung sudut section gelap */
+
+      /* --- GAMBAR PRODUK (hero): rasio asli dipertahankan, hanya dibatasi --- */
+      --hero-img-max-w: 62rem;
+      --hero-img-max-h: 36rem;
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS (mobile-first)       */
+    /* ======================================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { font-family: var(--font-body); line-height: 1.6; color: var(--light-text); -webkit-font-smoothing: antialiased; overflow-x: hidden; background: var(--light-bg); }
+    img, svg { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    h1, h2, h3, h4 { font-family: var(--font-heading); line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; }
+
+    /* --- Container --- */
+    .wrap { width: 100%; max-width: 80rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+    @media (min-width: 768px) { .wrap { padding-left: 2.5rem; padding-right: 2.5rem; } }
+    .pad { padding-top: 5rem; padding-bottom: 5rem; }
+    @media (min-width: 768px) { .pad { padding-top: 7rem; padding-bottom: 7rem; } }
+    .narrow { max-width: 46rem; margin-left: auto; margin-right: auto; }
+    .center { text-align: center; }
+    #cta-akhir { scroll-margin-top: 5rem; }
+
+    /* --- Tema section --- */
+    .sec-cream { background: var(--cream-bg); }
+    .sec-light { background: var(--light-bg); }
+    .sec-dark  { background: var(--dark-bg); color: var(--dark-text); }
+    .sec-cream .muted, .sec-light .muted { color: var(--light-muted); }
+    .sec-dark  .muted { color: var(--dark-muted); }
+    /* Sudut melengkung section gelap (latar terang mengintip di sudut) */
+    .round-top    { border-top-left-radius: var(--section-round); border-top-right-radius: var(--section-round); }
+    .round-bottom { border-bottom-left-radius: var(--section-round); border-bottom-right-radius: var(--section-round); }
+
+    /* --- Tipografi responsif --- */
+    .h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; }
+    .h2 { font-size: clamp(2rem, 5vw, 3.25rem); }
+    .lead { font-size: clamp(1.05rem, 2.2vw, 1.35rem); }
+
+    /* --- Tombol --- */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-weight: 600; padding: .95rem 1.6rem; border: 2px solid transparent; border-radius: var(--radius-btn); transition: transform .12s ease, background-color .12s ease, opacity .12s ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .btn-primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+    .btn-lg { padding: 1.1rem 2rem; font-size: 1.05rem; }
+    /* Ghost: garis tepi menyesuaikan latar */
+    .sec-cream .btn-ghost, .sec-light .btn-ghost { background: transparent; color: var(--light-text); border-color: var(--light-text); }
+    .sec-cream .btn-ghost:hover, .sec-light .btn-ghost:hover { background: var(--light-text); color: #fff; }
+    .sec-dark .btn-ghost { background: transparent; color: #fff; border-color: #fff; }
+    .sec-dark .btn-ghost:hover { background: #fff; color: #000; }
+    .btn .arrow { font-size: 1.1em; line-height: 1; }
+    /* Link tersier (teks + panah, garis bawah tebal) */
+    .link-arrow { display: inline-flex; align-items: center; gap: .35rem; font-weight: 700; color: var(--brand); border-bottom: 2px solid var(--brand); padding-bottom: 2px; }
+
+    /* --- Navbar --- */
+    .nav { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--cream-bg) 90%, transparent); backdrop-filter: blur(10px); }
+    .nav-inner { height: 4.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; }
+    .brand-logo { height: 2rem; width: auto; }
+
+    /* --- Hero image (rasio asli, dibatasi) --- */
+    .hero-img { margin: 0 auto; width: auto; height: auto; max-width: min(100%, var(--hero-img-max-w)); max-height: var(--hero-img-max-h); border-radius: var(--radius-card); box-shadow: 0 40px 80px -30px rgba(0,0,0,.3); }
+
+    /* --- Ikon fitur --- */
+    .ico { width: 3rem; height: 3rem; display: grid; place-items: center; border-radius: 14px; background: color-mix(in srgb, var(--brand) 12%, transparent); }
+    .ico svg { width: 1.5rem; height: 1.5rem; stroke: var(--brand); fill: none; stroke-width: 2; }
+
+    /* --- Baris fitur bergantian (gambar + teks) --- */
+    .feature-row { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
+    .feature-row + .feature-row { margin-top: 4.5rem; }
+    .feature-row .col { width: 100%; }
+    .feature-img { width: 100%; border-radius: var(--radius-card); background: var(--light-card); aspect-ratio: 4 / 3; object-fit: cover; }
+    @media (min-width: 768px) {
+      .feature-row { flex-direction: row; gap: 4rem; }
+      .feature-row.reverse { flex-direction: row-reverse; }
+      .feature-row .col { width: 50%; }
+    }
+
+    /* --- Kartu (use case / cocok untuk) --- */
+    .grid { display: grid; gap: 1.5rem; }
+    .g1 { grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .g2 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .g3 { grid-template-columns: repeat(3, 1fr); } }
+    .card-light { background: var(--light-card); border-radius: var(--radius-card); padding: 2rem; }
+    .card-light h3 { font-size: 1.3rem; margin-bottom: .5rem; }
+
+    /* --- Testimoni gambar (kartu gelap, bingkai minimalis) --- */
+    .card-dark { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: var(--radius-card); padding: .6rem; }
+    .testi-img { width: 100%; height: auto; border-radius: 18px; display: block; }
+
+    /* --- FAQ --- */
+    .faq { display: flex; flex-direction: column; gap: .75rem; }
+    .faq-item { border: 1px solid var(--light-border); border-radius: var(--radius-card); overflow: hidden; background: var(--light-bg); }
+    .faq-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-align: left; padding: 1.35rem 1.6rem; background: none; border: none; color: inherit; font-weight: 700; font-size: 1.05rem; }
+    .faq-icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; color: var(--brand); transition: transform .25s ease; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .faq-answer p { padding: 0 1.6rem 1.35rem; color: var(--light-muted); }
+    .faq-item[data-open="true"] .faq-answer { max-height: 420px; }
+    .faq-item[data-open="true"] .faq-icon { transform: rotate(45deg); }
+
+    /* --- Harga --- */
+    .price-old { font-size: 1.35rem; color: var(--light-muted); text-decoration: line-through; }
+    .price-new { font-size: clamp(2.5rem, 7vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; }
+
+    /* --- Footer --- */
+    .footer-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 640px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .footer-col h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--dark-muted); margin-bottom: 1rem; }
+    .footer-col a { display: block; padding: .3rem 0; color: var(--dark-text); opacity: .85; }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--dark-border); font-size: .9rem; color: var(--dark-muted); }
+
+    /* --- Floating WhatsApp --- */
+    .wa-float { position: fixed; z-index: 40; right: 1rem; bottom: 1.5rem; width: 3.5rem; height: 3.5rem; border-radius: 999px; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,.3); transition: transform .15s ease; }
+    .wa-float:hover { transform: scale(1.05); }
+    .wa-float svg { width: 1.75rem; height: 1.75rem; fill: #fff; }
+
+    /* --- Utility spasi --- */
+    .mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}
+    .mt-8{margin-top:2rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}.mt-14{margin-top:3.5rem}
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.in { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       HEADER / NAVBAR (krem)
+       ====================================================================== -->
+  <header class="nav sec-cream">
+    <div class="wrap nav-inner">
+      <!-- [[ LOGO / FOTO PROFIL: pakai SALAH SATU — teks brand ATAU <img>. Jangan dua-duanya ]] -->
+      <!-- AI INSTRUCTION: Nama brand (teks). Untuk logo gambar, ganti dengan:
+           <img src="logo.png" alt="Nama Brand" class="brand-logo" /> lalu hapus teksnya. -->
+      <a href="#" class="brand">NamaBrand</a>
+
+      <!-- AI INSTRUCTION: Tombol navbar 1-2 kata. href="#cta-akhir" = scroll ke harga; biarkan. -->
+      <a href="#cta-akhir" class="btn btn-primary">Beli Sekarang <span class="arrow">&rarr;</span></a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ====================================================================
+         1. HERO (krem)
+         ==================================================================== -->
+    <section class="sec-cream">
+      <div class="wrap pad center reveal">
+        <!-- AI INSTRUCTION: HEADLINE (H1) besar — janji utama produk, maks 8-10 kata -->
+        <h1 class="h1 narrow">Tulis Janji Terbesar Produk Anda di Sini</h1>
+        <!-- AI INSTRUCTION: Sub-headline 1-2 kalimat, perjelas manfaat & untuk siapa -->
+        <p class="lead muted narrow mt-6">Satu kalimat pengantar yang menjelaskan bagaimana produk Anda menyelesaikan masalah utama pelanggan, tanpa ribet.</p>
+        <!-- CTA hero: SCROLL-KE-HARGA (biarkan href="#cta-akhir") -->
+        <div class="mt-8">
+          <!-- AI INSTRUCTION: Teks tombol berorientasi hasil, mis. "Lihat Harga & Beli" -->
+          <a href="#cta-akhir" class="btn btn-primary btn-lg">Beli Sekarang <span class="arrow">&rarr;</span></a>
+        </div>
+        <!-- [[ GAMBAR PRODUK: ganti src dengan mockup/screenshot produk Anda ]] -->
+        <div class="mt-14">
+          <img class="hero-img" src="https://placehold.co/1200x720/F4F1EC/1a1614?text=Mockup+atau+Screenshot+Produk" alt="Tampilan produk Anda" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         2. HIGHLIGHT / VALUE (hitam) — impact section
+         ==================================================================== -->
+    <section class="sec-dark round-top round-bottom">
+      <div class="wrap pad center narrow reveal">
+        <!-- AI INSTRUCTION: Judul value/keamanan — inti kepercayaan/transformasi, maks 8 kata -->
+        <h2 class="h2">Inti Nilai atau Jaminan Utama Produk Anda</h2>
+        <!-- AI INSTRUCTION: 2-3 kalimat memperkuat kenapa produk ini bisa dipercaya/penting -->
+        <p class="lead muted mt-6">Jelaskan momen "aha!" atau jaminan utama produk Anda di sini — apa yang membuat pelanggan merasa aman dan yakin memilih Anda.</p>
+        <div class="mt-8">
+          <!-- SCROLL-KE-HARGA: biarkan href="#cta-akhir" -->
+          <a href="#cta-akhir" class="btn btn-ghost btn-lg">Pelajari Lebih Lanjut <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         3. FITUR (putih) — baris bergantian gambar/teks
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap pad">
+        <div class="narrow center reveal">
+          <!-- AI INSTRUCTION: Judul section fitur, mis. "Semua yang Anda butuhkan" -->
+          <h2 class="h2">Apa yang Membuatnya Berbeda</h2>
+        </div>
+
+        <div class="mt-14">
+          <!-- BARIS FITUR 1 (gambar kanan) -->
+          <div class="feature-row reverse reveal">
+            <div class="col">
+              <!-- [[ GAMBAR FITUR 1 ]] -->
+              <img class="feature-img" src="https://placehold.co/640x480/F4F1EC/6b6b6b?text=Visual+Fitur+1" alt="Visual fitur 1" />
+            </div>
+            <div class="col">
+              <span class="ico"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
+              <!-- AI INSTRUCTION: Judul fitur 1 (manfaat), maks 6 kata -->
+              <h3 class="h2" style="font-size:clamp(1.5rem,3vw,2rem); margin-top:1rem;">Judul Fitur / Manfaat #1</h3>
+              <!-- AI INSTRUCTION: 2-3 kalimat penjelasan fitur 1 -->
+              <p class="lead muted mt-4">Jelaskan apa yang membuat fitur ini berharga bagi pelanggan Anda, dan hasil nyata yang mereka rasakan.</p>
+              <!-- SCROLL-KE-HARGA: link tersier -->
+              <a href="#cta-akhir" class="link-arrow mt-6" style="display:inline-flex;">Selengkapnya <span class="arrow">&rarr;</span></a>
+            </div>
+          </div>
+
+          <!-- BARIS FITUR 2 (gambar kiri) -->
+          <div class="feature-row reveal">
+            <div class="col">
+              <!-- [[ GAMBAR FITUR 2 ]] -->
+              <img class="feature-img" src="https://placehold.co/640x480/F4F1EC/6b6b6b?text=Visual+Fitur+2" alt="Visual fitur 2" />
+            </div>
+            <div class="col">
+              <span class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg></span>
+              <h3 class="h2" style="font-size:clamp(1.5rem,3vw,2rem); margin-top:1rem;">Judul Fitur / Manfaat #2</h3>
+              <p class="lead muted mt-4">Jelaskan keunggulan kedua produk Anda dan bagaimana ia mempermudah hidup pelanggan.</p>
+              <a href="#cta-akhir" class="link-arrow mt-6" style="display:inline-flex;">Selengkapnya <span class="arrow">&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         4. TESTIMONIAL (hitam) — GAMBAR/SCREENSHOT ASLI
+         PENTING: testimoni = GAMBAR screenshot asli. Jangan mengarang.
+         ==================================================================== -->
+    <section class="sec-dark round-top round-bottom">
+      <div class="wrap pad">
+        <div class="narrow center reveal">
+          <!-- AI INSTRUCTION: Judul section testimoni -->
+          <h2 class="h2">Kata Mereka yang Sudah Mencoba</h2>
+        </div>
+        <div class="grid g1 g3 mt-14">
+          <!-- KARTU TESTIMONI GAMBAR (duplikat/kurangi; hanya ganti src="" screenshot asli) -->
+          <figure class="card-dark reveal">
+            <!-- [[ GAMBAR TESTIMONI 1: ganti src dengan screenshot asli, mis. testi1.jpg ]] -->
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          </figure>
+          <figure class="card-dark reveal">
+            <!-- [[ GAMBAR TESTIMONI 2 ]] -->
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          </figure>
+          <figure class="card-dark reveal">
+            <!-- [[ GAMBAR TESTIMONI 3 ]] -->
+            <img class="testi-img" src="https://placehold.co/600x760/1b1b1e/a7a7ad?text=Screenshot+Testimoni" alt="Screenshot testimoni pelanggan" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. COCOK UNTUK / USE CASE (putih) — grid kartu abu-abu muda
+         ==================================================================== -->
+    <section class="sec-light">
+      <div class="wrap pad">
+        <div class="narrow center reveal">
+          <!-- AI INSTRUCTION: Judul, mis. "Cocok untuk Anda yang..." -->
+          <h2 class="h2">Cocok untuk Anda yang…</h2>
+        </div>
+        <div class="grid g1 g3 mt-14">
+          <!-- KARTU (duplikat/kurangi sesuai kebutuhan) -->
+          <div class="card-light reveal">
+            <!-- AI INSTRUCTION: Judul profil/use-case 1 -->
+            <h3>Profil / Kondisi #1</h3>
+            <!-- AI INSTRUCTION: 1-2 kalimat menjelaskan cocoknya untuk profil ini -->
+            <p class="muted">Jelaskan singkat siapa yang paling terbantu oleh produk Anda dan kenapa.</p>
+          </div>
+          <div class="card-light reveal">
+            <h3>Profil / Kondisi #2</h3>
+            <p class="muted">Jelaskan singkat siapa yang paling terbantu oleh produk Anda dan kenapa.</p>
+          </div>
+          <div class="card-light reveal">
+            <h3>Profil / Kondisi #3</h3>
+            <p class="muted">Jelaskan singkat siapa yang paling terbantu oleh produk Anda dan kenapa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         6. FAQ (krem)
+         ==================================================================== -->
+    <section class="sec-cream">
+      <div class="wrap pad" style="max-width:52rem;">
+        <div class="center reveal">
+          <!-- AI INSTRUCTION: Judul FAQ -->
+          <h2 class="h2">Pertanyaan yang Sering Diajukan</h2>
+        </div>
+        <div class="faq mt-12">
+          <!-- ITEM FAQ (duplikat sesuai jumlah pertanyaan) -->
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <!-- AI INSTRUCTION: Pertanyaan 1 -->
+              <span>Tulis pertanyaan pertama di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><!-- AI INSTRUCTION: Jawaban 1 --><p>Tulis jawaban yang jelas dan meyakinkan.</p></div>
+          </div>
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <span>Tulis pertanyaan kedua di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Tulis jawaban untuk pertanyaan kedua.</p></div>
+          </div>
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <span>Tulis pertanyaan ketiga di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Tulis jawaban untuk pertanyaan ketiga.</p></div>
+          </div>
+          <div class="faq-item" data-open="false">
+            <button type="button" class="faq-trigger">
+              <span>Tulis pertanyaan keempat di sini?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Tulis jawaban untuk pertanyaan keempat.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         7. HARGA + CTA AKHIR (krem) — target scroll semua tombol atas
+         ==================================================================== -->
+    <section id="cta-akhir" class="sec-cream">
+      <div class="wrap pad center narrow reveal">
+        <!-- AI INSTRUCTION: Headline penutup, maks 8 kata -->
+        <h2 class="h2">Ambil Penawaran Ini Sekarang</h2>
+        <!-- AI INSTRUCTION: 1 kalimat urgensi/penutup (jujur) -->
+        <p class="lead muted mt-4">Tambahkan alasan untuk bertindak sekarang: bonus, harga promo, atau kuota terbatas yang nyata.</p>
+
+        <!-- HARGA (coret di atas, spesial di bawah) -->
+        <div class="mt-8" style="display:flex; flex-direction:column; align-items:center; gap:.15rem;">
+          <!-- AI INSTRUCTION: Harga normal (coret) -->
+          <span class="price-old">Rp000.000</span>
+          <!-- AI INSTRUCTION: Harga spesial -->
+          <span class="price-new">Rp00.000</span>
+        </div>
+
+        <!-- [[ LINK CHECKOUT: HANYA tombol INI yang diisi link checkout asli pada href ]] -->
+        <div class="mt-8">
+          <a href="#" class="btn btn-primary btn-lg">Beli Sekarang <span class="arrow">&rarr;</span></a>
+        </div>
+
+        <!-- AI INSTRUCTION: Catatan penutup (N.B) — tegaskan garansi / hilangkan risiko -->
+        <p class="muted mt-8" style="font-size:.9rem;"><strong style="color:var(--light-text);">N.B:</strong> Tulis catatan penutup di sini — mis. garansi uang kembali agar pembeli merasa aman.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER (hitam)
+       ====================================================================== -->
+  <footer class="sec-dark">
+    <div class="wrap" style="padding-top:4rem; padding-bottom:3rem;">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <!-- AI INSTRUCTION: Nama brand + 1 kalimat tagline -->
+          <a href="#" class="brand" style="font-size:1.3rem;">NamaBrand</a>
+          <p class="muted mt-4" style="max-width:22rem;">Tagline singkat brand Anda di sini.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Produk</h4>
+          <!-- [[ LINK ]] -->
+          <a href="#">Fitur</a>
+          <a href="#cta-akhir">Harga</a>
+          <a href="#">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Ikuti Kami</h4>
+          <!-- [[ LINK SOSMED ]] -->
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <!-- AI INSTRUCTION: Nama brand + tahun -->
+        <p>© 2026 NamaBrand. Semua hak dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       FLOATING WHATSAPP (opsional — hapus <a> ini bila tak dipakai)
+       [[ WHATSAPP: ganti nomor 62812XXXXXXX dengan nomor CS Anda (format 62...) ]]
+       ====================================================================== -->
+  <a href="https://wa.me/62812XXXXXXX" target="_blank" rel="noopener" class="wa-float" aria-label="Chat WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16.003 3C9.383 3 4 8.383 4 15c0 2.113.553 4.176 1.602 5.996L4 29l8.2-1.57A11.9 11.9 0 0016.003 27C22.62 27 28 21.617 28 15S22.62 3 16.003 3zm0 21.8c-1.79 0-3.55-.48-5.086-1.39l-.365-.216-4.87.932.93-4.75-.238-.377A9.77 9.77 0 016.2 15c0-5.4 4.402-9.8 9.803-9.8 5.4 0 9.797 4.4 9.797 9.8 0 5.4-4.397 9.8-9.797 9.8zm5.383-7.34c-.295-.148-1.744-.86-2.014-.96-.27-.098-.467-.147-.664.148-.196.295-.762.96-.934 1.156-.172.196-.344.22-.639.073-.295-.148-1.245-.459-2.372-1.463-.877-.782-1.47-1.748-1.642-2.043-.172-.295-.018-.454.13-.6.134-.132.295-.344.443-.516.148-.172.197-.295.295-.492.098-.196.05-.369-.025-.516-.074-.148-.664-1.6-.91-2.19-.24-.576-.483-.498-.664-.508l-.566-.01c-.196 0-.516.074-.787.369-.27.295-1.033 1.01-1.033 2.46 0 1.45 1.058 2.852 1.205 3.049.148.196 2.082 3.178 5.045 4.457.705.304 1.256.486 1.685.623.708.225 1.352.193 1.862.117.568-.085 1.744-.713 1.99-1.402.246-.688.246-1.279.172-1.402-.074-.123-.27-.196-.565-.344z"/>
+    </svg>
+  </a>
+
+  <script>
+    // FAQ accordion (tunggal)
+    document.querySelectorAll('.faq-trigger').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.faq-item');
+        var open = item.getAttribute('data-open') === 'true';
+        document.querySelectorAll('.faq-item').forEach(function (i) { i.setAttribute('data-open', 'false'); });
+        item.setAttribute('data-open', open ? 'false' : 'true');
+      });
+    });
+    // Animasi reveal
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+  </script>
+</body>
+</html>
