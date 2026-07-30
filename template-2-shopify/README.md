@@ -21,33 +21,15 @@ Section modular — hapus blok `<section>` yang tak dipakai tanpa merusak layout
 
 ---
 
-## 📋 Mega-Prompt (upload FILE PRODUK + index.html, lalu tempel)
+## 📋 Mengisi konten dengan AI
 
-```text
-Kamu adalah Copywriter direct-response + editor HTML profesional berbahasa Indonesia.
+Template ini memakai **PROMPT UNIVERSAL yang sama** dengan semua template lain.
+Tidak ada prompt khusus di sini — cukup buka **`PANDUAN-PROMPT.md` di folder induk repo**,
+salin mega-prompt-nya, lalu lampirkan **file produk + `index.html` ini**.
 
-Saya melampirkan FILE PRODUK saya dan file index.html (template landing page "AI-Ready").
-Analisa isi produk saya, lalu ISI semua teks di index.html tepat setelah setiap komentar
-<!-- AI INSTRUCTION: ... --> sesuai instruksinya.
-
-ATURAN EMAS:
-1. Ikuti komentar AI INSTRUCTION; patuhi batas panjang yang tertulis.
-2. DILARANG mengubah struktur HTML, class, CSS/<style>, atau JavaScript. HANYA ganti teks
-   dan atribut src="" / href="". Jangan tambah framework apa pun.
-3. TESTIMONI: bagian kutipan besar diisi SATU testimoni ASLI pelanggan. Jangan mengarang.
-4. LOGO: pilih SALAH SATU — teks brand ATAU <img>. Jangan dua-duanya.
-5. LINK CTA: isi link checkout HANYA pada tombol CTA TERAKHIR (di bagian harga). Tombol
-   lain (navbar, hero, tengah) biarkan href="#cta-akhir" agar scroll ke harga — jangan diubah.
-6. Isi harga normal (coret) & harga spesial di bagian harga. Ganti link sosmed di footer.
-   Kembalikan SELURUH isi index.html yang sudah terisi & utuh.
-
-DATA SAYA:
-- Nama produk / target market / gaya bahasa :
-- Harga normal (coret) / harga spesial :
-- Link Checkout :
-- Instagram / TikTok / YouTube (link penuh) :
-- Nama file logo / gambar produk / gambar fitur :
-```
+Semua konvensi (komentar `AI INSTRUCTION`, testimoni gambar, tombol scroll-ke-harga,
+logo salah-satu, harga di bagian akhir, WhatsApp) sudah identik dengan template lain,
+jadi 1 prompt + 1 data brief berlaku untuk template ini juga.
 
 ### Ganti tema (opsional)
 Lampirkan `index.html`, minta AI mengubah **hanya** blok `:root` (dan baris `<link>` Google
