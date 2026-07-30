@@ -72,14 +72,14 @@
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
 
-    .page { position: relative; z-index: 1; width: 100%; max-width: 30rem; padding: 2.5rem 1.25rem 3rem; text-align: center; }
+    .page { position: relative; z-index: 1; width: 100%; max-width: 30rem; padding: 4.75rem 1.25rem 3rem; text-align: center; }
 
     /* --- Profil --- */
     .avatar-wrap { position: relative; width: 8rem; margin: 0 auto; }
     .avatar { width: 8rem; height: 8rem; border-radius: 50%; object-fit: cover; border: 5px solid #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.25); background: #eaf6ff; }
-    /* Topi jerami (SVG) di atas avatar — ala Luffy: jerami cokelat + pita merah */
-    .hat { position: absolute; top: -2rem; left: 50%; transform: translateX(-50%) rotate(-7deg); width: 6.5rem; z-index: 2; filter: drop-shadow(0 3px 3px rgba(0,0,0,.25)); }
+    /* Topi jerami (SVG inline) di atas avatar — ala Luffy: jerami kuning + pita merah */
+    .hat { position: absolute; top: -3.1rem; left: 50%; transform: translateX(-50%); width: 7.6rem; z-index: 2; filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)); }
     .hat svg { width: 100%; height: auto; display: block; }
 
     /* Nama: satu baris, bersih & modern (bisa "@username" atau nama biasa) */
@@ -122,10 +122,33 @@
     <div class="avatar-wrap">
       <!-- Topi jerami (SVG dekoratif) — hapus <span class="hat"> ini bila tak dipakai -->
       <span class="hat" aria-hidden="true">
-        <svg viewBox="0 0 120 66">
-          <ellipse cx="60" cy="46" rx="56" ry="16" fill="#e7c069" stroke="#b07d24" stroke-width="2.5"/>
-          <path d="M31 46 Q31 12 60 12 Q89 12 89 46 Z" fill="#efce85" stroke="#b07d24" stroke-width="2.5"/>
-          <path d="M32 40 Q60 50 88 40 L88 31 Q60 41 32 31 Z" fill="#E12A2A" stroke="#a81b1b" stroke-width="1.5"/>
+        <svg viewBox="0 0 200 160">
+          <defs>
+            <clipPath id="brimClip"><ellipse cx="100" cy="100" rx="88" ry="44" transform="rotate(-14 100 100)"/></clipPath>
+            <clipPath id="crownClip"><path d="M31,92 C24,46 40,14 74,14 C112,14 146,42 145,64 C118,88 62,104 31,92 Z"/></clipPath>
+          </defs>
+          <!-- Brim: dasar taupe (sisi jauh) + kuning digeser => bayangan sabit di kanan -->
+          <ellipse cx="100" cy="100" rx="88" ry="44" transform="rotate(-14 100 100)" fill="#b59a90"/>
+          <g clip-path="url(#brimClip)">
+            <ellipse cx="90" cy="116" rx="88" ry="44" transform="rotate(-14 90 116)" fill="#F7D14B"/>
+            <g stroke="#d99b2b" stroke-width="2" stroke-linecap="round" opacity=".85">
+              <path d="M40,112 l6,9"/><path d="M52,120 l5,9"/><path d="M66,126 l4,9"/>
+              <path d="M150,96 l5,8"/><path d="M162,86 l5,8"/>
+            </g>
+          </g>
+          <ellipse cx="100" cy="100" rx="88" ry="44" transform="rotate(-14 100 100)" fill="none" stroke="#1a1a1a" stroke-width="4.5"/>
+          <!-- Crown (kubah) + bayangan taupe di sisi kanan -->
+          <path d="M31,92 C24,46 40,14 74,14 C112,14 146,42 145,64 C118,88 62,104 31,92 Z" fill="#F7D14B"/>
+          <g clip-path="url(#crownClip)">
+            <ellipse cx="166" cy="28" rx="64" ry="58" fill="#b59a90"/>
+            <g stroke="#d99b2b" stroke-width="2" stroke-linecap="round" opacity=".7">
+              <path d="M44,62 l5,8"/><path d="M56,44 l5,8"/>
+            </g>
+          </g>
+          <path d="M31,92 C24,46 40,14 74,14 C112,14 146,42 145,64 C118,88 62,104 31,92 Z" fill="none" stroke="#1a1a1a" stroke-width="4.5" stroke-linejoin="round"/>
+          <!-- Pita merah + lipatan gelap di ujung kanan -->
+          <path d="M28,67 C62,80 118,63 147,37 L146,62 C118,88 62,102 30,90 Z" fill="#F01B1B" stroke="#1a1a1a" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M146,40 C154,44 154,54 145,62 Z" fill="#B01038" stroke="#1a1a1a" stroke-width="3.5" stroke-linejoin="round"/>
         </svg>
       </span>
       <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
