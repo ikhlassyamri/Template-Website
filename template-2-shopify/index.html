@@ -71,6 +71,7 @@
       /* --- BENTUK --- */
       --radius-btn:  999px;  /* 999px = pill (khas Shopify). 8px = kotak         */
       --radius-card: 16px;
+      --section-round: clamp(1.5rem, 5vw, 2.75rem); /* Lengkung sudut section gelap */
 
       /* --- GAMBAR PRODUK (hero): rasio asli dipertahankan, hanya dibatasi --- */
       --hero-img-max-w: 60rem;  /* Batas lebar gambar/mockup produk  */
@@ -104,6 +105,10 @@
     /* --- Tema section (zebra) --- */
     .sec-light { background: var(--light-bg); color: var(--light-text); }
     .sec-dark  { background: var(--dark-bg);  color: var(--dark-text); }
+    /* Sudut melengkung untuk section gelap (ala Shopify). Latar body terang mengintip
+       di sudutnya sehingga tampak seperti panel melengkung. */
+    .round-top    { border-top-left-radius: var(--section-round); border-top-right-radius: var(--section-round); }
+    .round-bottom { border-bottom-left-radius: var(--section-round); border-bottom-right-radius: var(--section-round); }
     .sec-light .muted { color: var(--light-muted); }
     .sec-dark  .muted { color: var(--dark-muted); }
 
@@ -259,7 +264,7 @@
     <!-- ====================================================================
          3. FITUR UTAMA (section gelap)
          ==================================================================== -->
-    <section class="sec-dark">
+    <section class="sec-dark round-top">
       <div class="wrap pad reveal">
         <div class="narrow center">
           <!-- AI INSTRUCTION: Judul section fitur, mis. "Semua yang Anda butuhkan" -->
@@ -306,7 +311,7 @@
          5. TESTIMONIAL (section gelap) — GAMBAR/SCREENSHOT ASLI
          PENTING: testimoni = GAMBAR screenshot chat/ulasan asli. Jangan mengarang.
          ==================================================================== -->
-    <section class="sec-dark">
+    <section class="sec-dark round-bottom">
       <div class="wrap pad reveal">
         <div class="narrow center">
           <!-- AI INSTRUCTION: Judul section testimoni -->
@@ -396,7 +401,7 @@
     <!-- ====================================================================
          8. FAQ (section gelap)
          ==================================================================== -->
-    <section class="sec-dark">
+    <section class="sec-dark round-top round-bottom">
       <div class="wrap pad reveal" style="max-width:52rem;">
         <div class="center">
           <!-- AI INSTRUCTION: Judul FAQ -->
