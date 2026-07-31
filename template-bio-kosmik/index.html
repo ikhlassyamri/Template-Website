@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY BIO / LINK-IN-BIO TEMPLATE - "NEBULA" (tema luar angkasa)
+  ============================================================================
+  Halaman "link in bio": foto profil + nama + bio singkat + daftar tombol tautan.
+  Foto profil menjadi planet bercincin, bulan kecil mengorbit mengelilinginya,
+  tiga lapis bintang bergerak beda kecepatan saat halaman di-scroll, nebula
+  mengambang pelan, meteor sesekali melintas, dan lengkung planet bercahaya
+  menetap di kaki layar.
+
+  100% SELF-CONTAINED: HTML + CSS + JS satu file, tanpa framework/CDN, jalan OFFLINE.
+
+  CARA PAKAI:
+  1. Ubah TEMA (warna & font) di blok :root pada bagian STYLE di bawah.
+  2. Isi teks & tautan dengan bantuan AI (lihat PANDUAN-PROMPT-BIO.md di folder induk).
+  3. Ganti ASET (foto profil, favicon, link). Cari penanda [[ ... ]].
+  4. Tambah/kurangi tombol: duplikat/hapus blok <a class="link"> ... </a>.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama / @username" (maks 60 karakter) -->
+  <title>Nebula - Link in Bio</title>
+  <!-- AI INSTRUCTION: 1 kalimat deskripsi singkat (maks 150 karakter) -->
+  <meta name="description" content="Semua tautan penting dalam satu halaman." />
+
+  <!-- [[ FAVICON: ganti href dengan ikon Anda, mis. favicon.png ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Space Grotesk. Bila offline, otomatis pakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER - SILAKAN UBAH BAGIAN INI SAJA
+       ======================================================================== */
+    :root {
+      /* --- WARNA ANGKASA (atas gelap -> bawah lebih pekat) --- */
+      --space-1: #05030F;
+      --space-2: #0C0726;
+      --space-3: #150C36;
+      --space-4: #070417;
+
+      /* --- WARNA NEBULA (3 gumpalan cahaya di latar) --- */
+      --neb-1:   #7B2FF7;   /* ungu    */
+      --neb-2:   #21D4FD;   /* biru    */
+      --neb-3:   #FF3CAC;   /* magenta */
+
+      --star:    #FFFFFF;   /* bintang            */
+      --ring:    #C9B6FF;   /* cincin planet      */
+
+      --text:    #FFFFFF;
+      --muted:   rgba(214,222,255,.74);
+      --glass:      rgba(130,145,255,.10);  /* isi tombol   */
+      --glass-line: rgba(176,192,255,.34);  /* garis tombol */
+
+      /* --- FONT --- */
+      --font-body: 'Space Grotesk', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      /* --- BENTUK & UKURAN --- */
+      --radius-btn: 1.1rem;   /* 999px = kapsul penuh                          */
+      --avatar:     8.6rem;   /* diameter planet/foto                          */
+      --ring-w:     16.5rem;  /* lebar cincin planet                           */
+      --horizon-h:  7.5rem;   /* tinggi lengkung planet di kaki layar          */
+      --planet-d:   600vw;    /* diameter lengkung planet (besar = makin landai) */
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+    /* ======================================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body); color: var(--text); min-height: 100vh;
+      background: linear-gradient(180deg, var(--space-1) 0%, var(--space-2) 34%,
+                  var(--space-3) 64%, var(--space-4) 100%);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ===================== ANIMASI ========================================== */
+    @keyframes nebDrift { 0%,100% { transform: translate3d(0,0,0) scale(1); }
+                          50%     { transform: translate3d(4vw,-3vh,0) scale(1.12); } }
+    @keyframes twinkle  { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+    @keyframes ringGlow { 0%,100% { opacity: .8; } 50% { opacity: 1; } }
+    @keyframes meteor   { 0%   { transform: translate3d(0,0,0) rotate(26deg) scaleX(.15); opacity: 0; }
+                          3%   { opacity: 1; }
+                          12%  { transform: translate3d(62vw,34vh,0) rotate(26deg) scaleX(1); opacity: 0; }
+                          100% { transform: translate3d(62vw,34vh,0) rotate(26deg) scaleX(1); opacity: 0; } }
+    /* Bulan mengelilingi planet pada lintasan elips yang miring. Ukuran dan
+       terangnya ikut berubah supaya terasa ada jarak depan-belakang. */
+    @keyframes orbitMoon {
+      0% { transform: translate(7.277rem, -1.814rem) scale(0.850); opacity: 0.78; }
+      6.25% { transform: translate(6.918rem, -0.897rem) scale(0.907); opacity: 0.86; }
+      12.5% { transform: translate(5.505rem, 0.158rem) scale(0.956); opacity: 0.93; }
+      18.75% { transform: translate(3.254rem, 1.188rem) scale(0.989); opacity: 0.98; }
+      25% { transform: translate(0.508rem, 2.038rem) scale(1.000); opacity: 1.00; }
+      31.25% { transform: translate(-2.316rem, 2.577rem) scale(0.989); opacity: 0.98; }
+      37.5% { transform: translate(-4.787rem, 2.724rem) scale(0.956); opacity: 0.93; }
+      43.75% { transform: translate(-6.529rem, 2.456rem) scale(0.907); opacity: 0.86; }
+      50% { transform: translate(-7.277rem, 1.814rem) scale(0.850); opacity: 0.78; }
+      56.25% { transform: translate(-6.918rem, 0.897rem) scale(0.793); opacity: 0.69; }
+      62.5% { transform: translate(-5.505rem, -0.158rem) scale(0.744); opacity: 0.62; }
+      68.75% { transform: translate(-3.254rem, -1.188rem) scale(0.711); opacity: 0.57; }
+      75% { transform: translate(-0.508rem, -2.038rem) scale(0.700); opacity: 0.55; }
+      81.25% { transform: translate(2.316rem, -2.577rem) scale(0.711); opacity: 0.57; }
+      87.5% { transform: translate(4.787rem, -2.724rem) scale(0.744); opacity: 0.62; }
+      93.75% { transform: translate(6.529rem, -2.456rem) scale(0.793); opacity: 0.69; }
+      100% { transform: translate(7.277rem, -1.814rem) scale(0.850); opacity: 0.78; }
+    }
+    /* Berpindah ke belakang planet pada separuh lintasan */
+    @keyframes moonDepth {
+      0%, 49.9%  { z-index: 1; }
+      50%, 100%  { z-index: 3; }
+    }
+
+    /* ===================== NEBULA (menetap) ================================= */
+    .nebula { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .nebula span { position: absolute; border-radius: 50%; filter: blur(60px);
+      animation: nebDrift linear infinite; }
+
+    /* ===================== BINTANG (3 lapis, parallax) ====================== */
+    /* Tiap lapis bergeser dengan kecepatan berbeda memakai --sy (diatur skrip di
+       bawah), sehingga lapisan yang "jauh" bergerak lebih lambat. Lapisan
+       sengaja lebih tinggi dari layar supaya tepinya tak pernah terlihat. */
+    .stars { position: fixed; left: 0; right: 0; top: -30vh; height: 160vh;
+      z-index: 0; pointer-events: none; }
+    .stars i { position: absolute; border-radius: 50%; background: var(--star); }
+    .stars .tw { animation: twinkle ease-in-out infinite; }
+    .s-far  { transform: translate3d(0, calc(var(--sy, 0px) * -0.05), 0); }
+    .s-mid  { transform: translate3d(0, calc(var(--sy, 0px) * -0.15), 0); }
+    .s-near { transform: translate3d(0, calc(var(--sy, 0px) * -0.32), 0); }
+
+    /* ===================== METEOR =========================================== */
+    .meteors { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .meteors i { position: absolute; width: 9rem; height: 2px; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.35) 55%,
+                  rgba(255,255,255,.95) 92%, #fff 100%);
+      filter: blur(.7px); opacity: 0; animation: meteor ease-in infinite; }
+
+    /* ===================== LENGKUNG PLANET (menetap di kaki layar) ========== */
+    .horizon { position: fixed; left: 50%; bottom: calc(var(--horizon-h) - var(--planet-d));
+      width: var(--planet-d); height: var(--planet-d); margin-left: calc(var(--planet-d) / -2);
+      border-radius: 50%; z-index: 0; pointer-events: none;
+      background: radial-gradient(120% 60% at 50% 0%, #1B1140 0%, #0A0620 45%, #05030F 100%);
+      box-shadow: 0 0 3.2rem .28rem rgba(143,211,255,.42),
+                  inset 0 .6rem 2.4rem rgba(143,211,255,.20); }
+
+    /* ===================== KONTEN =========================================== */
+    .page { position: relative; z-index: 1; width: 100%; max-width: 30rem;
+      padding-top: 3.4rem; padding-left: 1.25rem; padding-right: 1.25rem;
+      padding-bottom: calc(var(--horizon-h) + 1.5rem); text-align: center; }
+
+    /* --- Planet (foto profil) + cincin + bulan --- */
+    /* Cincin dipecah dua: separuh BELAKANG di belakang foto, separuh DEPAN di
+       depan foto, sehingga cincin benar-benar melingkari planet. */
+    .avatar-zone { position: relative; width: var(--avatar); margin: 0 auto; }
+    .ring { position: absolute; top: 50%; left: 50%; width: min(var(--ring-w), 88vw);
+      aspect-ratio: 330 / 220; transform: translate(-50%, -50%);
+      pointer-events: none; animation: ringGlow 7s ease-in-out infinite; }
+    .ring svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .ring-back  { z-index: 1; }
+    .ring-front { z-index: 3; }
+    .avatar-wrap { position: relative; z-index: 2; width: var(--avatar); }
+    .avatar { width: var(--avatar); height: var(--avatar); border-radius: 50%;
+      object-fit: cover; background: #140B33;
+      border: 1px solid rgba(201,182,255,.55);
+      box-shadow: 0 0 0 .55rem rgba(123,47,247,.12),
+                  0 0 2.6rem rgba(143,211,255,.34),
+                  inset 0 0 2rem rgba(5,3,15,.55); }
+    /* pantulan cahaya bintang di sisi planet */
+    .avatar-wrap::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(60% 60% at 28% 22%, rgba(255,255,255,.34), rgba(255,255,255,0) 62%);
+      pointer-events: none; }
+    /* bulan yang mengorbit */
+    .moon { position: absolute; top: 50%; left: 50%; width: 1.15rem; height: 1.15rem;
+      margin: -.575rem 0 0 -.575rem; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(circle at 32% 30%, #FFFFFF, #C8CEEA 45%, #6E76A8 100%);
+      box-shadow: 0 0 .75rem rgba(200,215,255,.75);
+      animation: orbitMoon 22s linear infinite, moonDepth 22s linear infinite; }
+
+    .name { font-weight: 700; font-size: clamp(1.7rem, 6vw, 2.4rem); margin-top: 1.35rem;
+      letter-spacing: -.02em; text-shadow: 0 0 1.6rem rgba(143,211,255,.45); }
+    .bio { margin-top: .7rem; font-size: .98rem; color: var(--muted); line-height: 1.58; }
+
+    /* --- Tombol --- */
+    .links { margin-top: 2rem; display: flex; flex-direction: column; gap: .85rem; }
+    .link { position: relative; overflow: hidden; display: block; text-align: left;
+      padding: .95rem 1.35rem; border-radius: var(--radius-btn);
+      background: var(--glass); border: 1px solid var(--glass-line);
+      backdrop-filter: blur(6px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 .7rem 1.6rem -.8rem rgba(0,0,0,.8);
+      transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .link:hover { background: rgba(150,170,255,.20); border-color: rgba(205,220,255,.8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 0 1.6rem rgba(123,47,247,.42),
+                  0 .8rem 1.8rem -.8rem rgba(0,0,0,.85); }
+    .link .t { font-weight: 600; font-size: 1.03rem; }
+    .link .s { font-size: .84rem; color: var(--muted); margin-top: .1rem; }
+    /* Varian unggulan: tepi bercahaya */
+    .link.feature { background: linear-gradient(120deg, rgba(123,47,247,.30), rgba(33,212,253,.20));
+      border-color: rgba(224,232,255,.85);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 0 1.9rem rgba(123,47,247,.5),
+                  0 .8rem 1.8rem -.8rem rgba(0,0,0,.85); }
+    /* Badge */
+    .badge { position: absolute; top: .5rem; right: 1.1rem; z-index: 2;
+      background: rgba(255,255,255,.92); color: #1A0C3D; font-size: .62rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; padding: .2rem .55rem; border-radius: 999px; }
+
+    /* --- Sosial --- */
+    .socials { margin-top: 1.9rem; display: flex; justify-content: center; gap: .8rem; }
+    .socials a { position: relative; width: 2.9rem; height: 2.9rem; border-radius: 50%;
+      background: var(--glass); border: 1px solid var(--glass-line);
+      display: grid; place-items: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 .5rem 1.2rem -.6rem rgba(0,0,0,.8);
+      transition: background .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .socials a:hover { background: rgba(150,170,255,.22); border-color: rgba(205,220,255,.85);
+      box-shadow: 0 0 1.2rem rgba(143,211,255,.5); }
+    .socials svg { width: 1.3rem; height: 1.3rem; fill: #fff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nebula span, .stars .tw, .meteors i, .ring, .moon { animation: none; }
+      .meteors { display: none; }
+      .moon { transform: translate(7.28rem, -1.82rem); z-index: 3; opacity: 1; }
+      .s-far, .s-mid, .s-near { transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       NEBULA (dekoratif) - hapus seluruh <div class="nebula"> bila tak dipakai
+       ====================================================================== -->
+  <div class="nebula" aria-hidden="true">
+    <span style="left:-18%; top:-8%;  width:30rem; height:26rem; background:radial-gradient(circle, var(--neb-1), transparent 66%); opacity:.42; animation-duration:52s; animation-delay:-8s"></span>
+    <span style="right:-22%; top:12%; width:34rem; height:30rem; background:radial-gradient(circle, var(--neb-2), transparent 68%); opacity:.24; animation-duration:68s; animation-delay:-30s"></span>
+    <span style="left:6%; bottom:4%;  width:28rem; height:24rem; background:radial-gradient(circle, var(--neb-3), transparent 66%); opacity:.22; animation-duration:60s; animation-delay:-18s"></span>
+  </div>
+
+  <!-- ======================================================================
+       BINTANG - tiga lapis dengan kecepatan parallax berbeda (dekoratif).
+       Hapus seluruh <div class="stars"> yang tak dipakai.
+       ====================================================================== -->
+  <div class="stars s-far" aria-hidden="true">
+      <i style="left:45.24%;top:55.98%;width:1.7px;height:1.7px;opacity:0.45"></i>
+      <i style="left:50.78%;top:58.74%;width:1.1px;height:1.1px;opacity:0.46"></i>
+      <i style="left:62.99%;top:79.30%;width:1.1px;height:1.1px;opacity:0.40"></i>
+      <i style="left:9.07%;top:80.96%;width:1.6px;height:1.6px;opacity:0.31"></i>
+      <i style="left:98.22%;top:96.48%;width:1.5px;height:1.5px;opacity:0.50"></i>
+      <i style="left:15.75%;top:1.50%;width:1.4px;height:1.4px;opacity:0.32"></i>
+      <i style="left:19.02%;top:24.19%;width:1.0px;height:1.0px;opacity:0.45"></i>
+      <i style="left:44.05%;top:84.24%;width:1.4px;height:1.4px;opacity:0.50"></i>
+      <i style="left:49.98%;top:66.24%;width:1.4px;height:1.4px;opacity:0.39"></i>
+      <i style="left:99.77%;top:99.57%;width:1.7px;height:1.7px;opacity:0.53"></i>
+      <i style="left:31.53%;top:22.97%;width:1.2px;height:1.2px;opacity:0.32"></i>
+      <i style="left:76.63%;top:40.04%;width:1.7px;height:1.7px;opacity:0.42"></i>
+      <i style="left:95.80%;top:84.73%;width:1.0px;height:1.0px;opacity:0.37"></i>
+      <i style="left:91.03%;top:47.00%;width:1.8px;height:1.8px;opacity:0.43"></i>
+      <i style="left:7.30%;top:62.95%;width:1.6px;height:1.6px;opacity:0.39"></i>
+      <i style="left:8.71%;top:33.26%;width:1.8px;height:1.8px;opacity:0.54"></i>
+      <i style="left:11.80%;top:24.64%;width:1.1px;height:1.1px;opacity:0.32"></i>
+      <i style="left:79.70%;top:17.77%;width:1.4px;height:1.4px;opacity:0.44"></i>
+      <i style="left:19.07%;top:73.19%;width:1.1px;height:1.1px;opacity:0.51"></i>
+      <i style="left:11.65%;top:42.08%;width:1.2px;height:1.2px;opacity:0.39"></i>
+      <i style="left:97.09%;top:80.34%;width:1.2px;height:1.2px;opacity:0.58"></i>
+      <i style="left:21.07%;top:39.43%;width:1.7px;height:1.7px;opacity:0.51"></i>
+      <i style="left:10.03%;top:98.93%;width:1.2px;height:1.2px;opacity:0.38"></i>
+      <i style="left:77.27%;top:32.90%;width:1.2px;height:1.2px;opacity:0.32"></i>
+      <i style="left:9.01%;top:58.27%;width:1.2px;height:1.2px;opacity:0.49"></i>
+      <i style="left:37.17%;top:45.32%;width:1.8px;height:1.8px;opacity:0.45"></i>
+      <i style="left:57.46%;top:86.65%;width:1.1px;height:1.1px;opacity:0.35"></i>
+      <i style="left:90.84%;top:81.78%;width:1.2px;height:1.2px;opacity:0.36"></i>
+      <i style="left:73.94%;top:94.04%;width:1.2px;height:1.2px;opacity:0.60"></i>
+      <i style="left:88.22%;top:60.35%;width:1.3px;height:1.3px;opacity:0.33"></i>
+      <i style="left:3.87%;top:96.27%;width:1.2px;height:1.2px;opacity:0.53"></i>
+      <i style="left:25.70%;top:82.37%;width:1.5px;height:1.5px;opacity:0.39"></i>
+      <i style="left:17.54%;top:72.04%;width:1.1px;height:1.1px;opacity:0.37"></i>
+      <i style="left:55.94%;top:85.24%;width:1.5px;height:1.5px;opacity:0.39"></i>
+      <i style="left:91.74%;top:20.40%;width:1.0px;height:1.0px;opacity:0.39"></i>
+      <i style="left:44.57%;top:6.05%;width:1.1px;height:1.1px;opacity:0.42"></i>
+      <i style="left:57.22%;top:13.16%;width:1.3px;height:1.3px;opacity:0.59"></i>
+      <i style="left:98.05%;top:65.69%;width:1.6px;height:1.6px;opacity:0.49"></i>
+      <i style="left:14.03%;top:3.51%;width:1.0px;height:1.0px;opacity:0.59"></i>
+      <i style="left:70.10%;top:96.28%;width:1.0px;height:1.0px;opacity:0.50"></i>
+      <i style="left:48.22%;top:73.05%;width:1.3px;height:1.3px;opacity:0.62"></i>
+      <i style="left:7.53%;top:54.61%;width:1.6px;height:1.6px;opacity:0.59"></i>
+      <i style="left:73.71%;top:70.37%;width:1.6px;height:1.6px;opacity:0.59"></i>
+      <i style="left:35.18%;top:68.51%;width:1.7px;height:1.7px;opacity:0.58"></i>
+      <i style="left:41.72%;top:79.05%;width:1.7px;height:1.7px;opacity:0.48"></i>
+      <i style="left:62.50%;top:38.23%;width:1.5px;height:1.5px;opacity:0.49"></i>
+      <i style="left:8.02%;top:63.94%;width:1.8px;height:1.8px;opacity:0.58"></i>
+      <i style="left:72.82%;top:38.84%;width:1.6px;height:1.6px;opacity:0.49"></i>
+      <i style="left:44.05%;top:83.84%;width:1.1px;height:1.1px;opacity:0.54"></i>
+      <i style="left:2.98%;top:60.13%;width:1.4px;height:1.4px;opacity:0.37"></i>
+      <i style="left:69.83%;top:49.73%;width:1.5px;height:1.5px;opacity:0.59"></i>
+      <i style="left:25.58%;top:1.13%;width:1.2px;height:1.2px;opacity:0.52"></i>
+      <i style="left:20.26%;top:16.96%;width:1.7px;height:1.7px;opacity:0.51"></i>
+      <i style="left:44.19%;top:89.17%;width:1.3px;height:1.3px;opacity:0.51"></i>
+      <i style="left:19.85%;top:43.09%;width:1.6px;height:1.6px;opacity:0.59"></i>
+      <i style="left:88.03%;top:38.44%;width:1.5px;height:1.5px;opacity:0.40"></i>
+      <i style="left:13.62%;top:49.65%;width:1.7px;height:1.7px;opacity:0.57"></i>
+      <i style="left:71.12%;top:95.00%;width:1.2px;height:1.2px;opacity:0.35"></i>
+      <i style="left:45.06%;top:27.52%;width:1.2px;height:1.2px;opacity:0.43"></i>
+      <i style="left:62.57%;top:49.39%;width:1.3px;height:1.3px;opacity:0.57"></i>
+      <i style="left:98.20%;top:45.25%;width:1.1px;height:1.1px;opacity:0.31"></i>
+      <i style="left:87.28%;top:4.15%;width:1.6px;height:1.6px;opacity:0.48"></i>
+      <i style="left:30.90%;top:79.15%;width:1.0px;height:1.0px;opacity:0.34"></i>
+      <i style="left:45.48%;top:2.47%;width:1.7px;height:1.7px;opacity:0.38"></i>
+      <i style="left:14.09%;top:4.69%;width:1.5px;height:1.5px;opacity:0.44"></i>
+      <i style="left:63.00%;top:65.50%;width:1.6px;height:1.6px;opacity:0.61"></i>
+      <i style="left:68.45%;top:19.93%;width:1.4px;height:1.4px;opacity:0.36"></i>
+      <i style="left:1.08%;top:47.22%;width:1.6px;height:1.6px;opacity:0.36"></i>
+      <i style="left:27.24%;top:34.57%;width:1.6px;height:1.6px;opacity:0.47"></i>
+      <i style="left:61.44%;top:75.62%;width:1.3px;height:1.3px;opacity:0.55"></i>
+      <i style="left:90.62%;top:8.72%;width:1.7px;height:1.7px;opacity:0.53"></i>
+      <i style="left:12.99%;top:45.35%;width:1.5px;height:1.5px;opacity:0.59"></i>
+      <i style="left:37.68%;top:56.88%;width:1.7px;height:1.7px;opacity:0.55"></i>
+      <i style="left:94.43%;top:46.37%;width:1.5px;height:1.5px;opacity:0.37"></i>
+      <i style="left:72.19%;top:81.83%;width:1.5px;height:1.5px;opacity:0.53"></i>
+      <i style="left:21.33%;top:90.00%;width:1.8px;height:1.8px;opacity:0.61"></i>
+      <i style="left:53.70%;top:79.08%;width:1.3px;height:1.3px;opacity:0.59"></i>
+      <i style="left:85.58%;top:34.85%;width:1.1px;height:1.1px;opacity:0.44"></i>
+      <i style="left:55.03%;top:76.82%;width:1.4px;height:1.4px;opacity:0.31"></i>
+      <i style="left:80.91%;top:6.41%;width:1.6px;height:1.6px;opacity:0.36"></i>
+      <i style="left:33.50%;top:78.79%;width:1.1px;height:1.1px;opacity:0.35"></i>
+      <i style="left:51.65%;top:72.36%;width:1.7px;height:1.7px;opacity:0.52"></i>
+      <i style="left:94.57%;top:49.26%;width:1.8px;height:1.8px;opacity:0.33"></i>
+      <i style="left:22.14%;top:52.67%;width:1.2px;height:1.2px;opacity:0.53"></i>
+      <i style="left:63.89%;top:52.28%;width:1.7px;height:1.7px;opacity:0.48"></i>
+      <i style="left:31.17%;top:38.12%;width:1.7px;height:1.7px;opacity:0.59"></i>
+      <i style="left:20.82%;top:85.08%;width:1.8px;height:1.8px;opacity:0.47"></i>
+      <i style="left:57.30%;top:20.10%;width:1.4px;height:1.4px;opacity:0.46"></i>
+      <i style="left:60.52%;top:2.78%;width:1.8px;height:1.8px;opacity:0.47"></i>
+      <i style="left:40.06%;top:80.11%;width:1.5px;height:1.5px;opacity:0.46"></i>
+      <i style="left:69.10%;top:6.59%;width:1.4px;height:1.4px;opacity:0.43"></i>
+      <i style="left:95.69%;top:92.34%;width:1.2px;height:1.2px;opacity:0.45"></i>
+      <i style="left:12.70%;top:43.37%;width:1.7px;height:1.7px;opacity:0.59"></i>
+      <i style="left:47.65%;top:31.72%;width:1.2px;height:1.2px;opacity:0.50"></i>
+      <i style="left:92.53%;top:12.95%;width:1.6px;height:1.6px;opacity:0.31"></i>
+  </div>
+  <div class="stars s-mid" aria-hidden="true">
+      <i style="left:19.41%;top:22.73%;width:2.3px;height:2.3px;opacity:0.56"></i>
+      <i style="left:61.98%;top:10.49%;width:2.3px;height:2.3px;opacity:0.49"></i>
+      <i style="left:25.06%;top:19.77%;width:2.1px;height:2.1px;opacity:0.60"></i>
+      <i style="left:41.34%;top:52.93%;width:1.8px;height:1.8px;opacity:0.52"></i>
+      <i style="left:63.85%;top:52.96%;width:2.5px;height:2.5px;opacity:0.66"></i>
+      <i style="left:23.27%;top:74.08%;width:2.4px;height:2.4px;opacity:0.77"></i>
+      <i style="left:31.50%;top:92.28%;width:1.8px;height:1.8px;opacity:0.80"></i>
+      <i class="tw" style="left:13.39%;top:23.93%;width:2.3px;height:2.3px;opacity:0.54;animation-duration:4.8s;animation-delay:-2.1s"></i>
+      <i class="tw" style="left:78.99%;top:12.60%;width:2.0px;height:2.0px;opacity:0.69;animation-duration:3.1s;animation-delay:-3.4s"></i>
+      <i style="left:91.14%;top:96.84%;width:1.7px;height:1.7px;opacity:0.63"></i>
+      <i class="tw" style="left:50.28%;top:68.57%;width:1.8px;height:1.8px;opacity:0.47;animation-duration:2.7s;animation-delay:-2.8s"></i>
+      <i class="tw" style="left:51.48%;top:56.87%;width:1.7px;height:1.7px;opacity:0.51;animation-duration:4.8s;animation-delay:-5.0s"></i>
+      <i style="left:92.69%;top:9.52%;width:1.7px;height:1.7px;opacity:0.78"></i>
+      <i style="left:76.47%;top:32.68%;width:2.1px;height:2.1px;opacity:0.63"></i>
+      <i class="tw" style="left:60.09%;top:1.32%;width:2.3px;height:2.3px;opacity:0.75;animation-duration:3.8s;animation-delay:-3.7s"></i>
+      <i class="tw" style="left:40.53%;top:19.51%;width:1.8px;height:1.8px;opacity:0.63;animation-duration:4.9s;animation-delay:-4.0s"></i>
+      <i style="left:70.47%;top:86.07%;width:2.2px;height:2.2px;opacity:0.59"></i>
+      <i style="left:50.43%;top:98.27%;width:2.4px;height:2.4px;opacity:0.54"></i>
+      <i style="left:74.44%;top:77.80%;width:2.4px;height:2.4px;opacity:0.59"></i>
+      <i style="left:87.98%;top:69.48%;width:2.4px;height:2.4px;opacity:0.72"></i>
+      <i class="tw" style="left:72.26%;top:7.06%;width:1.9px;height:1.9px;opacity:0.61;animation-duration:3.5s;animation-delay:-3.2s"></i>
+      <i style="left:62.40%;top:23.21%;width:2.5px;height:2.5px;opacity:0.68"></i>
+      <i style="left:65.98%;top:56.96%;width:2.1px;height:2.1px;opacity:0.59"></i>
+      <i class="tw" style="left:64.23%;top:70.13%;width:2.4px;height:2.4px;opacity:0.79;animation-duration:4.2s;animation-delay:-3.7s"></i>
+      <i style="left:25.66%;top:40.16%;width:1.7px;height:1.7px;opacity:0.52"></i>
+      <i style="left:9.84%;top:25.09%;width:2.5px;height:2.5px;opacity:0.64"></i>
+      <i style="left:96.71%;top:56.80%;width:2.6px;height:2.6px;opacity:0.67"></i>
+      <i style="left:7.62%;top:59.75%;width:2.4px;height:2.4px;opacity:0.47"></i>
+      <i style="left:15.99%;top:47.18%;width:1.8px;height:1.8px;opacity:0.62"></i>
+      <i style="left:5.85%;top:94.53%;width:2.0px;height:2.0px;opacity:0.63"></i>
+      <i class="tw" style="left:36.56%;top:28.58%;width:2.3px;height:2.3px;opacity:0.65;animation-duration:4.5s;animation-delay:-1.5s"></i>
+      <i style="left:1.40%;top:24.50%;width:1.6px;height:1.6px;opacity:0.50"></i>
+      <i style="left:39.00%;top:89.75%;width:2.3px;height:2.3px;opacity:0.47"></i>
+      <i style="left:94.45%;top:7.35%;width:2.5px;height:2.5px;opacity:0.60"></i>
+      <i style="left:97.32%;top:24.37%;width:2.1px;height:2.1px;opacity:0.78"></i>
+      <i class="tw" style="left:46.84%;top:97.88%;width:2.4px;height:2.4px;opacity:0.66;animation-duration:4.2s;animation-delay:-2.3s"></i>
+      <i style="left:20.37%;top:5.21%;width:2.1px;height:2.1px;opacity:0.49"></i>
+      <i style="left:66.79%;top:45.56%;width:1.9px;height:1.9px;opacity:0.65"></i>
+      <i style="left:77.80%;top:53.08%;width:2.6px;height:2.6px;opacity:0.78"></i>
+      <i style="left:23.84%;top:11.39%;width:2.5px;height:2.5px;opacity:0.72"></i>
+      <i style="left:35.92%;top:27.15%;width:2.3px;height:2.3px;opacity:0.65"></i>
+      <i style="left:63.31%;top:75.33%;width:1.8px;height:1.8px;opacity:0.54"></i>
+      <i class="tw" style="left:91.57%;top:87.88%;width:1.6px;height:1.6px;opacity:0.47;animation-duration:3.7s;animation-delay:-3.1s"></i>
+      <i style="left:10.25%;top:54.16%;width:1.7px;height:1.7px;opacity:0.48"></i>
+      <i class="tw" style="left:55.06%;top:63.11%;width:2.0px;height:2.0px;opacity:0.62;animation-duration:3.5s;animation-delay:-3.7s"></i>
+      <i style="left:83.86%;top:7.43%;width:1.7px;height:1.7px;opacity:0.73"></i>
+  </div>
+  <div class="stars s-near" aria-hidden="true">
+      <i style="left:76.88%;top:21.32%;width:3.2px;height:3.2px;opacity:0.78"></i>
+      <i class="tw" style="left:36.89%;top:65.37%;width:4.0px;height:4.0px;opacity:0.80;animation-duration:4.5s;animation-delay:-4.6s"></i>
+      <i class="tw" style="left:42.77%;top:36.93%;width:2.7px;height:2.7px;opacity:0.96;animation-duration:2.8s;animation-delay:-2.8s"></i>
+      <i class="tw" style="left:48.49%;top:68.53%;width:3.0px;height:3.0px;opacity:0.93;animation-duration:3.2s;animation-delay:-3.3s"></i>
+      <i class="tw" style="left:8.17%;top:30.38%;width:3.6px;height:3.6px;opacity:0.91;animation-duration:3.0s;animation-delay:-1.8s"></i>
+      <i class="tw" style="left:72.60%;top:36.64%;width:2.8px;height:2.8px;opacity:0.91;animation-duration:5.0s;animation-delay:-4.7s"></i>
+      <i class="tw" style="left:91.34%;top:43.80%;width:3.7px;height:3.7px;opacity:0.79;animation-duration:3.6s;animation-delay:-4.7s"></i>
+      <i class="tw" style="left:89.47%;top:24.83%;width:3.1px;height:3.1px;opacity:0.81;animation-duration:3.6s;animation-delay:-1.9s"></i>
+      <i style="left:19.50%;top:56.38%;width:3.7px;height:3.7px;opacity:0.86"></i>
+      <i class="tw" style="left:56.28%;top:17.66%;width:3.7px;height:3.7px;opacity:0.96;animation-duration:2.7s;animation-delay:-2.6s"></i>
+      <i style="left:54.42%;top:56.75%;width:4.0px;height:4.0px;opacity:0.90"></i>
+      <i class="tw" style="left:6.41%;top:54.68%;width:3.7px;height:3.7px;opacity:0.73;animation-duration:4.5s;animation-delay:-4.5s"></i>
+      <i class="tw" style="left:8.47%;top:63.41%;width:2.8px;height:2.8px;opacity:0.92;animation-duration:3.2s;animation-delay:-1.1s"></i>
+      <i class="tw" style="left:76.54%;top:52.16%;width:3.7px;height:3.7px;opacity:0.82;animation-duration:5.1s;animation-delay:-3.4s"></i>
+      <i style="left:49.37%;top:53.73%;width:3.6px;height:3.6px;opacity:0.91"></i>
+      <i style="left:41.06%;top:82.62%;width:3.5px;height:3.5px;opacity:0.96"></i>
+      <i class="tw" style="left:83.38%;top:88.86%;width:3.9px;height:3.9px;opacity:0.89;animation-duration:4.4s;animation-delay:-4.0s"></i>
+      <i style="left:42.16%;top:42.05%;width:2.8px;height:2.8px;opacity:0.92"></i>
+      <i class="tw" style="left:37.55%;top:16.77%;width:2.9px;height:2.9px;opacity:0.83;animation-duration:5.1s;animation-delay:-0.3s"></i>
+      <i class="tw" style="left:30.84%;top:11.48%;width:3.5px;height:3.5px;opacity:0.93;animation-duration:2.8s;animation-delay:-2.3s"></i>
+  </div>
+
+  <!-- ======================================================================
+       METEOR (dekoratif) - melintas sesekali, bukan menetap
+       ====================================================================== -->
+  <div class="meteors" aria-hidden="true">
+    <i style="left:-12%; top:6%;  animation-duration:13s; animation-delay:-2s"></i>
+    <i style="left:-16%; top:38%; animation-duration:19s; animation-delay:-11s"></i>
+  </div>
+
+  <!-- ======================================================================
+       LENGKUNG PLANET DI KAKI LAYAR (dekoratif, menetap)
+       ====================================================================== -->
+  <div class="horizon" aria-hidden="true"></div>
+
+  <main class="page">
+    <!-- ====================================================================
+         PROFIL - foto menjadi planet bercincin, bulan kecil mengorbit
+         ==================================================================== -->
+    <div class="avatar-zone">
+      <!-- Separuh cincin di BELAKANG planet -->
+      <span class="ring ring-back" aria-hidden="true">
+        <svg viewBox="0 0 330 220" fill="none">
+          <defs>
+            <linearGradient id="rgBack" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0"   stop-color="#C9B6FF" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#C9B6FF" stop-opacity=".85"/>
+              <stop offset=".5"  stop-color="#C9B6FF" stop-opacity=".35"/>
+              <stop offset=".78" stop-color="#C9B6FF" stop-opacity=".85"/>
+              <stop offset="1"   stop-color="#C9B6FF" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g transform="rotate(-14 165 110)">
+            <ellipse cx="165" cy="110" rx="150" ry="42" stroke="url(#rgBack)" stroke-width="7"/>
+            <ellipse cx="165" cy="110" rx="132" ry="35" stroke="url(#rgBack)" stroke-width="2.6" opacity=".7"/>
+          </g>
+        </svg>
+      </span>
+
+      <div class="avatar-wrap">
+        <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
+        <img class="avatar" src="https://placehold.co/240x240/140B33/CDBBFF?text=Foto" alt="Foto profil" />
+      </div>
+
+      <!-- Bulan yang mengorbit planet (dekoratif) -->
+      <span class="moon" aria-hidden="true"></span>
+
+      <!-- Separuh cincin di DEPAN planet -->
+      <span class="ring ring-front" aria-hidden="true">
+        <svg viewBox="0 0 330 220" fill="none">
+          <defs>
+            <linearGradient id="rgFront" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0"   stop-color="#C9B6FF" stop-opacity="0"/>
+              <stop offset=".25" stop-color="#C9B6FF" stop-opacity=".95"/>
+              <stop offset=".5"  stop-color="#FFFFFF" stop-opacity=".9"/>
+              <stop offset=".75" stop-color="#C9B6FF" stop-opacity=".95"/>
+              <stop offset="1"   stop-color="#C9B6FF" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g transform="rotate(-14 165 110)">
+            <path d="M15,110 A150,42 0 0 0 315,110" stroke="url(#rgFront)" stroke-width="7"/>
+            <path d="M33,110 A132,35 0 0 0 297,110" stroke="url(#rgFront)" stroke-width="2.6" opacity=".7"/>
+          </g>
+        </svg>
+      </span>
+    </div>
+
+    <!-- AI INSTRUCTION: Nama tampilan - BEBAS: bisa "@username" ATAU nama biasa (boleh emoji) -->
+    <h1 class="name">Nama Kamu</h1>
+    <!-- AI INSTRUCTION: Bio singkat 1-2 kalimat (boleh emoji) -->
+    <p class="bio">Menjelajah tanpa batas. Semua tautan pentingku ada di bawah.</p>
+
+    <!-- ====================================================================
+         TOMBOL TAUTAN - untuk menambah tautan, DUPLIKAT seluruh blok
+         <a class="link"> ... </a>. Jangan ubah nama class.
+         Kelas "feature" = tombol unggulan (pakai di satu tombol saja).
+         ==================================================================== -->
+    <div class="links">
+      <!-- [[ LINK TAUTAN 1: ganti href ]] -->
+      <a href="#" class="link feature">
+        <!-- AI INSTRUCTION: Label badge, 1-2 kata (mis. "Utama"). Hapus <span> ini bila tak perlu. -->
+        <span class="badge">Utama</span>
+        <!-- AI INSTRUCTION: Judul tautan 1 (maks 4 kata) -->
+        <div class="t">Link 1</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 1 (maks 8 kata) -->
+        <div class="s">Keterangan singkat tautan pertama</div>
+      </a>
+      <!-- [[ LINK TAUTAN 2: ganti href ]] -->
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tautan 2 (maks 4 kata) -->
+        <div class="t">Link 2</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 2 (maks 8 kata) -->
+        <div class="s">Keterangan singkat tautan kedua</div>
+      </a>
+      <!-- [[ LINK TAUTAN 3: ganti href ]] -->
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tautan 3 (maks 4 kata) -->
+        <div class="t">Link 3</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 3 (maks 8 kata) -->
+        <div class="s">Keterangan singkat tautan ketiga</div>
+      </a>
+    </div>
+
+    <!-- [[ LINK SOSMED: ganti href tiap ikon. Hapus <a> yang tak dipakai. ]] -->
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.8-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.5 3c.3 2 1.5 3.6 3.5 3.9V10c-1.4 0-2.7-.4-3.9-1.1v6.3a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.2a2.6 2.6 0 1 0 1.8 2.4V3h3.4Z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 8.2s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C16.5 4.6 12 4.6 12 4.6s-4.5 0-7.8.3c-.5 0-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 10 .8 11.9v1.8c0 1.9.2 3.7.2 3.7s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.5 0 7.8-.3c.5 0 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.8c0-1.9-.2-3.6-.2-3.6ZM9.7 15.3V8.9l5.8 3.2-5.8 3.2Z"/></svg></a>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       SKRIP DEKORATIF: mencatat posisi scroll ke variabel --sy, dipakai
+       lapisan bintang untuk bergerak dengan kecepatan berbeda (parallax).
+       Hapus seluruh <script> ini bila tak dipakai.
+       ====================================================================== -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var queued = false;
+      function apply() { queued = false; root.style.setProperty('--sy', window.pageYOffset + 'px'); }
+      window.addEventListener('scroll', function () {
+        if (!queued) { queued = true; requestAnimationFrame(apply); }
+      }, { passive: true });
+      apply();
+    })();
+  </script>
+</body>
+</html>
