@@ -122,7 +122,7 @@
          PROFIL
          ==================================================================== -->
     <div class="avatar-wrap">
-      <!-- Topi jerami (SVG dekoratif) — hapus <span class="hat"> ini bila tak dipakai -->
+      <!-- Topi jerami (SVG dekoratif) -->
       <span class="hat" aria-hidden="true">
         <svg viewBox="0 0 240 150">
           <defs>
@@ -130,111 +130,81 @@
             <clipPath id="hatCrown"><path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76 C146,94 86,98 62,86 Z"/></clipPath>
           </defs>
 
-          <!-- 1. BRIM (Dasar & Anyaman) -->
-          <g>
-            <ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)" fill="#C2A480"/>
-            <g clip-path="url(#hatBrim)">
-              <ellipse cx="111" cy="109" rx="112" ry="40" transform="rotate(-7 111 109)" fill="#F2C94C"/>
-              <g fill="none" stroke="#C9982F" stroke-width="1.5" opacity=".5">
-                <ellipse cx="112" cy="107" rx="99" ry="33" transform="rotate(-7 112 107)"/>
-                <ellipse cx="112" cy="105" rx="86" ry="27" transform="rotate(-7 112 105)"/>
-                <ellipse cx="112" cy="103" rx="73" ry="21" transform="rotate(-7 112 103)"/>
-                <ellipse cx="112" cy="101" rx="60" ry="15" transform="rotate(-7 112 101)"/>
-              </g>
-              <g stroke="#C9982F" stroke-width="1.7" stroke-linecap="round" opacity=".55">
-                <path d="M22,96 l14,5"/><path d="M28,112 l13,7"/><path d="M44,124 l10,9"/>
-                <path d="M64,132 l7,10"/><path d="M88,138 l4,10"/><path d="M112,140 l1,10"/>
-                <path d="M136,138 l-1,10"/><path d="M160,132 l-4,10"/><path d="M182,122 l-7,9"/>
-                <path d="M200,108 l-11,8"/><path d="M212,92 l-13,6"/><path d="M218,76 l-14,4"/>
-              </g>
+          <!-- 1. BRIM (Pinggiran Topi & Anyaman) -->
+          <ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)" fill="#C2A480"/>
+          <g clip-path="url(#hatBrim)">
+            <ellipse cx="111" cy="109" rx="112" ry="40" transform="rotate(-7 111 109)" fill="#F2C94C"/>
+            <!-- anyaman cincin konsentris -->
+            <g fill="none" stroke="#C9982F" stroke-width="1.5" opacity=".5">
+              <ellipse cx="112" cy="107" rx="99" ry="33" transform="rotate(-7 112 107)"/>
+              <ellipse cx="112" cy="105" rx="86" ry="27" transform="rotate(-7 112 105)"/>
+              <ellipse cx="112" cy="103" rx="73" ry="21" transform="rotate(-7 112 103)"/>
+              <ellipse cx="112" cy="101" rx="60" ry="15" transform="rotate(-7 112 101)"/>
+            </g>
+            <!-- anyaman guratan radial -->
+            <g stroke="#C9982F" stroke-width="1.7" stroke-linecap="round" opacity=".55">
+              <path d="M22,96 l14,5"/><path d="M28,112 l13,7"/><path d="M44,124 l10,9"/>
+              <path d="M64,132 l7,10"/><path d="M88,138 l4,10"/><path d="M112,140 l1,10"/>
+              <path d="M136,138 l-1,10"/><path d="M160,132 l-4,10"/><path d="M182,122 l-7,9"/>
+              <path d="M200,108 l-11,8"/><path d="M212,92 l-13,6"/><path d="M218,76 l-14,4"/>
             </g>
           </g>
+          <!-- Garis Luar Brim -->
+          <ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)" fill="none" stroke="#3B2A18" stroke-width="5"/>
 
-          <!-- 2. CROWN & PITA MERAH (Diklip agar tidak tumpah memotong brim) -->
-          <g>
-            <path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76 C146,94 86,98 62,86 Z" fill="#F2C94C"/>
-            <g clip-path="url(#hatCrown)">
-              <!-- Bayangan dan Cahaya Mahkota -->
-              <ellipse cx="182" cy="26" rx="70" ry="68" fill="#C2A480"/>
-              <ellipse cx="90" cy="42" rx="24" ry="28" fill="#F9DE84" opacity=".75"/>
-              
-              <!-- Detail Anyaman Mahkota -->
-              <g fill="none" stroke="#C9982F" stroke-width="1.5" opacity=".5">
-                <path d="M74,84 C69,56 78,28 94,17"/>
-                <path d="M92,90 C89,58 94,30 106,16"/>
-                <path d="M111,92 C110,60 112,32 115,16"/>
-                <path d="M130,90 C133,58 133,32 127,18"/>
-                <path d="M148,84 C154,58 152,34 141,23"/>
-              </g>
-              
-              <!-- Pita Merah (Dibuat lebar di bagian bawah, lalu otomatis dipotong rapi oleh batas Crown) -->
-              <path d="M40,58 C88,76 146,72 190,52 L190,120 L40,120 Z" fill="#E02020"/>
-              <path d="M40,58 C88,76 146,72 190,52 L190,62 C146,82 88,86 40,68 Z" fill="#F04444" opacity=".55"/>
-              
-              <!-- Lipatan pita kanan -->
-              <path d="M162,48 C185,58 185,75 160,95 Z" fill="#A81828"/>
+          <!-- 2. CROWN (Warna Dasar & Bayangan) -->
+          <path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76 C146,94 86,98 62,86 Z" fill="#F2C94C"/>
+          <g clip-path="url(#hatCrown)">
+            <ellipse cx="182" cy="26" rx="70" ry="68" fill="#C2A480"/>
+            <ellipse cx="90" cy="42" rx="24" ry="28" fill="#F9DE84" opacity=".75"/>
+            <g fill="none" stroke="#C9982F" stroke-width="1.5" opacity=".5">
+              <path d="M74,84 C69,56 78,28 94,17"/>
+              <path d="M92,90 C89,58 94,30 106,16"/>
+              <path d="M111,92 C110,60 112,32 115,16"/>
+              <path d="M130,90 C133,58 133,32 127,18"/>
+              <path d="M148,84 C154,58 152,34 141,23"/>
             </g>
           </g>
+          
+          <!-- Garis Luar Crown (KUNCI PERBAIKAN: Hanya setengah kubah atas, tidak ditarik penuh hingga bawah menabrak brim) -->
+          <path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76" fill="none" stroke="#3B2A18" stroke-width="5" stroke-linecap="round"/>
 
-          <!-- 3. OUTLINES (Digambar terakhir & digambar terbuka agar tidak menabrak batas yang tidak semestinya) -->
-          <g fill="none" stroke="#3B2A18" stroke-linecap="round" stroke-linejoin="round">
-            <!-- Garis pinggiran topi -->
-            <ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)" stroke-width="5"/>
-            
-            <!-- Garis atas mahkota (Tanpa garis melengkung bawah yang memotong brim) -->
-            <path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76" stroke-width="5"/>
-            
-            <!-- Garis batas atas pita merah -->
-            <path d="M62.5,60 C88,76 146,72 167.5,52" stroke-width="4.5"/>
-            
-            <!-- Garis lipatan simpul pita -->
-            <path d="M167.5,52 C178,57 175,70 168,76" stroke-width="4"/>
-          </g>
+          <!-- 3. PITA MERAH (Kembali pakai koordinat presisi dari file asli Anda) -->
+          <path d="M63,58 C88,74 146,70 168,50 L168,74 C146,94 88,96 63,80 Z" fill="#E02020" stroke="#3B2A18" stroke-width="4.5" stroke-linejoin="round"/>
+          <path d="M63,58 C88,74 146,70 168,50 L168,58 C146,79 88,83 63,67 Z" fill="#F04444" opacity=".55"/>
+          <path d="M168,50 C178,56 178,68 168,74 Z" fill="#A81828" stroke="#3B2A18" stroke-width="4" stroke-linejoin="round"/>
         </svg>
       </span>
       <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
-      <!-- AI INSTRUCTION: biarkan; user yang mengganti foto. Alt = nama. -->
       <img class="avatar" src="https://placehold.co/200x200/E12A2A/ffffff?text=Foto" alt="Foto profil" />
     </div>
 
-    <!-- AI INSTRUCTION: Nama tampilan — BEBAS: bisa "@username" ATAU nama biasa (boleh emoji) -->
+    <!-- AI INSTRUCTION: Nama tampilan -->
     <h1 class="name">Monkey D. Luffy</h1>
-    <!-- AI INSTRUCTION: Bio singkat 1-2 kalimat (boleh emoji), mis. ajakan cek link di bawah -->
+    <!-- AI INSTRUCTION: Bio singkat -->
     <p class="bio">Aku bakal jadi Raja Bajak Laut! Semua tautan pentingku ada di bawah 👇</p>
 
     <!-- ====================================================================
-         TOMBOL TAUTAN (duplikat/kurangi blok <a class="link"> sesuai kebutuhan)
+         TOMBOL TAUTAN
          ==================================================================== -->
     <div class="links">
-      <!-- TOMBOL 1 (unggulan/kuning + badge). [[ LINK: ganti href="#" ]] -->
       <a href="#" class="link feature">
         <span class="badge">Utama</span>
-        <!-- AI INSTRUCTION: Judul tombol 1 -->
         <div class="t">Link 1</div>
-        <!-- AI INSTRUCTION: Keterangan singkat tombol 1 (opsional) -->
         <div class="s">Keterangan singkat tautan pertama</div>
       </a>
-
-      <!-- TOMBOL 2. [[ LINK: ganti href="#" ]] -->
       <a href="#" class="link">
-        <!-- AI INSTRUCTION: Judul tombol 2 -->
         <div class="t">Link 2</div>
-        <!-- AI INSTRUCTION: Keterangan singkat tombol 2 (opsional) -->
         <div class="s">Keterangan singkat tautan kedua</div>
       </a>
-
-      <!-- TOMBOL 3. [[ LINK: ganti href="#" ]] -->
       <a href="#" class="link">
-        <!-- AI INSTRUCTION: Judul tombol 3 -->
         <div class="t">Link 3</div>
-        <!-- AI INSTRUCTION: Keterangan singkat tombol 3 (opsional) -->
         <div class="s">Keterangan singkat tautan ketiga</div>
       </a>
     </div>
 
     <!-- ====================================================================
-         SOSIAL (opsional — hapus blok ini bila tak dipakai)
-         [[ LINK SOSMED: ganti href ]]
+         SOSIAL
          ==================================================================== -->
     <div class="socials">
       <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.8-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
@@ -242,9 +212,8 @@
       <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 8.2s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C16.5 4.6 12 4.6 12 4.6s-4.5 0-7.8.3c-.5 0-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 10 .8 11.9v1.8c0 1.9.2 3.7.2 3.7s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.5 0 7.8-.3c.5 0 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.8c0-1.9-.2-3.6-.2-3.6ZM9.7 15.3V8.9l5.8 3.2-5.8 3.2Z"/></svg></a>
     </div>
 
-    <!-- AI INSTRUCTION: Footer kecil (mis. nama brand + tahun) -->
+    <!-- Footer -->
     <p class="foot">⛵ Dibuat dengan semangat petualangan</p>
   </main>
 </body>
-      </html>
-      
+</html>
