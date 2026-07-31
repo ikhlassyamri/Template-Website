@@ -26,6 +26,10 @@ hanya *konvensi/mekanika* di bawah ini. Setiap template baru HARUS mematuhi kont
    dengan nilai cadangan: `var(--nama, nilai)`.
 5. **Logo navbar** — mendukung SALAH SATU: teks brand ATAU `<img class="brand-logo">`. Komentar
    menegaskan "jangan dua-duanya".
+   Varian yang juga diizinkan: logo `<img>` **opsional berdampingan** dengan nama produk
+   dalam satu bar (mis. template 5). Bila memakai varian ini, komentar di file DAN blok
+   "ATURAN UNTUK AI" wajib menyatakannya, agar tidak bentrok dengan aturan "pilih salah
+   satu" di prompt universal. Cukup satu bar di atas — jangan ada baris menu terpisah.
 6. **Testimoni = GAMBAR** — slot `<img>` screenshot asli dengan bingkai minimalis
    (`.testi-card` / `.testi-img`). TIDAK ada kutipan teks yang bisa dikarang AI.
 7. **Harga** — berada di section ber-`id="cta-akhir"`, format harga coret + harga spesial.

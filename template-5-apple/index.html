@@ -35,7 +35,10 @@
      kecuali pemilik memang memberi nama file ikon sendiri.
   6. Testimoni memakai GAMBAR screenshot asli: ganti src-nya saja.
      DILARANG KERAS mengarang kutipan atau nama testimoni.
-  7. Logo navbar: pilih SALAH SATU, teks brand ATAU img. Jangan dua-duanya.
+  7. Bar atas HANYA SATU (sub-nav sticky), berisi logo opsional BERDAMPINGAN dengan
+     nama produk, lalu tombol Beli. Logo dipasang dengan menyisipkan <img
+     class="brand-logo"> sesuai komentar di sana. JANGAN hapus nama produknya, dan
+     JANGAN menambah bar/baris menu baru di atasnya.
   8. Angka statistik diisi HANYA bila ada data nyata. Bila tidak ada, hapus
      seluruh blok statistiknya.
   9. Link checkout HANYA pada tombol CTA TERAKHIR di bagian harga. Tombol CTA
@@ -170,14 +173,15 @@
     .link-blue { color: var(--accent); font-weight: 500; font-size: 1.1rem; display: inline-flex; align-items: center; gap: .2rem; }
     .link-blue:hover { text-decoration: underline; }
 
-    /* --- Sub-nav sticky (nama produk + tombol Beli) --- */
-    .topbar { background: rgba(255,255,255,.8); backdrop-filter: blur(18px); border-bottom: 1px solid #ededed; }
-    .topbar-inner { height: 3rem; display: flex; align-items: center; justify-content: space-between; }
-    .topbar .logo { font-weight: 700; font-size: 1.05rem; }
+    /* --- Sub-nav sticky (logo + nama produk + tombol Beli) --- */
+    .logo { font-weight: 700; font-size: 1.05rem; }
     .subnav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.72); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid #e6e6e6; }
-    .subnav-inner { height: 3.25rem; display: flex; align-items: center; justify-content: space-between; }
-    .subnav .name { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
-    .brand-logo { height: 1.6rem; width: auto; }
+    .subnav-inner { height: 3.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    /* Logo (bila dipasang) berdampingan dengan nama produk di sisi kiri */
+    .subnav-brand { display: flex; align-items: center; gap: .55rem; min-width: 0; }
+    .subnav .name { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-logo { height: 1.6rem; width: auto; flex-shrink: 0; }
 
     /* --- Hero image (bentuk asli, tinggi dibatasi) --- */
     .hero-media { margin: 0 auto; width: auto; height: auto; max-width: min(100%, 56rem); max-height: var(--hero-media-h); border-radius: var(--radius-card); }
@@ -260,25 +264,20 @@
 <body>
 
   <!-- ======================================================================
-       HEADER UTAMA (tipis, ikut ter-scroll) — opsional
-       ====================================================================== -->
-  <div class="topbar sec-white">
-    <div class="wrap topbar-inner">
-      <!-- [[ LOGO / FOTO PROFIL: pakai SALAH SATU — teks brand ATAU <img>. Jangan dua-duanya ]] -->
-      <!-- AI INSTRUCTION: Nama brand (teks). Untuk logo gambar, ganti dengan:
-           <img src="logo.png" alt="Nama Brand" class="brand-logo" /> lalu hapus teksnya. -->
-      <a href="#" class="logo">NamaBrand</a>
-      <span class="muted" style="font-size:.9rem;">Menu</span>
-    </div>
-  </div>
-
-  <!-- ======================================================================
-       SUB-NAV STICKY (nama produk + tombol Beli biru) — menempel saat scroll
+       SUB-NAV STICKY (logo + nama produk + tombol Beli biru) — menempel saat scroll
+       Ini satu-satunya bar di atas. Tidak ada baris menu terpisah di atasnya.
        ====================================================================== -->
   <div class="subnav sec-white">
     <div class="wrap subnav-inner">
-      <!-- AI INSTRUCTION: Nama produk (singkat) -->
-      <span class="name">Nama Produk</span>
+      <div class="subnav-brand">
+        <!-- [[ LOGO (opsional): untuk memasang logo, sisipkan satu baris tepat di bawah
+             komentar ini, PERSIS seperti contoh berikut, dengan nama file logo Anda:
+             <img src="logo.png" alt="Nama Brand" class="brand-logo" />
+             Logo tampil BERDAMPINGAN dengan nama produk, bukan menggantikannya.
+             Tidak punya logo? Biarkan saja tanpa gambar. ]] -->
+        <!-- AI INSTRUCTION: Nama produk (singkat, maks 3 kata). JANGAN dihapus. -->
+        <span class="name">Nama Produk</span>
+      </div>
       <!-- AI INSTRUCTION: Tombol Beli. href="#cta-akhir" = scroll ke harga; biarkan. -->
       <a href="#cta-akhir" class="btn btn-blue btn-sm">Beli</a>
     </div>
