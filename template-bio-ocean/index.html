@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY BIO / LINK-IN-BIO TEMPLATE - "DEEP BLUE" (tema lautan lepas)
+  ============================================================================
+  Halaman "link in bio": foto profil + nama + bio singkat + daftar tombol tautan.
+  Seluruh layar terasa terendam air: permukaan berbuih putih di atas, berkas
+  cahaya & garis tipis di air, gelembung naik, dasar laut gelap, dan ikan
+  sungut ganda (anglerfish) berlampu yang berenang menerangi dasar.
+
+  100% SELF-CONTAINED: HTML + CSS + JS satu file, tanpa framework/CDN, jalan OFFLINE.
+
+  CARA PAKAI:
+  1. Ubah TEMA (warna & font) di blok :root pada bagian STYLE di bawah.
+  2. Isi teks & tautan dengan bantuan AI (lihat PANDUAN-PROMPT-BIO.md di folder induk).
+  3. Ganti ASET (foto profil, favicon, link). Cari penanda [[ ... ]].
+  4. Tambah/kurangi tombol: duplikat/hapus blok <a class="link"> ... </a>.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama / @username" (maks 60 karakter) -->
+  <title>Deep Blue - Link in Bio</title>
+  <!-- AI INSTRUCTION: 1 kalimat deskripsi singkat (maks 150 karakter) -->
+  <meta name="description" content="Semua tautan penting dalam satu halaman." />
+
+  <!-- [[ FAVICON: ganti href dengan ikon Anda, mis. favicon.png ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Poppins. Bila offline, otomatis pakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER - SILAKAN UBAH BAGIAN INI SAJA
+       ======================================================================== */
+    :root {
+      /* --- WARNA AIR (atas terang -> bawah gelap) --- */
+      --sea-1:   #7FE3EC;   /* tepat di bawah permukaan */
+      --sea-2:   #2AA7C9;
+      --sea-3:   #10618F;
+      --sea-4:   #072F55;
+      --abyss:   #03121F;   /* dasar laut gelap          */
+      --foam:    #FFFFFF;   /* buih ombak                */
+      --lamp:    #FFE9A8;   /* lampu ikan anglerfish     */
+
+      --text:    #FFFFFF;
+      --muted:   rgba(226,246,255,.78);
+      --bubble:  rgba(180,235,255,.16);  /* isi tombol gelembung */
+      --bubble-line: rgba(255,255,255,.55);
+
+      /* --- FONT --- */
+      --font-body: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      /* --- BENTUK & UKURAN --- */
+      --radius-btn: 999px;   /* 999px = gelembung penuh */
+      --floor-h:    11rem;   /* tinggi dasar laut       */
+      --surface-h:  5rem;    /* tinggi permukaan+buih   */
+      --bob:        1;       /* kekuatan gerak mengapung */
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+    /* ======================================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body); color: var(--text); min-height: 100vh;
+      /* SELURUH LAYAR TERENDAM AIR */
+      background: linear-gradient(180deg, var(--sea-1) 0%, var(--sea-2) 22%,
+                  var(--sea-3) 48%, var(--sea-4) 74%, var(--abyss) 100%);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ===================== ANIMASI ========================================== */
+    @keyframes drift    { from { transform: translateX(0); } to { transform: translateX(-600px); } }
+    @keyframes floatTilt{ 0%,100% { transform: translateY(calc(-6px * var(--bob))) rotate(-4.5deg); }
+                          50%     { transform: translateY(calc(6px * var(--bob))) rotate(2.5deg); } }
+    @keyframes bobY     { 0%,100% { transform: translateY(calc(-7px * var(--bob))); }
+                          50%     { transform: translateY(calc(7px * var(--bob))); } }
+    @keyframes bobSoft  { 0%,100% { transform: translateY(calc(-4px * var(--bob))) rotate(-1deg); }
+                          50%     { transform: translateY(calc(4px * var(--bob))) rotate(1deg); } }
+    @keyframes riseUp   { 0%   { transform: translate(0, 8vh) scale(.7); opacity: 0; }
+                          12%  { opacity: 1; }
+                          100% { transform: translate(var(--dx,20px), -104vh) scale(1.15); opacity: 0; } }
+    @keyframes shimmer  { 0%,100% { opacity: .55; transform: translateX(0) skewX(-8deg); }
+                          50%     { opacity: .95; transform: translateX(14px) skewX(-8deg); } }
+    @keyframes lineDrift{ 0%   { transform: translateX(-30px); opacity: 0; }
+                          20%,80% { opacity: 1; }
+                          100% { transform: translateX(60px); opacity: 0; } }
+    @keyframes swayWeed { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+    @keyframes swim     { 0%   { transform: translateX(112vw) scaleX(1); }
+                          49%  { transform: translateX(-34vw) scaleX(1); }
+                          50%  { transform: translateX(-34vw) scaleX(-1); }
+                          99%  { transform: translateX(112vw) scaleX(-1); }
+                          100% { transform: translateX(112vw) scaleX(1); } }
+    @keyframes lampPulse{ 0%,100% { opacity: .75; } 50% { opacity: 1; } }
+    @keyframes finFlap  { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+
+    /* ===================== LAPISAN AIR (menetap) ============================ */
+    .sea { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
+    /* permukaan air + buih putih */
+    .surface { position: absolute; top: 0; left: 0; width: 100%; height: var(--surface-h); }
+    .surface svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; }
+    .wv1 { animation: drift 13s linear infinite; }
+    .wv2 { animation: drift 8s linear infinite; }
+    .foam { animation: drift 10s linear infinite; }
+
+    /* berkas cahaya dari permukaan */
+    .rays { position: absolute; inset: 0; }
+    .rays i { position: absolute; top: 0; width: 12%; height: 78%;
+      background: linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,0) 78%);
+      filter: blur(7px); animation: shimmer 7s ease-in-out infinite; }
+
+    /* garis tipis cahaya di air */
+    .caustics { position: absolute; inset: 0; }
+    .caustics span { position: absolute; height: 1px; border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      animation: lineDrift linear infinite; }
+
+    /* gelembung naik */
+    .bubbles { position: absolute; inset: 0; }
+    .bubbles span { position: absolute; bottom: -6vh; border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.95), rgba(255,255,255,.12) 42%, rgba(255,255,255,.05) 70%);
+      border: 1px solid rgba(255,255,255,.45); animation: riseUp linear infinite; }
+
+    /* ===================== DASAR LAUT (menetap di bawah) ==================== */
+    .floor { position: fixed; left: 0; bottom: 0; z-index: 0; width: 100%; height: var(--floor-h);
+      pointer-events: none; }
+    .floor svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
+    .weed path { transform-origin: bottom center; animation: swayWeed 5.5s ease-in-out infinite; }
+
+    /* ===================== IKAN ANGLERFISH ================================== */
+    .angler { position: fixed; left: 0; bottom: 3.2rem; z-index: 0;
+      width: 8.5rem; pointer-events: none; animation: swim 34s linear infinite; animation-delay: -9s; }
+    .angler-in { animation: bobSoft 4.6s ease-in-out infinite; }
+    .angler svg { width: 100%; height: auto; display: block; }
+    .lamp-glow { animation: lampPulse 2.4s ease-in-out infinite; transform-origin: center; }
+    .fin { transform-origin: 20% 50%; animation: finFlap 1.1s ease-in-out infinite; }
+
+    /* ===================== KONTEN =========================================== */
+    .page { position: relative; z-index: 1; width: 100%; max-width: 30rem;
+      padding: calc(var(--surface-h) + 2rem) 1.25rem calc(var(--floor-h) + 1.5rem); text-align: center; }
+
+    /* --- Foto profil TERAPUNG di permukaan ombak --- */
+    /* .avatar-zone menahan posisi; ombak tetap datar sementara foto bergoyang-miring */
+    .avatar-zone { position: relative; width: 8.6rem; margin: 0 auto; }
+    /* ombak bergelombang melintas DI DEPAN foto -> foto tampak setengah terendam */
+    .float-wave { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%);
+      width: 100vw; height: 4.2rem; z-index: 2; pointer-events: none; }
+    .float-wave svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .fw1 { animation: drift 11s linear infinite; }
+    .fw2 { animation: drift 7s linear infinite; }
+    .avatar-wrap { position: relative; width: 8.6rem;
+      animation: floatTilt 6s ease-in-out infinite; }
+    .avatar { width: 8.6rem; height: 8.6rem; border-radius: 50%; object-fit: cover;
+      border: 4px solid rgba(255,255,255,.6); background: #0d4e6e;
+      box-shadow: 0 0 0 10px rgba(180,235,255,.12), 0 18px 34px rgba(2,20,40,.55); }
+    /* kilau seperti gelembung di foto */
+    .avatar-wrap::after { content: ""; position: absolute; left: 18%; top: 12%;
+      width: 30%; height: 20%; border-radius: 50%;
+      background: linear-gradient(140deg, rgba(255,255,255,.75), rgba(255,255,255,0));
+      pointer-events: none; }
+
+    .name { font-weight: 800; font-size: clamp(1.7rem, 6vw, 2.4rem); margin-top: 1.15rem;
+      letter-spacing: -.02em; text-shadow: 0 3px 14px rgba(2,26,48,.6); }
+    .bio { margin-top: .65rem; font-size: .98rem; color: var(--muted); line-height: 1.55;
+      text-shadow: 0 2px 8px rgba(2,26,48,.5); }
+
+    /* --- Tombol GELEMBUNG --- */
+    .links { margin-top: 1.9rem; display: flex; flex-direction: column; gap: 1rem; }
+    .link { position: relative; overflow: hidden; display: block; text-align: left;
+      padding: 1rem 1.5rem; border-radius: var(--radius-btn);
+      background: var(--bubble); border: 1px solid var(--bubble-line);
+      backdrop-filter: blur(4px);
+      box-shadow: inset 0 6px 14px rgba(255,255,255,.22), inset 0 -8px 16px rgba(3,30,55,.30),
+                  0 10px 22px -10px rgba(2,20,40,.75);
+      animation: bobSoft 6s ease-in-out infinite;
+      transition: box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
+    /* kilau gelembung */
+    .link::before { content: ""; position: absolute; left: 8%; top: 12%; width: 26%; height: 30%;
+      border-radius: 50%; background: linear-gradient(145deg, rgba(255,255,255,.8), rgba(255,255,255,0));
+      pointer-events: none; }
+    .link::after { content: ""; position: absolute; right: 12%; bottom: 16%; width: 10%; height: 16%;
+      border-radius: 50%; background: rgba(255,255,255,.35); pointer-events: none; }
+    /* fase berbeda supaya tidak serempak */
+    .link:nth-child(2) { animation-duration: 7.2s; animation-delay: -2.4s; }
+    .link:nth-child(3) { animation-duration: 6.6s; animation-delay: -4.1s; }
+    .link:nth-child(4) { animation-duration: 7.8s; animation-delay: -1.2s; }
+    .link:nth-child(5) { animation-duration: 6.2s; animation-delay: -3.3s; }
+    .link:hover { animation-play-state: paused; background: rgba(180,235,255,.28);
+      border-color: rgba(255,255,255,.85);
+      box-shadow: inset 0 6px 14px rgba(255,255,255,.3), inset 0 -8px 16px rgba(3,30,55,.26),
+                  0 14px 26px -8px rgba(120,225,255,.5); }
+    .link .t { font-weight: 700; font-size: 1.03rem; text-shadow: 0 2px 6px rgba(2,26,48,.55); }
+    .link .s { font-size: .84rem; color: var(--muted); margin-top: .05rem; }
+    /* Varian unggulan: gelembung bercahaya */
+    .link.feature { background: rgba(140,240,255,.3); border-color: rgba(255,255,255,.9);
+      box-shadow: inset 0 6px 16px rgba(255,255,255,.4), inset 0 -8px 16px rgba(3,60,90,.3),
+                  0 0 26px rgba(130,235,255,.45), 0 12px 24px -10px rgba(2,20,40,.7); }
+    /* Badge */
+    .badge { position: absolute; top: .45rem; right: 1.2rem; z-index: 2;
+      background: rgba(255,255,255,.9); color: #05405e; font-size: .62rem; font-weight: 800;
+      letter-spacing: .06em; text-transform: uppercase; padding: .18rem .55rem; border-radius: 999px; }
+
+    /* --- Sosial: gelembung kecil --- */
+    .socials { margin-top: 1.8rem; display: flex; justify-content: center; gap: .75rem; }
+    .socials a { position: relative; width: 2.9rem; height: 2.9rem; border-radius: 50%;
+      background: var(--bubble); border: 1px solid var(--bubble-line);
+      display: grid; place-items: center; animation: bobSoft 5.4s ease-in-out infinite;
+      box-shadow: inset 0 4px 10px rgba(255,255,255,.25), 0 8px 16px -8px rgba(2,20,40,.7);
+      transition: background .18s ease, border-color .18s ease; }
+    .socials a::before { content: ""; position: absolute; left: 20%; top: 16%; width: 30%; height: 26%;
+      border-radius: 50%; background: linear-gradient(145deg, rgba(255,255,255,.85), rgba(255,255,255,0)); }
+    .socials a:nth-child(2) { animation-duration: 6.4s; animation-delay: -2s; }
+    .socials a:nth-child(3) { animation-duration: 5.8s; animation-delay: -3.6s; }
+    .socials a:hover { animation-play-state: paused; background: rgba(180,235,255,.3);
+      border-color: rgba(255,255,255,.9); }
+    .socials svg { width: 1.3rem; height: 1.3rem; fill: #fff; position: relative; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wv1, .wv2, .foam, .rays i, .caustics span, .bubbles span, .weed path,
+      .angler, .angler-in, .lamp-glow, .fin, .avatar-wrap, .fw1, .fw2, .link, .socials a { animation: none; }
+      .bubbles, .caustics { display: none; }
+      .angler { left: 8%; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       LAUTAN (dekoratif, menetap) - hapus <div class="sea"> bila tak dipakai
+       ====================================================================== -->
+  <div class="sea" aria-hidden="true">
+    <!-- PERMUKAAN AIR + BUIH PUTIH -->
+    <div class="surface">
+      <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <g class="wv1" fill="rgba(255,255,255,.30)">
+          <path d="M0,34 q150,-16 300,0 t300,0 t300,0 t300,0 t300,0 V0 H0 Z"/>
+        </g>
+        <g class="wv2" fill="rgba(255,255,255,.55)">
+          <path d="M0,24 q150,-13 300,0 t300,0 t300,0 t300,0 t300,0 V0 H0 Z"/>
+        </g>
+      </svg>
+      <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <g class="foam" fill="#FFFFFF">
+          <circle cx="0" cy="29.4" r="2.0" opacity="0.54"/>
+          <circle cx="16" cy="33.1" r="3.3" opacity="0.75"/>
+          <circle cx="28" cy="35.8" r="3.0" opacity="0.88"/>
+          <circle cx="43" cy="38.3" r="2.6" opacity="0.54"/>
+          <circle cx="53" cy="38.3" r="1.9" opacity="0.81"/>
+          <circle cx="67" cy="33.6" r="3.6" opacity="0.47"/>
+          <circle cx="83" cy="42.0" r="2.0" opacity="0.85"/>
+          <circle cx="98" cy="36.5" r="3.3" opacity="0.52"/>
+          <circle cx="114" cy="42.4" r="4.1" opacity="0.48"/>
+          <circle cx="125" cy="42.2" r="3.1" opacity="0.55"/>
+          <circle cx="142" cy="44.6" r="2.2" opacity="0.53"/>
+          <circle cx="156" cy="40.6" r="3.3" opacity="0.72"/>
+          <circle cx="168" cy="37.0" r="1.8" opacity="0.7"/>
+          <circle cx="183" cy="40.2" r="3.5" opacity="0.75"/>
+          <circle cx="199" cy="41.5" r="2.3" opacity="0.53"/>
+          <circle cx="208" cy="35.4" r="3.8" opacity="0.93"/>
+          <circle cx="223" cy="34.9" r="3.2" opacity="0.52"/>
+          <circle cx="240" cy="38.4" r="3.5" opacity="0.78"/>
+          <circle cx="252" cy="38.9" r="4.1" opacity="0.58"/>
+          <circle cx="264" cy="36.6" r="3.3" opacity="0.68"/>
+          <circle cx="277" cy="37.3" r="2.2" opacity="0.57"/>
+          <circle cx="292" cy="29.5" r="3.9" opacity="0.63"/>
+          <circle cx="308" cy="28.5" r="3.9" opacity="0.86"/>
+          <circle cx="323" cy="25.3" r="1.9" opacity="0.47"/>
+          <circle cx="333" cy="28.2" r="1.6" opacity="0.58"/>
+          <circle cx="347" cy="22.2" r="2.3" opacity="0.58"/>
+          <circle cx="361" cy="20.5" r="4.2" opacity="0.78"/>
+          <circle cx="376" cy="23.1" r="2.8" opacity="0.98"/>
+          <circle cx="392" cy="24.4" r="1.5" opacity="0.77"/>
+          <circle cx="409" cy="21.8" r="2.8" opacity="0.81"/>
+          <circle cx="419" cy="22.1" r="3.6" opacity="0.49"/>
+          <circle cx="432" cy="20.6" r="2.4" opacity="0.82"/>
+          <circle cx="448" cy="23.2" r="2.3" opacity="0.53"/>
+          <circle cx="464" cy="20.6" r="3.7" opacity="0.93"/>
+          <circle cx="476" cy="20.7" r="2.2" opacity="0.89"/>
+          <circle cx="490" cy="18.1" r="2.8" opacity="0.78"/>
+          <circle cx="501" cy="18.2" r="2.7" opacity="0.49"/>
+          <circle cx="514" cy="25.8" r="3.7" opacity="0.48"/>
+          <circle cx="529" cy="25.0" r="3.4" opacity="0.46"/>
+          <circle cx="545" cy="21.7" r="3.6" opacity="0.63"/>
+          <circle cx="556" cy="22.7" r="3.8" opacity="0.57"/>
+          <circle cx="572" cy="27.5" r="1.8" opacity="0.81"/>
+          <circle cx="586" cy="24.6" r="3.7" opacity="0.6"/>
+          <circle cx="595" cy="32.3" r="3.4" opacity="0.66"/>
+          <circle cx="605" cy="31.4" r="3.0" opacity="0.83"/>
+          <circle cx="618" cy="33.2" r="3.4" opacity="0.55"/>
+          <circle cx="629" cy="33.6" r="3.5" opacity="0.89"/>
+          <circle cx="645" cy="34.9" r="3.4" opacity="0.51"/>
+          <circle cx="657" cy="32.8" r="3.7" opacity="1.0"/>
+          <circle cx="671" cy="40.2" r="2.4" opacity="0.89"/>
+          <circle cx="681" cy="37.6" r="2.4" opacity="0.93"/>
+          <circle cx="691" cy="36.4" r="1.7" opacity="0.91"/>
+          <circle cx="703" cy="43.8" r="2.3" opacity="0.91"/>
+          <circle cx="713" cy="44.3" r="4.1" opacity="0.93"/>
+          <circle cx="728" cy="44.8" r="4.0" opacity="0.98"/>
+          <circle cx="739" cy="44.6" r="3.6" opacity="0.64"/>
+          <circle cx="749" cy="45.1" r="2.7" opacity="0.74"/>
+          <circle cx="765" cy="41.2" r="2.1" opacity="0.83"/>
+          <circle cx="779" cy="39.0" r="3.3" opacity="0.95"/>
+          <circle cx="790" cy="43.4" r="3.5" opacity="0.74"/>
+          <circle cx="800" cy="41.5" r="2.2" opacity="0.59"/>
+          <circle cx="816" cy="36.9" r="1.7" opacity="0.92"/>
+          <circle cx="833" cy="35.9" r="2.5" opacity="0.75"/>
+          <circle cx="848" cy="31.8" r="3.2" opacity="0.58"/>
+          <circle cx="864" cy="33.7" r="4.0" opacity="0.7"/>
+          <circle cx="879" cy="28.8" r="2.0" opacity="0.61"/>
+          <circle cx="891" cy="28.6" r="2.6" opacity="0.5"/>
+          <circle cx="904" cy="34.2" r="3.8" opacity="0.79"/>
+          <circle cx="921" cy="30.2" r="3.2" opacity="0.7"/>
+          <circle cx="931" cy="30.6" r="3.9" opacity="0.89"/>
+          <circle cx="945" cy="28.3" r="4.1" opacity="0.98"/>
+          <circle cx="960" cy="19.7" r="4.1" opacity="0.76"/>
+          <circle cx="973" cy="22.3" r="2.2" opacity="0.47"/>
+          <circle cx="987" cy="22.9" r="1.6" opacity="0.96"/>
+          <circle cx="1003" cy="24.1" r="2.9" opacity="0.66"/>
+          <circle cx="1016" cy="19.0" r="4.1" opacity="0.96"/>
+          <circle cx="1032" cy="19.9" r="2.8" opacity="0.83"/>
+          <circle cx="1043" cy="16.7" r="4.2" opacity="0.6"/>
+          <circle cx="1055" cy="19.4" r="1.6" opacity="0.74"/>
+          <circle cx="1065" cy="22.6" r="1.6" opacity="0.89"/>
+          <circle cx="1076" cy="22.5" r="3.6" opacity="0.98"/>
+          <circle cx="1086" cy="24.6" r="1.8" opacity="0.64"/>
+          <circle cx="1095" cy="20.7" r="1.6" opacity="0.76"/>
+          <circle cx="1112" cy="24.3" r="3.2" opacity="0.5"/>
+          <circle cx="1129" cy="21.8" r="4.1" opacity="0.53"/>
+          <circle cx="1140" cy="28.1" r="3.5" opacity="0.55"/>
+          <circle cx="1153" cy="25.7" r="2.1" opacity="0.57"/>
+          <circle cx="1162" cy="26.4" r="2.6" opacity="0.64"/>
+          <circle cx="1175" cy="26.3" r="2.5" opacity="0.87"/>
+          <circle cx="1185" cy="25.2" r="2.7" opacity="0.61"/>
+          <circle cx="1198" cy="33.5" r="4.0" opacity="0.9"/>
+          <circle cx="1215" cy="29.8" r="2.4" opacity="0.51"/>
+          <circle cx="1226" cy="31.3" r="2.1" opacity="0.63"/>
+          <circle cx="1243" cy="35.4" r="3.9" opacity="0.74"/>
+          <circle cx="1257" cy="38.3" r="3.1" opacity="0.96"/>
+          <circle cx="1271" cy="38.0" r="2.0" opacity="0.5"/>
+          <circle cx="1284" cy="38.1" r="1.8" opacity="0.97"/>
+          <circle cx="1293" cy="39.1" r="2.1" opacity="0.67"/>
+          <circle cx="1309" cy="44.7" r="2.5" opacity="0.84"/>
+          <circle cx="1325" cy="39.2" r="2.5" opacity="0.69"/>
+          <circle cx="1340" cy="39.7" r="3.9" opacity="0.55"/>
+          <circle cx="1355" cy="42.7" r="1.5" opacity="0.63"/>
+          <circle cx="1370" cy="40.4" r="1.6" opacity="0.71"/>
+          <circle cx="1384" cy="40.5" r="2.6" opacity="0.97"/>
+          <circle cx="1398" cy="39.6" r="2.7" opacity="0.87"/>
+          <circle cx="1409" cy="39.3" r="3.5" opacity="0.5"/>
+          <circle cx="1419" cy="34.7" r="3.3" opacity="0.89"/>
+          <circle cx="1434" cy="38.6" r="1.5" opacity="0.65"/>
+          <circle cx="1446" cy="34.9" r="2.1" opacity="0.65"/>
+          <circle cx="1457" cy="31.4" r="3.0" opacity="0.46"/>
+          <circle cx="1470" cy="33.1" r="3.7" opacity="0.84"/>
+          <circle cx="1482" cy="28.1" r="3.4" opacity="0.85"/>
+          <circle cx="1496" cy="35.3" r="2.8" opacity="0.67"/>
+          <circle cx="1510" cy="25.8" r="3.2" opacity="0.52"/>
+          <circle cx="1524" cy="28.8" r="3.3" opacity="0.55"/>
+          <circle cx="1539" cy="30.2" r="4.2" opacity="0.87"/>
+          <circle cx="1549" cy="27.6" r="1.9" opacity="0.99"/>
+          <circle cx="1558" cy="19.9" r="2.5" opacity="0.49"/>
+          <circle cx="1575" cy="26.6" r="2.1" opacity="0.93"/>
+          <circle cx="1587" cy="24.7" r="1.7" opacity="0.97"/>
+          <circle cx="1599" cy="18.6" r="2.6" opacity="0.45"/>
+          <circle cx="1608" cy="20.3" r="3.1" opacity="1.0"/>
+          <circle cx="1622" cy="18.5" r="2.1" opacity="0.46"/>
+          <circle cx="1638" cy="21.4" r="2.1" opacity="0.87"/>
+          <circle cx="1652" cy="20.8" r="2.7" opacity="0.93"/>
+          <circle cx="1669" cy="22.0" r="1.9" opacity="0.7"/>
+          <circle cx="1683" cy="24.2" r="2.8" opacity="0.72"/>
+          <circle cx="1693" cy="16.7" r="2.2" opacity="0.82"/>
+          <circle cx="1703" cy="23.5" r="3.2" opacity="0.61"/>
+          <circle cx="1716" cy="25.1" r="1.5" opacity="0.79"/>
+          <circle cx="1731" cy="27.5" r="2.3" opacity="0.8"/>
+          <circle cx="1747" cy="22.9" r="3.6" opacity="0.86"/>
+          <circle cx="1764" cy="25.6" r="1.7" opacity="0.73"/>
+          <circle cx="1778" cy="31.7" r="3.5" opacity="0.75"/>
+          <circle cx="1794" cy="32.9" r="3.1" opacity="0.6"/>
+          <circle cx="1803" cy="31.6" r="1.4" opacity="0.64"/>
+          <circle cx="1820" cy="30.6" r="3.3" opacity="0.85"/>
+          <circle cx="1831" cy="35.0" r="3.9" opacity="0.85"/>
+          <circle cx="1843" cy="39.7" r="3.3" opacity="0.58"/>
+          <circle cx="1859" cy="39.4" r="3.9" opacity="0.91"/>
+          <circle cx="1874" cy="37.2" r="3.5" opacity="0.87"/>
+          <circle cx="1889" cy="36.8" r="4.2" opacity="0.77"/>
+          <circle cx="1906" cy="40.5" r="3.6" opacity="0.78"/>
+          <circle cx="1917" cy="40.8" r="3.7" opacity="0.6"/>
+          <circle cx="1933" cy="43.4" r="3.6" opacity="0.74"/>
+          <circle cx="1948" cy="42.7" r="2.6" opacity="0.45"/>
+          <circle cx="1962" cy="43.1" r="3.0" opacity="0.67"/>
+          <circle cx="1975" cy="37.6" r="3.2" opacity="0.49"/>
+          <circle cx="1985" cy="37.0" r="4.1" opacity="0.95"/>
+          <circle cx="1999" cy="44.0" r="2.0" opacity="0.81"/>
+          <circle cx="2012" cy="35.7" r="3.0" opacity="0.51"/>
+          <circle cx="2023" cy="35.2" r="2.1" opacity="0.94"/>
+          <circle cx="2036" cy="37.8" r="1.8" opacity="0.53"/>
+          <circle cx="2046" cy="38.2" r="3.0" opacity="0.86"/>
+          <circle cx="2060" cy="32.8" r="2.5" opacity="0.65"/>
+          <circle cx="2076" cy="35.1" r="3.7" opacity="0.81"/>
+          <circle cx="2093" cy="33.7" r="1.4" opacity="0.49"/>
+          <circle cx="2102" cy="33.8" r="2.0" opacity="0.7"/>
+          <circle cx="2116" cy="26.2" r="2.2" opacity="0.94"/>
+          <circle cx="2126" cy="30.5" r="2.7" opacity="0.83"/>
+          <circle cx="2138" cy="27.8" r="3.4" opacity="0.68"/>
+          <circle cx="2150" cy="24.4" r="3.5" opacity="0.46"/>
+          <circle cx="2160" cy="22.7" r="3.4" opacity="0.73"/>
+          <circle cx="2171" cy="26.5" r="3.0" opacity="0.94"/>
+          <circle cx="2183" cy="26.1" r="3.0" opacity="0.64"/>
+          <circle cx="2193" cy="24.1" r="1.9" opacity="0.9"/>
+          <circle cx="2209" cy="17.2" r="3.4" opacity="0.84"/>
+          <circle cx="2219" cy="22.4" r="4.1" opacity="0.63"/>
+          <circle cx="2232" cy="18.9" r="2.1" opacity="0.54"/>
+          <circle cx="2246" cy="23.7" r="1.8" opacity="0.46"/>
+          <circle cx="2260" cy="17.4" r="3.8" opacity="0.61"/>
+          <circle cx="2269" cy="18.0" r="2.5" opacity="0.69"/>
+          <circle cx="2281" cy="18.1" r="4.1" opacity="0.46"/>
+          <circle cx="2292" cy="23.4" r="2.0" opacity="0.57"/>
+          <circle cx="2304" cy="22.4" r="3.7" opacity="0.88"/>
+          <circle cx="2314" cy="25.8" r="1.9" opacity="0.89"/>
+          <circle cx="2330" cy="19.7" r="2.5" opacity="0.57"/>
+          <circle cx="2343" cy="26.8" r="3.6" opacity="0.87"/>
+          <circle cx="2352" cy="23.3" r="4.0" opacity="0.86"/>
+          <circle cx="2367" cy="23.9" r="1.8" opacity="0.72"/>
+          <circle cx="2381" cy="25.0" r="3.8" opacity="0.77"/>
+          <circle cx="2398" cy="33.9" r="2.5" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- BERKAS CAHAYA -->
+    <div class="rays">
+      <i style="left:8%;  animation-delay:-1s"></i>
+      <i style="left:31%; animation-delay:-3.5s; width:9%"></i>
+      <i style="left:58%; animation-delay:-2s;  width:14%"></i>
+      <i style="left:80%; animation-delay:-5s;  width:8%"></i>
+    </div>
+
+    <!-- GARIS TIPIS CAHAYA -->
+    <div class="caustics">
+      <span style="top:576.9px;left:70.6%;width:195.5px;opacity:0.27;animation-duration:12.0s;animation-delay:-11.5s"></span>
+      <span style="top:415.3px;left:19.7%;width:161.0px;opacity:0.21;animation-duration:8.5s;animation-delay:-2.8s"></span>
+      <span style="top:305.1px;left:85.2%;width:203.4px;opacity:0.24;animation-duration:13.6s;animation-delay:-11.2s"></span>
+      <span style="top:213.2px;left:60.0%;width:98.9px;opacity:0.12;animation-duration:8.3s;animation-delay:-7.9s"></span>
+      <span style="top:392.8px;left:35.9%;width:200.8px;opacity:0.14;animation-duration:14.3s;animation-delay:-8.4s"></span>
+      <span style="top:345.9px;left:28.7%;width:177.2px;opacity:0.21;animation-duration:9.0s;animation-delay:-2.7s"></span>
+      <span style="top:113.6px;left:39.7%;width:180.1px;opacity:0.24;animation-duration:11.1s;animation-delay:-8.3s"></span>
+      <span style="top:370.4px;left:7.7%;width:124.1px;opacity:0.19;animation-duration:15.4s;animation-delay:-5.6s"></span>
+      <span style="top:198.4px;left:28.0%;width:222.3px;opacity:0.26;animation-duration:12.1s;animation-delay:-6.6s"></span>
+      <span style="top:499.1px;left:77.3%;width:281.7px;opacity:0.15;animation-duration:7.8s;animation-delay:-7.4s"></span>
+      <span style="top:264.4px;left:42.2%;width:197.9px;opacity:0.12;animation-duration:12.2s;animation-delay:-5.3s"></span>
+    </div>
+
+    <!-- GELEMBUNG NAIK -->
+    <div class="bubbles">
+      <span style="left:48.8%;width:12.2px;height:12.2px;--dx:3px;opacity:0.46;animation-duration:16.2s;animation-delay:-17.6s"></span>
+      <span style="left:82.6%;width:5.9px;height:5.9px;--dx:9px;opacity:0.62;animation-duration:13.4s;animation-delay:-3.9s"></span>
+      <span style="left:42.0%;width:7.5px;height:7.5px;--dx:7px;opacity:0.67;animation-duration:10.2s;animation-delay:-16.2s"></span>
+      <span style="left:27.3%;width:8.4px;height:8.4px;--dx:6px;opacity:0.64;animation-duration:10.8s;animation-delay:-11.5s"></span>
+      <span style="left:57.4%;width:9.0px;height:9.0px;--dx:31px;opacity:0.4;animation-duration:10.0s;animation-delay:-14.1s"></span>
+      <span style="left:31.3%;width:11.3px;height:11.3px;--dx:1px;opacity:0.47;animation-duration:12.8s;animation-delay:-13.4s"></span>
+      <span style="left:37.5%;width:8.0px;height:8.0px;--dx:-17px;opacity:0.42;animation-duration:18.2s;animation-delay:-17.0s"></span>
+      <span style="left:69.6%;width:9.2px;height:9.2px;--dx:-13px;opacity:0.42;animation-duration:13.4s;animation-delay:-10.2s"></span>
+      <span style="left:69.5%;width:16.3px;height:16.3px;--dx:-24px;opacity:0.55;animation-duration:9.6s;animation-delay:-15.8s"></span>
+      <span style="left:6.9%;width:11.5px;height:11.5px;--dx:-29px;opacity:0.48;animation-duration:11.3s;animation-delay:-14.6s"></span>
+      <span style="left:92.3%;width:11.4px;height:11.4px;--dx:21px;opacity:0.56;animation-duration:13.4s;animation-delay:-11.7s"></span>
+      <span style="left:41.1%;width:7.5px;height:7.5px;--dx:31px;opacity:0.4;animation-duration:16.8s;animation-delay:-9.1s"></span>
+      <span style="left:30.8%;width:10.6px;height:10.6px;--dx:-11px;opacity:0.56;animation-duration:18.9s;animation-delay:-14.0s"></span>
+      <span style="left:79.4%;width:5.7px;height:5.7px;--dx:26px;opacity:0.59;animation-duration:16.5s;animation-delay:-8.5s"></span>
+      <span style="left:36.4%;width:6.0px;height:6.0px;--dx:-17px;opacity:0.56;animation-duration:13.1s;animation-delay:-6.8s"></span>
+      <span style="left:83.2%;width:10.3px;height:10.3px;--dx:-8px;opacity:0.27;animation-duration:10.2s;animation-delay:-10.1s"></span>
+      <span style="left:11.1%;width:9.7px;height:9.7px;--dx:31px;opacity:0.49;animation-duration:9.3s;animation-delay:-2.4s"></span>
+      <span style="left:19.3%;width:5.5px;height:5.5px;--dx:30px;opacity:0.33;animation-duration:11.9s;animation-delay:-5.8s"></span>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       DASAR LAUT GELAP (menetap di bawah)
+       ====================================================================== -->
+  <div class="floor" aria-hidden="true">
+    <svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="bed" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#062133"/><stop offset="1" stop-color="#010A12"/>
+        </linearGradient>
+        <radialGradient id="stone" cx="34%" cy="26%">
+          <stop offset="0" stop-color="#123047"/><stop offset="1" stop-color="#040F1A"/>
+        </radialGradient>
+      </defs>
+      <!-- gundukan pasir gelap -->
+      <path d="M0,120 C110,92 210,126 330,112 C450,98 560,124 680,106 C730,99 770,104 800,98 L800,200 L0,200 Z" fill="url(#bed)"/>
+      <!-- batu karang -->
+      <ellipse cx="150" cy="132" rx="66" ry="30" fill="url(#stone)"/>
+      <ellipse cx="640" cy="128" rx="80" ry="34" fill="url(#stone)"/>
+      <ellipse cx="410" cy="140" rx="46" ry="20" fill="url(#stone)" opacity=".9"/>
+      <!-- rumput laut -->
+      <g class="weed">
+          <path d="M777,200 C792,184 763,176 797,168" stroke="#0A3E3C" stroke-width="3.6" fill="none" stroke-linecap="round" style="animation-delay:-3.3s"/>
+          <path d="M557,200 C553,176 562,163 551,151" stroke="#12635A" stroke-width="3.1" fill="none" stroke-linecap="round" style="animation-delay:-3.6s"/>
+          <path d="M745,200 C738,174 751,161 736,148" stroke="#16786A" stroke-width="4.7" fill="none" stroke-linecap="round" style="animation-delay:-1.7s"/>
+          <path d="M476,200 C465,170 486,155 461,140" stroke="#12635A" stroke-width="4.3" fill="none" stroke-linecap="round" style="animation-delay:-3.2s"/>
+          <path d="M383,200 C375,181 390,171 372,162" stroke="#0E4F4A" stroke-width="3.5" fill="none" stroke-linecap="round" style="animation-delay:-2.1s"/>
+          <path d="M32,200 C20,161 43,142 16,122" stroke="#0E4F4A" stroke-width="3.1" fill="none" stroke-linecap="round" style="animation-delay:-4.1s"/>
+          <path d="M605,200 C595,180 615,169 591,159" stroke="#16786A" stroke-width="3.8" fill="none" stroke-linecap="round" style="animation-delay:-5.0s"/>
+          <path d="M478,200 C473,176 484,164 470,152" stroke="#0E4F4A" stroke-width="4.1" fill="none" stroke-linecap="round" style="animation-delay:-1.5s"/>
+          <path d="M376,200 C369,162 384,143 366,124" stroke="#0E4F4A" stroke-width="3.7" fill="none" stroke-linecap="round" style="animation-delay:-0.3s"/>
+          <path d="M605,200 C620,183 591,175 625,166" stroke="#16786A" stroke-width="5.8" fill="none" stroke-linecap="round" style="animation-delay:-2.7s"/>
+          <path d="M64,200 C55,171 72,156 52,141" stroke="#0E4F4A" stroke-width="3.4" fill="none" stroke-linecap="round" style="animation-delay:-3.0s"/>
+          <path d="M72,200 C74,178 69,167 76,155" stroke="#0E4F4A" stroke-width="3.5" fill="none" stroke-linecap="round" style="animation-delay:-3.8s"/>
+          <path d="M505,200 C492,175 518,162 486,150" stroke="#0E4F4A" stroke-width="5.3" fill="none" stroke-linecap="round" style="animation-delay:-1.0s"/>
+          <path d="M495,200 C484,164 506,146 479,129" stroke="#16786A" stroke-width="3.9" fill="none" stroke-linecap="round" style="animation-delay:-0.7s"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ======================================================================
+       IKAN ANGLERFISH BERLAMPU (berenang menerangi dasar laut)
+       Hapus seluruh <div class="angler"> ini bila tak dipakai.
+       ====================================================================== -->
+  <div class="angler" aria-hidden="true">
+    <div class="angler-in">
+      <svg viewBox="0 0 260 150">
+        <defs>
+          <radialGradient id="lampG" cx="50%" cy="50%">
+            <stop offset="0" stop-color="#FFF6D5" stop-opacity="1"/>
+            <stop offset="35%" stop-color="#FFE9A8" stop-opacity=".65"/>
+            <stop offset="100%" stop-color="#FFE9A8" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="fish" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2A4A63"/><stop offset="1" stop-color="#0A1C2C"/>
+          </linearGradient>
+          <linearGradient id="cone" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0" stop-color="#FFE9A8" stop-opacity=".38"/>
+            <stop offset="100%" stop-color="#FFE9A8" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- kerucut cahaya dari lampu -->
+        <path class="lamp-glow" d="M44,40 L-70,-6 L-70,104 Z" fill="url(#cone)"/>
+        <!-- halo cahaya -->
+        <circle class="lamp-glow" cx="44" cy="40" r="46" fill="url(#lampG)"/>
+
+        <!-- ekor -->
+        <path class="fin" d="M214,72 C238,50 254,58 250,74 C254,92 238,100 214,80 Z" fill="#12293D"/>
+        <!-- badan -->
+        <path d="M84,74 C88,40 122,26 156,32 C196,39 218,58 218,76 C218,96 194,114 154,118 C118,122 88,106 84,74 Z" fill="url(#fish)"/>
+        <!-- sirip punggung & bawah -->
+        <path class="fin" d="M150,32 C158,14 176,10 184,20 C172,22 162,28 156,36 Z" fill="#12293D"/>
+        <path d="M132,116 C126,132 138,142 150,136 C142,132 138,124 138,116 Z" fill="#12293D"/>
+        <!-- perut lebih terang -->
+        <path d="M96,88 C112,110 150,118 186,106 C154,116 116,108 96,88 Z" fill="#17364C" opacity=".9"/>
+
+        <!-- mulut & gigi -->
+        <path d="M84,74 C90,88 106,98 124,100 L120,108 C96,106 82,92 78,80 Z" fill="#07121C"/>
+        <g fill="#EAF6FF">
+          <path d="M88,80 l6,9 4,-8 Z"/><path d="M99,87 l6,9 4,-8 Z"/><path d="M110,93 l6,8 4,-7 Z"/>
+          <path d="M92,94 l5,-8 5,8 Z"/><path d="M104,99 l5,-8 5,8 Z"/>
+        </g>
+        <!-- mata -->
+        <circle cx="112" cy="62" r="9" fill="#EAF6FF"/>
+        <circle cx="114" cy="62" r="4.6" fill="#08151F"/>
+        <circle cx="110" cy="59" r="1.8" fill="#fff"/>
+
+        <!-- tangkai lampu (illicium) -->
+        <path d="M136,34 C120,10 84,6 56,26 C48,32 44,36 44,40" stroke="#16324A" stroke-width="6"
+              fill="none" stroke-linecap="round"/>
+        <!-- bola lampu -->
+        <circle cx="44" cy="40" r="11" fill="#FFF2C9"/>
+        <circle cx="44" cy="40" r="6.5" fill="#FFFDF2"/>
+      </svg>
+    </div>
+  </div>
+
+  <main class="page">
+    <!-- ====================================================================
+         PROFIL (mengapung)
+         ==================================================================== -->
+    <div class="avatar-zone">
+      <div class="avatar-wrap">
+        <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
+        <img class="avatar" src="https://placehold.co/240x240/0D4E6E/BEEBFF?text=Foto" alt="Foto profil" />
+      </div>
+      <!-- Ombak bergelombang yang melintas di depan foto (dekoratif) -->
+      <span class="float-wave" aria-hidden="true">
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+          <g class="fw1">
+            <path d="M0,34 q100,-15 200,0 t200,0 t200,0 t200,0 t200,0 t200,0" fill="none"
+                  stroke="rgba(255,255,255,.95)" stroke-width="3"/>
+          </g>
+          <g class="fw2">
+            <path d="M0,42 q120,-13 240,0 t240,0 t240,0 t240,0 t240,0" fill="none"
+                  stroke="rgba(255,255,255,.7)" stroke-width="2"/>
+            <g fill="#FFFFFF" opacity=".9">
+              <circle cx="60" cy="36" r="3"/><circle cx="118" cy="31" r="2.2"/><circle cx="176" cy="35" r="3.4"/>
+              <circle cx="242" cy="30" r="2"/><circle cx="300" cy="34" r="3"/><circle cx="366" cy="31" r="2.6"/>
+              <circle cx="430" cy="36" r="3.2"/><circle cx="492" cy="30" r="2"/><circle cx="556" cy="35" r="3"/>
+              <circle cx="620" cy="31" r="2.4"/><circle cx="684" cy="36" r="3.3"/><circle cx="744" cy="30" r="2.1"/>
+              <circle cx="808" cy="34" r="3"/><circle cx="872" cy="31" r="2.5"/><circle cx="936" cy="36" r="3.2"/>
+              <circle cx="1000" cy="30" r="2"/><circle cx="1064" cy="35" r="3"/><circle cx="1128" cy="31" r="2.4"/>
+            </g>
+          </g>
+        </svg>
+      </span>
+    </div>
+
+    <!-- AI INSTRUCTION: Nama tampilan - BEBAS: bisa "@username" ATAU nama biasa (boleh emoji) -->
+    <h1 class="name">Nama Kamu</h1>
+    <!-- AI INSTRUCTION: Bio singkat 1-2 kalimat (boleh emoji) -->
+    <p class="bio">Menyelam sedalam-dalamnya. Semua tautan pentingku ada di bawah.</p>
+
+    <!-- ====================================================================
+         TOMBOL TAUTAN - untuk menambah tautan, DUPLIKAT seluruh blok
+         <a class="link"> ... </a>. Jangan ubah nama class.
+         Kelas "feature" = gelembung unggulan (pakai di satu tombol saja).
+         ==================================================================== -->
+    <div class="links">
+      <a href="#" class="link feature">
+        <!-- AI INSTRUCTION: Label badge, 1-2 kata (mis. "Utama"). Hapus <span> ini bila tak perlu. -->
+        <span class="badge">Utama</span>
+        <!-- AI INSTRUCTION: Judul tautan 1 (maks 4 kata) -->
+        <div class="t">Link 1</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 1 (maks 8 kata) -->
+        <div class="s">Keterangan singkat tautan pertama</div>
+      </a>
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tautan 2 -->
+        <div class="t">Link 2</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 2 -->
+        <div class="s">Keterangan singkat tautan kedua</div>
+      </a>
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tautan 3 -->
+        <div class="t">Link 3</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 3 -->
+        <div class="s">Keterangan singkat tautan ketiga</div>
+      </a>
+    </div>
+
+    <!-- [[ LINK SOSMED: ganti href tiap ikon. Hapus <a> yang tak dipakai. ]] -->
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.8-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.5 3c.3 2 1.5 3.6 3.5 3.9V10c-1.4 0-2.7-.4-3.9-1.1v6.3a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.2a2.6 2.6 0 1 0 1.8 2.4V3h3.4Z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 8.2s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C16.5 4.6 12 4.6 12 4.6s-4.5 0-7.8.3c-.5 0-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 10 .8 11.9v1.8c0 1.9.2 3.7.2 3.7s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.5 0 7.8-.3c.5 0 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.8c0-1.9-.2-3.6-.2-3.6ZM9.7 15.3V8.9l5.8 3.2-5.8 3.2Z"/></svg></a>
+    </div>
+  </main>
+</body>
+</html>
