@@ -65,6 +65,11 @@ ATURAN EMAS (WAJIB PATUHI):
    index.html. Hormati batas panjang yang tertulis (mis. "maks 8 kata").
 2. JANGAN UBAH DESAIN: dilarang mengubah struktur HTML, tag, class, CSS/<style>, atau
    JavaScript. Hanya ganti teks dan atribut (src="", href=""). Jangan tambah framework.
+2b. JANGAN HAPUS SATU BARIS PUN di dalam blok :root maupun blok html "JARING PENGAMAN".
+   Salin keduanya PERSIS seperti aslinya, baris demi baris, termasuk baris yang tampak
+   tidak terpakai. Menghapus satu variabel warna saja bisa membuat seluruh teks hilang.
+2c. IKON SOSIAL MEDIA: ganti href-nya saja. Isi <svg> ikon JANGAN diganti menjadi <img>,
+   kecuali saya memang meminta memakai file gambar ikon sendiri.
 3. TESTIMONI = GAMBAR: JIKA ADA bagian testimoni, ia memakai screenshot asli. Cukup ganti
    src gambar dengan nama file testimoni saya. DILARANG KERAS menulis/mengarang kutipan & nama.
 4. LOGO PILIH SATU: untuk logo di navbar, pilih SALAH SATU — ganti teks brand ATAU

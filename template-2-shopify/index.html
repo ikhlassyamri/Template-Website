@@ -79,6 +79,41 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS (mobile-first)       */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --btn-on-light:       #000000;
+      --btn-on-light-hover: #1f1f1f;
+      --btn-on-dark:        #ffffff;
+      --btn-on-dark-hover:  #e5e5e5;
+      --accent:             #008060;
+      --light-bg:           #ffffff;
+      --light-text:         #1a1a1a;
+      --light-muted:        #616a75;
+      --light-card:         #f6f6f7;
+      --light-border:       #e3e3e5;
+      --dark-bg:            #050505;
+      --dark-text:          #ffffff;
+      --dark-muted:         #a1a1aa;
+      --dark-card:          #171719;
+      --dark-border:        #2c2c2f;
+      --font-heading:       'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --font-body:          'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --radius-btn:         999px;
+      --radius-card:        16px;
+      --section-round:      clamp(1.5rem, 5vw, 2.75rem);
+      --hero-img-max-w:     60rem;
+      --hero-img-max-h:     34rem;
+    }
     /* ======================================================================== */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

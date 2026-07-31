@@ -72,6 +72,38 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --space-1:    #05030F;
+      --space-2:    #0C0726;
+      --space-3:    #150C36;
+      --space-4:    #070417;
+      --neb-1:      #7B2FF7;
+      --neb-2:      #21D4FD;
+      --neb-3:      #FF3CAC;
+      --star:       #FFFFFF;
+      --ring:       #C9B6FF;
+      --text:       #FFFFFF;
+      --muted:      rgba(214,222,255,.74);
+      --glass:      rgba(130,145,255,.10);
+      --glass-line: rgba(176,192,255,.34);
+      --font-body:  'Space Grotesk', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --radius-btn: 1.1rem;
+      --avatar:     8.6rem;
+      --ring-w:     16.5rem;
+      --horizon-h:  7.5rem;
+      --planet-d:   600vw;
+    }
     /* ======================================================================== */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

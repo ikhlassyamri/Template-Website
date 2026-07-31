@@ -13,6 +13,13 @@ hanya *konvensi/mekanika* di bawah ini. Setiap template baru HARUS mematuhi kont
    ⚠️ Jangan pernah menaruh `-->` literal di dalam komentar lain (komentar HTML tak boleh bersarang).
 3. **Penanda aset/link `[[ ... ]]`** — logo, gambar, link checkout, WhatsApp, dsb.
 4. **Tema via CSS variables** — semua warna & font di blok `:root` "PENGATURAN USER".
+   Wajib disertai blok **`html { ... }` "JARING PENGAMAN"** tepat di bawah garis
+   "JANGAN UBAH KODE DI BAWAH INI", berisi salinan seluruh nilai `:root`. Karena
+   selektor `html` spesifisitasnya lebih rendah dari `:root`, nilai user selalu menang;
+   blok ini hanya menyala bila ada variabel yang hilang, sehingga halaman tidak pernah
+   rusak total (mis. teks hitam di atas latar hitam) ketika AI tak sengaja menghapus baris.
+   Variabel yang BUKAN tema (dipakai per-elemen atau di-set dari JS) wajib selalu ditulis
+   dengan nilai cadangan: `var(--nama, nilai)`.
 5. **Logo navbar** — mendukung SALAH SATU: teks brand ATAU `<img class="brand-logo">`. Komentar
    menegaskan "jangan dua-duanya".
 6. **Testimoni = GAMBAR** — slot `<img>` screenshot asli dengan bingkai minimalis

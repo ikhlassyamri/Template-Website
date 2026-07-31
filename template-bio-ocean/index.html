@@ -68,6 +68,35 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --sea-1:       #7FE3EC;
+      --sea-2:       #2AA7C9;
+      --sea-3:       #10618F;
+      --sea-4:       #072F55;
+      --abyss:       #03121F;
+      --foam:        #FFFFFF;
+      --lamp:        #FFE9A8;
+      --text:        #FFFFFF;
+      --muted:       rgba(226,246,255,.78);
+      --bubble:      rgba(180,235,255,.16);
+      --bubble-line: rgba(255,255,255,.55);
+      --font-body:   'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --radius-btn:  999px;
+      --floor-h:     11rem;
+      --sky-h:       13rem;
+      --bob:         1;
+    }
     /* ======================================================================== */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

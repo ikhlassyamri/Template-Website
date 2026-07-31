@@ -77,6 +77,39 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS (mobile-first)       */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --brand:          #0061FF;
+      --brand-hover:    #0049c4;
+      --cream-bg:       #FAF7F2;
+      --light-bg:       #ffffff;
+      --light-text:     #1a1614;
+      --light-muted:    #6b6b6b;
+      --light-card:     #F4F1EC;
+      --light-border:   #e7e3db;
+      --dark-bg:        #0e0e0f;
+      --dark-text:      #ffffff;
+      --dark-muted:     #a7a7ad;
+      --dark-card:      #1b1b1e;
+      --dark-border:    #2d2d31;
+      --font-heading:   'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --font-body:      'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --radius-btn:     10px;
+      --radius-card:    24px;
+      --section-round:  clamp(1.75rem, 5vw, 3rem);
+      --hero-img-max-w: 62rem;
+      --hero-img-max-h: 36rem;
+    }
     /* ======================================================================== */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
