@@ -34,6 +34,30 @@ hanya *konvensi/mekanika* di bawah ini. Setiap template baru HARUS mematuhi kont
     (mis. `align-items:center` pada slider), agar screenshot ukuran apa pun tetap rapi
     tanpa ruang kosong.
 
+## Kontrak TEMPLATE BIO (link-in-bio) — kategori terpisah
+
+Template bio (foto profil + nama + bio + daftar tombol tautan) TIDAK memakai aturan
+jualan di atas (harga, checkout, testimoni). Prompt universalnya ada di
+**`PANDUAN-PROMPT-BIO.md`**. Agar 1 prompt itu berlaku untuk semua template bio,
+setiap template bio HARUS:
+
+B1. **Self-contained** — HTML + CSS + JS satu file, tanpa framework/CDN, jalan offline,
+    mobile-first, tanpa horizontal-overflow.
+B2. **Komentar `AI INSTRUCTION`** pada SETIAP teks yang boleh diisi: judul halaman,
+    meta description, nama tampilan, bio, serta judul/keterangan/badge tiap tautan.
+B3. **Penanda `[[ ... ]]`** pada aset & tautan: foto profil, favicon, URL tombol, sosmed.
+B4. **Nama tampilan = SATU field bebas** (boleh "@username" atau nama biasa) — jangan
+    dipisah menjadi nama + handle.
+B5. **Tombol tautan modular** — satu blok `<a>` per tautan, bisa diduplikat/dihapus utuh
+    tanpa merusak layout. Sediakan satu varian "unggulan" (warna beda) dan badge opsional.
+B6. **Ikon sosial** berupa inline SVG; hanya `href` yang diganti, tiap ikon bisa dihapus utuh.
+B7. **Tema via CSS variables** di blok `:root` "PENGATURAN USER" (warna & font).
+B8. **Ilustrasi & animasi dekoratif** (maskot, latar, objek bergerak) dibuat inline SVG/CSS,
+    diberi `aria-hidden="true"`, `pointer-events: none` bila menimpa konten, dan mematuhi
+    `prefers-reduced-motion`. Beri komentar bahwa blok itu boleh dihapus utuh.
+B9. Jika ada elemen menetap di layar (mis. latar bawah), beri konten `padding-bottom`
+    yang setara agar elemen terakhir tidak tertimpa.
+
 ## Cara menambah template baru (3, 4, 5, …)
 
 - Buat folder `template-N-namareferensi/` berisi `index.html` + `README.md` singkat.
@@ -41,4 +65,6 @@ hanya *konvensi/mekanika* di bawah ini. Setiap template baru HARUS mematuhi kont
 - README folder cukup menunjuk ke `PANDUAN-PROMPT.md` universal (jangan bikin prompt baru).
 - Uji: buka di HP & desktop, pastikan tanpa horizontal-overflow.
 
-Selama kontrak ini dipatuhi, pembeli cukup pakai **1 prompt + 1 data brief** untuk template mana pun.
+Selama kontrak ini dipatuhi, pembeli cukup pakai **1 prompt + 1 data brief** untuk template mana pun:
+`PANDUAN-PROMPT.md` untuk template landing page produk, dan `PANDUAN-PROMPT-BIO.md`
+untuk template bio.
