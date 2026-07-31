@@ -8,6 +8,10 @@ hanya *konvensi/mekanika* di bawah ini. Setiap template baru HARUS mematuhi kont
 
 1. **Self-contained** — HTML + CSS + JS dalam 1 file. TANPA framework/CDN (mis. Tailwind CDN).
    Wajib jalan offline & mobile-first (ada `<meta name="viewport" ...>`).
+1b. **Blok "ATURAN UNTUK AI" di kepala file** — daftar aturan singkat di komentar
+   paling atas `index.html`. WAJIB, karena pembeli biasanya hanya melampirkan
+   `index.html` ke AI: aturan yang cuma ada di `PANDUAN-PROMPT.md` tidak ikut
+   terkirim. Blok ini menyatakan dirinya menang bila bertentangan dengan prompt.
 2. **Komentar `AI INSTRUCTION`** — setiap teks yang boleh diisi didahului
    `<!-- AI INSTRUCTION: ... -->` beserta batas panjang (mis. "maks 8 kata").
    ⚠️ Jangan pernah menaruh `-->` literal di dalam komentar lain (komentar HTML tak boleh bersarang).
