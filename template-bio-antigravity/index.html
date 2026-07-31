@@ -43,7 +43,11 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- minimum-scale=1 mencegah halaman di-zoom OUT di bawah ukuran pas layar.
+       Perlu karena latar dekoratif memakai position:fixed sehingga tidak ikut
+       mengecil saat di-zoom out dan menyisakan area kosong. Zoom IN sengaja
+       TIDAK dibatasi (tanpa maximum-scale / user-scalable=no) demi aksesibilitas. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 
   <!-- AI INSTRUCTION: Ganti <title> dengan "Nama / @username" (maks 60 karakter) -->
   <title>Zero-G - Link in Bio</title>
