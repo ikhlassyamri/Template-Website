@@ -38,7 +38,6 @@ dekoratif `pointer-events: none` sehingga tidak mengganggu klik tautan.
 | `--avatar` | Diameter planet (foto profil) |
 | `--ring-w` | Lebar cincin planet |
 | `--horizon-h` | Tinggi lengkung planet di kaki layar |
-| `--planet-d` | Diameter lengkung planet (makin besar = makin landai) |
 | `--radius-btn` | Kelengkungan tombol (`999px` = kapsul penuh) |
 
 Menambah tautan: **duplikat** blok `<a class="link"> ... </a>`. Kelas `feature`
