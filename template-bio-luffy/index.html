@@ -78,8 +78,10 @@
     .avatar-wrap { position: relative; width: 8rem; margin: 0 auto; }
     .avatar { width: 8rem; height: 8rem; border-radius: 50%; object-fit: cover; border: 5px solid #fff;
       box-shadow: 0 10px 30px rgba(0,0,0,.25); background: #eaf6ff; }
-    /* Topi jerami (SVG inline) di atas avatar — ala Luffy: jerami kuning + pita merah */
-    .hat { position: absolute; top: -3.1rem; left: 50%; transform: translateX(-50%); width: 7.6rem; z-index: 2; filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)); }
+    /* Topi jerami (SVG inline) — duduk di atas avatar, hanya menutupi bagian atasnya.
+       Atur --hat-w (ukuran) & --hat-top (seberapa turun menutupi foto). */
+    .hat { position: absolute; top: var(--hat-top, -3.35rem); left: 50%; transform: translateX(-50%);
+      width: var(--hat-w, 9.5rem); z-index: 2; filter: drop-shadow(0 5px 5px rgba(0,0,0,.25)); }
     .hat svg { width: 100%; height: auto; display: block; }
 
     /* Nama: satu baris, bersih & modern (bisa "@username" atau nama biasa) */
@@ -122,33 +124,49 @@
     <div class="avatar-wrap">
       <!-- Topi jerami (SVG dekoratif) — hapus <span class="hat"> ini bila tak dipakai -->
       <span class="hat" aria-hidden="true">
-        <svg viewBox="0 0 200 160">
+        <svg viewBox="0 0 240 150">
           <defs>
-            <clipPath id="brimClip"><ellipse cx="100" cy="100" rx="88" ry="44" transform="rotate(-14 100 100)"/></clipPath>
-            <clipPath id="crownClip"><path d="M31,92 C24,46 40,14 74,14 C112,14 146,42 145,64 C118,88 62,104 31,92 Z"/></clipPath>
+            <clipPath id="hatBrim"><ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)"/></clipPath>
+            <clipPath id="hatCrown"><path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76 C146,94 86,98 62,86 Z"/></clipPath>
           </defs>
-          <!-- Brim: dasar taupe (sisi jauh) + kuning digeser => bayangan sabit di kanan -->
-          <ellipse cx="100" cy="100" rx="88" ry="44" transform="rotate(-14 100 100)" fill="#b59a90"/>
-          <g clip-path="url(#brimClip)">
-            <ellipse cx="90" cy="116" rx="88" ry="44" transform="rotate(-14 90 116)" fill="#F7D14B"/>
-            <g stroke="#d99b2b" stroke-width="2" stroke-linecap="round" opacity=".85">
-              <path d="M40,112 l6,9"/><path d="M52,120 l5,9"/><path d="M66,126 l4,9"/>
-              <path d="M150,96 l5,8"/><path d="M162,86 l5,8"/>
+          <!-- BRIM: dasar taupe (sisi jauh) + kuning digeser => bayangan sabit -->
+          <ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)" fill="#C2A480"/>
+          <g clip-path="url(#hatBrim)">
+            <ellipse cx="111" cy="109" rx="112" ry="40" transform="rotate(-7 111 109)" fill="#F2C94C"/>
+            <!-- anyaman jerami: cincin konsentris -->
+            <g fill="none" stroke="#C9982F" stroke-width="1.5" opacity=".5">
+              <ellipse cx="112" cy="107" rx="99" ry="33" transform="rotate(-7 112 107)"/>
+              <ellipse cx="112" cy="105" rx="86" ry="27" transform="rotate(-7 112 105)"/>
+              <ellipse cx="112" cy="103" rx="73" ry="21" transform="rotate(-7 112 103)"/>
+              <ellipse cx="112" cy="101" rx="60" ry="15" transform="rotate(-7 112 101)"/>
+            </g>
+            <!-- anyaman jerami: guratan radial -->
+            <g stroke="#C9982F" stroke-width="1.7" stroke-linecap="round" opacity=".55">
+              <path d="M22,96 l14,5"/><path d="M28,112 l13,7"/><path d="M44,124 l10,9"/>
+              <path d="M64,132 l7,10"/><path d="M88,138 l4,10"/><path d="M112,140 l1,10"/>
+              <path d="M136,138 l-1,10"/><path d="M160,132 l-4,10"/><path d="M182,122 l-7,9"/>
+              <path d="M200,108 l-11,8"/><path d="M212,92 l-13,6"/><path d="M218,76 l-14,4"/>
             </g>
           </g>
-          <ellipse cx="100" cy="100" rx="88" ry="44" transform="rotate(-14 100 100)" fill="none" stroke="#1a1a1a" stroke-width="4.5"/>
-          <!-- Crown (kubah) + bayangan taupe di sisi kanan -->
-          <path d="M31,92 C24,46 40,14 74,14 C112,14 146,42 145,64 C118,88 62,104 31,92 Z" fill="#F7D14B"/>
-          <g clip-path="url(#crownClip)">
-            <ellipse cx="166" cy="28" rx="64" ry="58" fill="#b59a90"/>
-            <g stroke="#d99b2b" stroke-width="2" stroke-linecap="round" opacity=".7">
-              <path d="M44,62 l5,8"/><path d="M56,44 l5,8"/>
+          <ellipse cx="120" cy="98" rx="112" ry="40" transform="rotate(-7 120 98)" fill="none" stroke="#3B2A18" stroke-width="5"/>
+          <!-- CROWN + bayangan taupe & sorot cahaya -->
+          <path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76 C146,94 86,98 62,86 Z" fill="#F2C94C"/>
+          <g clip-path="url(#hatCrown)">
+            <ellipse cx="182" cy="26" rx="70" ry="68" fill="#C2A480"/>
+            <ellipse cx="90" cy="42" rx="24" ry="28" fill="#F9DE84" opacity=".75"/>
+            <g fill="none" stroke="#C9982F" stroke-width="1.5" opacity=".5">
+              <path d="M74,84 C69,56 78,28 94,17"/>
+              <path d="M92,90 C89,58 94,30 106,16"/>
+              <path d="M111,92 C110,60 112,32 115,16"/>
+              <path d="M130,90 C133,58 133,32 127,18"/>
+              <path d="M148,84 C154,58 152,34 141,23"/>
             </g>
           </g>
-          <path d="M31,92 C24,46 40,14 74,14 C112,14 146,42 145,64 C118,88 62,104 31,92 Z" fill="none" stroke="#1a1a1a" stroke-width="4.5" stroke-linejoin="round"/>
-          <!-- Pita merah + lipatan gelap di ujung kanan -->
-          <path d="M28,67 C62,80 118,63 147,37 L146,62 C118,88 62,102 30,90 Z" fill="#F01B1B" stroke="#1a1a1a" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M146,40 C154,44 154,54 145,62 Z" fill="#B01038" stroke="#1a1a1a" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M62,86 C58,44 78,16 112,16 C148,16 172,42 168,76 C146,94 86,98 62,86 Z" fill="none" stroke="#3B2A18" stroke-width="5" stroke-linejoin="round"/>
+          <!-- PITA MERAH melingkar di dasar crown + lipatan gelap -->
+          <path d="M63,58 C88,74 146,70 168,50 L168,74 C146,94 88,96 63,80 Z" fill="#E02020" stroke="#3B2A18" stroke-width="4.5" stroke-linejoin="round"/>
+          <path d="M63,58 C88,74 146,70 168,50 L168,58 C146,79 88,83 63,67 Z" fill="#F04444" opacity=".55"/>
+          <path d="M168,50 C178,56 178,68 168,74 Z" fill="#A81828" stroke="#3B2A18" stroke-width="4" stroke-linejoin="round"/>
         </svg>
       </span>
       <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
