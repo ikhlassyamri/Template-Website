@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  AI-READY BIO / LINK-IN-BIO TEMPLATE · "WEB SLINGER" (tema Spider-Man)
+  ============================================================================
+  Halaman "link in bio": foto profil + nama + bio singkat + daftar tombol tautan.
+  Bertema Spider-Man: malam kota, jaring laba-laba, merah-biru, laba-laba
+  bergelantungan yang turun saat halaman di-scroll.
+
+  100% SELF-CONTAINED: HTML + CSS + JS satu file, tanpa framework/CDN, jalan OFFLINE.
+
+  CARA PAKAI:
+  1. Ubah TEMA (warna & font) di blok :root pada bagian STYLE di bawah.
+  2. Isi teks & tautan dengan bantuan AI (lihat PANDUAN-PROMPT-BIO.md di folder induk).
+  3. Ganti ASET (foto profil, favicon, link). Cari penanda [[ ... ]].
+  4. Tambah/kurangi tombol: duplikat/hapus blok <a class="link"> ... </a>.
+  ============================================================================
+-->
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- AI INSTRUCTION: Ganti <title> dengan "Nama / @username" (maks 60 karakter) -->
+  <title>Spider-Man - Link in Bio</title>
+  <!-- AI INSTRUCTION: 1 kalimat deskripsi singkat (maks 150 karakter) -->
+  <meta name="description" content="Semua tautan penting dalam satu halaman." />
+
+  <!-- [[ FAVICON: ganti href dengan ikon Anda, mis. favicon.png ]] -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Font: Poppins. Bila offline, otomatis pakai font sistem. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========================================================================
+       PENGATURAN USER - SILAKAN UBAH BAGIAN INI SAJA
+       ======================================================================== */
+    :root {
+      /* --- WARNA TEMA --- */
+      --red:        #D9202C;   /* Merah kostum (tombol unggulan & aksen) */
+      --red-dark:   #8E1119;
+      --blue:       #2B5BD7;   /* Biru kostum (aksen sekunder)          */
+      --bg-top:     #0A0D1A;   /* Latar atas (langit malam)             */
+      --bg-bottom:  #141024;   /* Latar bawah                           */
+      --glow:       #FF9E3D;   /* Cahaya kota di kaki langit            */
+      --text:       #FFFFFF;
+      --muted:      rgba(255,255,255,.66);
+      --card:       #171826;   /* Latar tombol                          */
+      --card-line:  rgba(255,255,255,.10);
+
+      /* --- FONT --- */
+      --font-body:  'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      /* --- BENTUK & UKURAN --- */
+      --radius-btn: 14px;
+      --city-h:     11rem;   /* tinggi panel kota di bawah layar */
+      --spider-w:   3.4rem;  /* ukuran laba-laba bergelantungan  */
+    }
+    /* ======================================================================== */
+    /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+    /* ======================================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body); color: var(--text); min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-top) 0%, #101427 55%, var(--bg-bottom) 100%);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* --- Lapisan dekorasi jaring (menetap di layar) --- */
+    .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .web { position: absolute; width: 15rem; max-width: 58vw; opacity: .5; }
+    .web-tl { top: -1.5rem; left: -1.5rem; }
+    .web-tr { top: -1.5rem; right: -1.5rem; transform: scaleX(-1); }
+    .web line, .web polyline { fill: none; stroke: rgba(255,255,255,.16); stroke-width: 1.4; }
+
+    .page { position: relative; z-index: 1; width: 100%; max-width: 30rem;
+      padding: 4.5rem 1.25rem calc(var(--city-h) + 1.5rem); text-align: center; }
+
+    /* --- Profil --- */
+    .avatar-wrap { position: relative; width: 8.5rem; height: 8.5rem; margin: 0 auto; }
+    /* denyut "spidey-sense" */
+    .pulse { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--red);
+      opacity: 0; animation: pulse 3.2s ease-out infinite; }
+    .pulse.b { animation-delay: 1.6s; }
+    @keyframes pulse { 0% { transform: scale(1); opacity: .55; } 70% { opacity: 0; } 100% { transform: scale(1.55); opacity: 0; } }
+    .avatar { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%;
+      object-fit: cover; border: 4px solid var(--red); background: #0f1220;
+      box-shadow: 0 0 0 6px rgba(217,32,44,.16), 0 14px 34px rgba(0,0,0,.5); }
+    /* emblem laba-laba di pojok avatar */
+    .emblem { position: absolute; z-index: 2; right: -.15rem; bottom: -.15rem; width: 2.6rem; height: 2.6rem;
+      border-radius: 50%; background: var(--red); border: 3px solid var(--bg-top);
+      display: grid; place-items: center; }
+    .emblem svg { width: 1.5rem; height: 1.5rem; fill: #fff; }
+
+    .name { font-weight: 800; font-size: clamp(1.7rem, 6vw, 2.4rem); margin-top: 1.25rem;
+      letter-spacing: -.02em; text-shadow: 0 2px 14px rgba(217,32,44,.35); }
+    .bio { margin-top: .7rem; font-size: .98rem; color: var(--muted); line-height: 1.55; }
+
+    /* --- Tombol tautan --- */
+    .links { margin-top: 1.9rem; display: flex; flex-direction: column; gap: .85rem; }
+    .link { position: relative; display: block; overflow: hidden;
+      background: var(--card); border: 1px solid var(--card-line); border-left: 4px solid var(--red);
+      border-radius: var(--radius-btn); padding: .95rem 1.1rem; text-align: left;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
+    .link:hover { transform: translateY(-2px); border-color: rgba(217,32,44,.6);
+      box-shadow: 0 10px 26px -12px rgba(217,32,44,.85); }
+    .link:active { transform: translateY(0); }
+    .link .t { font-weight: 700; font-size: 1.03rem; }
+    .link .s { font-size: .84rem; color: var(--muted); margin-top: .1rem; }
+    /* Varian unggulan */
+    .link.feature { background: linear-gradient(100deg, var(--red), var(--red-dark));
+      border-color: transparent; border-left-color: var(--blue); }
+    .link.feature .s { color: rgba(255,255,255,.82); }
+    /* Badge kecil */
+    .badge { position: absolute; top: .5rem; right: .7rem; background: var(--blue); color: #fff;
+      font-size: .62rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      padding: .18rem .5rem; border-radius: 999px; }
+
+    /* --- Sosial --- */
+    .socials { margin-top: 1.7rem; display: flex; justify-content: center; gap: .7rem; }
+    .socials a { width: 2.8rem; height: 2.8rem; border-radius: 50%; background: rgba(255,255,255,.07);
+      border: 1px solid var(--card-line); display: grid; place-items: center;
+      transition: background .15s ease, transform .15s ease; }
+    .socials a:hover { background: rgba(217,32,44,.25); transform: translateY(-2px); }
+    .socials svg { width: 1.3rem; height: 1.3rem; fill: #fff; }
+
+    /* --- Kota di bawah layar (menetap) --- */
+    .city { position: fixed; left: 0; bottom: 0; z-index: 0; width: 100%; height: var(--city-h);
+      pointer-events: none; }
+    .city-glow { position: absolute; inset: auto 0 0 0; height: 100%;
+      background: linear-gradient(0deg, rgba(255,158,61,.30), rgba(255,158,61,.06) 45%, transparent 75%); }
+    .skyline { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
+    .twinkle rect { animation: blink 2.6s ease-in-out infinite; }
+    .twinkle rect:nth-child(2n) { animation-delay: .9s; }
+    .twinkle rect:nth-child(3n) { animation-delay: 1.7s; }
+    @keyframes blink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+    /* --- Laba-laba bergelantungan (menetap, turun saat scroll) --- */
+    .spider-drop { position: fixed; top: 0; right: 9%; z-index: 2; pointer-events: none;
+      transform: translateY(var(--spider-y, 0px)); }
+    .thread { width: 2px; height: var(--thread-h, 5.5rem); margin: 0 auto;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.45)); }
+    .spider { width: var(--spider-w); margin: -2px auto 0; transform-origin: 50% -300%;
+      animation: sway 4.5s ease-in-out infinite; }
+    .spider svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 3px 6px rgba(0,0,0,.6)); }
+    @keyframes sway { 0%, 100% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pulse, .twinkle rect, .spider { animation: none; }
+      .pulse { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       DEKORASI JARING (menetap) - hapus <div class="bg-fx"> bila tak dipakai
+       ====================================================================== -->
+  <div class="bg-fx" aria-hidden="true">
+    <svg class="web web-tl" viewBox="0 0 230 230">
+      <g>
+        <line x1="0" y1="0" x2="227.8" y2="32.0"/><line x1="0" y1="0" x2="213.3" y2="86.2"/>
+        <line x1="0" y1="0" x2="186.1" y2="135.2"/><line x1="0" y1="0" x2="147.8" y2="176.2"/>
+        <line x1="0" y1="0" x2="100.8" y2="206.7"/><line x1="0" y1="0" x2="32.0" y2="227.8"/>
+        <polyline points="59.4,8.4 55.6,22.5 48.5,35.3 38.6,46.0 26.3,53.9 8.4,59.4"/>
+        <polyline points="108.9,15.3 102.0,41.2 89.0,64.7 70.7,84.3 48.2,98.8 15.3,108.9"/>
+        <polyline points="163.4,23.0 153.0,61.8 133.5,97.0 106.1,126.4 72.3,148.3 23.0,163.4"/>
+        <polyline points="217.9,30.6 204.0,82.4 178.0,129.3 141.4,168.5 96.4,197.7 30.6,217.9"/>
+      </g>
+    </svg>
+    <svg class="web web-tr" viewBox="0 0 230 230">
+      <g>
+        <line x1="0" y1="0" x2="227.8" y2="32.0"/><line x1="0" y1="0" x2="213.3" y2="86.2"/>
+        <line x1="0" y1="0" x2="186.1" y2="135.2"/><line x1="0" y1="0" x2="147.8" y2="176.2"/>
+        <line x1="0" y1="0" x2="100.8" y2="206.7"/><line x1="0" y1="0" x2="32.0" y2="227.8"/>
+        <polyline points="59.4,8.4 55.6,22.5 48.5,35.3 38.6,46.0 26.3,53.9 8.4,59.4"/>
+        <polyline points="108.9,15.3 102.0,41.2 89.0,64.7 70.7,84.3 48.2,98.8 15.3,108.9"/>
+        <polyline points="163.4,23.0 153.0,61.8 133.5,97.0 106.1,126.4 72.3,148.3 23.0,163.4"/>
+        <polyline points="217.9,30.6 204.0,82.4 178.0,129.3 141.4,168.5 96.4,197.7 30.6,217.9"/>
+      </g>
+    </svg>
+  </div>
+
+  <main class="page">
+    <!-- ====================================================================
+         PROFIL
+         ==================================================================== -->
+    <div class="avatar-wrap">
+      <span class="pulse" aria-hidden="true"></span>
+      <span class="pulse b" aria-hidden="true"></span>
+      <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
+      <img class="avatar" src="https://placehold.co/240x240/171826/D9202C?text=Foto" alt="Foto profil" />
+      <!-- Emblem laba-laba (dekoratif) - hapus <span class="emblem"> bila tak dipakai -->
+      <span class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 6.6c1.5 0 2.7 1.2 2.7 2.7 0 1.5-1.2 2.8-2.7 2.8s-2.7-1.3-2.7-2.8c0-1.5 1.2-2.7 2.7-2.7Z"/>
+          <path d="M9.6 8.2 5.9 6.1 3.4 7.6l.6 1 1.9-1.1 3.3 1.9.4-1.2Zm4.8 0 3.7-2.1 2.5 1.5-.6 1-1.9-1.1-3.3 1.9-.4-1.2ZM9.3 10.6 5.2 11 3 13.4l.9.7 1.7-1.9 3.7-.4v-1.2Zm5.4 0 4.1.4 2.2 2.4-.9.7-1.7-1.9-3.7-.4v-1.2ZM10 12.6l-2.8 2.9-.5 3.3 1.2.2.4-2.7 2.5-2.6-.8-1.1Zm4 0 2.8 2.9.5 3.3-1.2.2-.4-2.7-2.5-2.6.8-1.1Z"/>
+        </svg>
+      </span>
+    </div>
+
+    <!-- AI INSTRUCTION: Nama tampilan - BEBAS: bisa "@username" ATAU nama biasa (boleh emoji) -->
+    <h1 class="name">Spider-Man</h1>
+    <!-- AI INSTRUCTION: Bio singkat 1-2 kalimat (boleh emoji) -->
+    <p class="bio">Tetangga baik hati dari sebelah. Semua tautan pentingku ada di bawah.</p>
+
+    <!-- ====================================================================
+         TOMBOL TAUTAN - untuk menambah tautan, DUPLIKAT seluruh blok
+         <a class="link"> ... </a>. Jangan ubah nama class.
+         Kelas "feature" = tombol merah unggulan (pakai di satu tombol saja).
+         ==================================================================== -->
+    <div class="links">
+      <a href="#" class="link feature">
+        <!-- AI INSTRUCTION: Label badge, 1-2 kata (mis. "Utama"). Hapus <span> ini bila tak perlu. -->
+        <span class="badge">Utama</span>
+        <!-- AI INSTRUCTION: Judul tautan 1 (maks 4 kata) -->
+        <div class="t">Link 1</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 1 (maks 8 kata) -->
+        <div class="s">Keterangan singkat tautan pertama</div>
+      </a>
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tautan 2 -->
+        <div class="t">Link 2</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 2 -->
+        <div class="s">Keterangan singkat tautan kedua</div>
+      </a>
+      <a href="#" class="link">
+        <!-- AI INSTRUCTION: Judul tautan 3 -->
+        <div class="t">Link 3</div>
+        <!-- AI INSTRUCTION: Keterangan singkat tautan 3 -->
+        <div class="s">Keterangan singkat tautan ketiga</div>
+      </a>
+    </div>
+
+    <!-- [[ LINK SOSMED: ganti href tiap ikon. Hapus <a> yang tak dipakai. ]] -->
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.8-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.5 3c.3 2 1.5 3.6 3.5 3.9V10c-1.4 0-2.7-.4-3.9-1.1v6.3a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v3.2a2.6 2.6 0 1 0 1.8 2.4V3h3.4Z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 8.2s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C16.5 4.6 12 4.6 12 4.6s-4.5 0-7.8.3c-.5 0-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 10 .8 11.9v1.8c0 1.9.2 3.7.2 3.7s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.5 0 7.8-.3c.5 0 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.8c0-1.9-.2-3.6-.2-3.6ZM9.7 15.3V8.9l5.8 3.2-5.8 3.2Z"/></svg></a>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       KOTA MALAM (dekoratif, menetap di bawah layar)
+       Hapus seluruh <div class="city"> ini bila tak dipakai.
+       ====================================================================== -->
+  <div class="city" aria-hidden="true">
+    <div class="city-glow"></div>
+    <svg class="skyline" viewBox="0 0 800 200" preserveAspectRatio="xMidYMax slice">
+          <g fill="#0d1220">
+            <rect x="0" y="110" width="60" height="90"/>
+            <rect x="62" y="68" width="44" height="132"/>
+            <rect x="110" y="128" width="70" height="72"/>
+            <rect x="184" y="48" width="50" height="152"/>
+            <rect x="238" y="96" width="38" height="104"/>
+            <rect x="280" y="78" width="64" height="122"/>
+            <rect x="348" y="28" width="46" height="172"/>
+            <rect x="398" y="104" width="56" height="96"/>
+            <rect x="458" y="58" width="42" height="142"/>
+            <rect x="504" y="88" width="68" height="112"/>
+            <rect x="576" y="38" width="40" height="162"/>
+            <rect x="620" y="114" width="58" height="86"/>
+            <rect x="682" y="74" width="48" height="126"/>
+            <rect x="734" y="98" width="66" height="102"/>
+          </g>
+          <g fill="#FFC46B">
+            <rect x="8" y="164" width="6" height="9" opacity="0.25"/>
+            <rect x="24" y="144" width="6" height="9" opacity="0.85"/>
+            <rect x="70" y="122" width="6" height="9" opacity="0.25"/>
+            <rect x="118" y="142" width="6" height="9" opacity="0.25"/>
+            <rect x="134" y="142" width="6" height="9" opacity="0.25"/>
+            <rect x="150" y="162" width="6" height="9" opacity="0.85"/>
+            <rect x="192" y="62" width="6" height="9" opacity="0.4"/>
+            <rect x="192" y="82" width="6" height="9" opacity="0.4"/>
+            <rect x="192" y="102" width="6" height="9" opacity="0.25"/>
+            <rect x="192" y="122" width="6" height="9" opacity="0.7"/>
+            <rect x="208" y="62" width="6" height="9" opacity="0.7"/>
+            <rect x="208" y="122" width="6" height="9" opacity="0.25"/>
+            <rect x="208" y="142" width="6" height="9" opacity="0.55"/>
+            <rect x="246" y="110" width="6" height="9" opacity="0.25"/>
+            <rect x="288" y="92" width="6" height="9" opacity="0.85"/>
+            <rect x="288" y="112" width="6" height="9" opacity="0.55"/>
+            <rect x="304" y="152" width="6" height="9" opacity="0.85"/>
+            <rect x="320" y="92" width="6" height="9" opacity="0.55"/>
+            <rect x="320" y="132" width="6" height="9" opacity="0.4"/>
+            <rect x="320" y="152" width="6" height="9" opacity="0.4"/>
+            <rect x="356" y="102" width="6" height="9" opacity="0.25"/>
+            <rect x="372" y="62" width="6" height="9" opacity="0.7"/>
+            <rect x="372" y="82" width="6" height="9" opacity="0.7"/>
+            <rect x="406" y="118" width="6" height="9" opacity="0.85"/>
+            <rect x="422" y="118" width="6" height="9" opacity="0.85"/>
+            <rect x="422" y="138" width="6" height="9" opacity="0.85"/>
+            <rect x="422" y="158" width="6" height="9" opacity="0.25"/>
+            <rect x="466" y="72" width="6" height="9" opacity="0.85"/>
+            <rect x="466" y="132" width="6" height="9" opacity="0.25"/>
+            <rect x="466" y="152" width="6" height="9" opacity="0.7"/>
+            <rect x="528" y="162" width="6" height="9" opacity="0.85"/>
+            <rect x="544" y="102" width="6" height="9" opacity="0.55"/>
+            <rect x="544" y="122" width="6" height="9" opacity="0.25"/>
+            <rect x="544" y="142" width="6" height="9" opacity="0.7"/>
+            <rect x="584" y="72" width="6" height="9" opacity="0.55"/>
+            <rect x="584" y="112" width="6" height="9" opacity="0.85"/>
+            <rect x="584" y="132" width="6" height="9" opacity="0.25"/>
+            <rect x="628" y="128" width="6" height="9" opacity="0.25"/>
+            <rect x="644" y="148" width="6" height="9" opacity="0.85"/>
+            <rect x="644" y="168" width="6" height="9" opacity="0.4"/>
+            <rect x="690" y="88" width="6" height="9" opacity="0.4"/>
+            <rect x="690" y="108" width="6" height="9" opacity="0.4"/>
+            <rect x="690" y="128" width="6" height="9" opacity="0.25"/>
+            <rect x="690" y="148" width="6" height="9" opacity="0.7"/>
+            <rect x="690" y="168" width="6" height="9" opacity="0.55"/>
+            <rect x="706" y="88" width="6" height="9" opacity="0.55"/>
+            <rect x="742" y="132" width="6" height="9" opacity="0.85"/>
+            <rect x="742" y="152" width="6" height="9" opacity="0.55"/>
+            <rect x="758" y="132" width="6" height="9" opacity="0.7"/>
+            <rect x="758" y="152" width="6" height="9" opacity="0.7"/>
+            <rect x="774" y="132" width="6" height="9" opacity="0.25"/>
+            <rect x="774" y="152" width="6" height="9" opacity="0.7"/>
+          </g>
+          <g fill="#FFD79B" class="twinkle">
+            <rect x="246" y="170" width="6" height="9"/>
+            <rect x="288" y="152" width="6" height="9"/>
+            <rect x="304" y="132" width="6" height="9"/>
+            <rect x="320" y="112" width="6" height="9"/>
+            <rect x="584" y="92" width="6" height="9"/>
+          </g>
+    </svg>
+  </div>
+
+  <!-- ======================================================================
+       LABA-LABA BERGELANTUNGAN (dekoratif, turun perlahan saat scroll)
+       Hapus seluruh <div class="spider-drop"> ini bila tak dipakai.
+       ====================================================================== -->
+  <div class="spider-drop" aria-hidden="true">
+    <div class="thread"></div>
+    <div class="spider">
+      <svg viewBox="0 0 60 54">
+        <g stroke="#454A66" stroke-width="3.4" fill="none" stroke-linecap="round">
+          <path d="M23,20 C13,16 9,20 5,12"/><path d="M22,27 C11,27 6,31 2,25"/>
+          <path d="M22,34 C11,36 7,42 4,37"/><path d="M24,40 C16,45 13,50 9,47"/>
+          <path d="M37,20 C47,16 51,20 55,12"/><path d="M38,27 C49,27 54,31 58,25"/>
+          <path d="M38,34 C49,36 53,42 56,37"/><path d="M36,40 C44,45 47,50 51,47"/>
+        </g>
+        <ellipse cx="30" cy="34" rx="11" ry="13" fill="#20233A" stroke="#5A6086" stroke-width="1.6"/>
+        <ellipse cx="30" cy="19" rx="7.5" ry="6.5" fill="#20233A" stroke="#5A6086" stroke-width="1.6"/>
+        <path d="M30,27 l5,7 -5,7 -5,-7 Z" fill="#D9202C"/>
+        <circle cx="27" cy="18" r="1.7" fill="#fff"/><circle cx="33" cy="18" r="1.7" fill="#fff"/>
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    // Laba-laba turun perlahan saat halaman di-scroll.
+    (function () {
+      var el = document.querySelector('.spider-drop');
+      if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var ticking = false;
+      function update() {
+        var max = window.innerHeight * 0.45;                 // batas turun
+        var y = Math.min(window.scrollY * 0.35, max);
+        el.style.setProperty('--spider-y', y.toFixed(1) + 'px');
+        ticking = false;
+      }
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>
