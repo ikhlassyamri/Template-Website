@@ -78,6 +78,35 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --color-primary:       #E50914;
+      --color-primary-hover: #F6121D;
+      --color-bg:            #000000;
+      --color-bg-elevated:   #0d0d0d;
+      --color-bg-card:       #161616;
+      --color-text:          #ffffff;
+      --color-text-muted:    #a3a3a3;
+      --color-border:        #262626;
+      --glow-a:              #7f5bff;
+      --glow-b:              #ff2fb0;
+      --font-heading:        'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --font-body:           'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --radius-button:       10px;
+      --radius-card:         18px;
+      --hero-img-max-w:      26rem;
+      --hero-img-max-h:      30rem;
+    }
     /* Ditulis MOBILE-FIRST: gaya dasar untuk HP, lalu @media untuk layar besar. */
     /* ======================================================================== */
 

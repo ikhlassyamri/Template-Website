@@ -55,16 +55,19 @@ ATURAN EMAS (WAJIB DIPATUHI):
    struktur HTML. Ini mencakup SEMUA ilustrasi dekoratif dan animasinya, apa pun temanya.
    Jangan "merapikan", "menyederhanakan", "memperbaiki", atau menulis ulang kode —
    termasuk bila menurutmu ada yang bisa dioptimalkan.
-3. JANGAN menambah framework, CDN, library, font, atau file eksternal apa pun.
-4. MENAMBAH TAUTAN: duplikat seluruh blok tombol tautan yang sudah ada, lalu ganti
+3. JANGAN HAPUS SATU BARIS PUN di dalam blok :root maupun blok html "JARING PENGAMAN".
+   Salin keduanya PERSIS seperti aslinya, baris demi baris, termasuk baris yang tampak
+   tidak terpakai. Menghapus satu variabel warna saja bisa membuat seluruh teks hilang.
+4. JANGAN menambah framework, CDN, library, font, atau file eksternal apa pun.
+5. MENAMBAH TAUTAN: duplikat seluruh blok tombol tautan yang sudah ada, lalu ganti
    teksnya saja. Jangan mengubah nama class. MENGHAPUS TAUTAN: hapus satu blok tombol
    secara utuh. Jika ada kelas penanda "tombol unggulan", biarkan hanya pada satu tombol.
-5. JIKA ADA badge/label kecil pada tombol: ganti teksnya, atau hapus elemen badge itu
+6. JIKA ADA badge/label kecil pada tombol: ganti teksnya, atau hapus elemen badge itu
    secara utuh bila tidak dipakai.
-6. JIKA ADA ikon sosial media: hanya ganti href-nya. Untuk yang tidak dipakai, hapus
+7. JIKA ADA ikon sosial media: hanya ganti href-nya. Untuk yang tidak dipakai, hapus
    seluruh elemen <a> ikon tersebut — JANGAN mengubah isi <svg> ikonnya.
-7. Isi nama file foto profil dan favicon sesuai data saya (file-nya saya upload sendiri).
-8. Kembalikan SELURUH isi file index.html yang sudah terisi, utuh dan siap disimpan.
+8. Isi nama file foto profil dan favicon sesuai data saya (file-nya saya upload sendiri).
+9. Kembalikan SELURUH isi file index.html yang sudah terisi, utuh dan siap disimpan.
 
 DATA SAYA:
 [TEMPEL HASIL LANGKAH 1 DI SINI]

@@ -68,6 +68,32 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS (mobile-first)       */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --accent:       #0066cc;
+      --white-bg:     #ffffff;
+      --white-text:   #1d1d1f;
+      --white-muted:  #6e6e73;
+      --black-bg:     #000000;
+      --black-text:   #f5f5f7;
+      --black-muted:  #a1a1a6;
+      --black-line:   #2a2a2c;
+      --font-heading: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, Segoe UI, Roboto, sans-serif;
+      --font-body:    -apple-system, BlinkMacSystemFont, 'Inter', system-ui, Segoe UI, Roboto, sans-serif;
+      --radius-pill:  999px;
+      --radius-card:  1.5rem;
+      --hero-media-h: 30rem;
+    }
     /* ======================================================================== */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

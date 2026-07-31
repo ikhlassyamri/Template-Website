@@ -61,6 +61,33 @@
     }
     /* ======================================================================== */
     /* JANGAN UBAH KODE DI BAWAH INI KECUALI ANDA PAHAM CSS                      */
+
+    /* ----------------------------------------------------------------------
+       JARING PENGAMAN - JANGAN HAPUS BLOK INI.
+       Salinan nilai bawaan dari blok :root di atas. Selektor "html"
+       spesifisitasnya LEBIH RENDAH daripada ":root", jadi nilai yang Anda
+       tulis di atas SELALU menang selama masih ada. Blok ini baru menyala
+       bila sebuah variabel hilang - misalnya barisnya terhapus tanpa sengaja
+       saat file diedit AI - supaya halaman tidak pernah rusak total
+       (contoh: teks hitam di atas latar hitam sehingga tak terbaca).
+       Untuk mengganti tema, edit blok :root di ATAS, bukan blok ini.
+       ---------------------------------------------------------------------- */
+    html {
+      --accent:      #8B7BFF;
+      --accent-2:    #46E0C8;
+      --warm:        #FFB86B;
+      --wall-top:    #171C33;
+      --wall-bottom: #10142a;
+      --floor:       #0C1024;
+      --text:        #FFFFFF;
+      --muted:       rgba(255,255,255,.64);
+      --card:        rgba(30,36,64,.78);
+      --card-line:   rgba(255,255,255,.14);
+      --font-body:   'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --radius-btn:  16px;
+      --floor-h:     9rem;
+      --float-amp:   1;
+    }
     /* ======================================================================== */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
