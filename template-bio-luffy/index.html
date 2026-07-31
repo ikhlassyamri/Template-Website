@@ -113,6 +113,19 @@
     .socials svg { width: 1.35rem; height: 1.35rem; fill: #fff; }
 
     .foot { margin-top: 2rem; font-size: .8rem; opacity: .8; }
+
+    /* --- LAUT + KAPAL (dekoratif, di bawah halaman) --- */
+    .sea { position: relative; align-self: stretch; width: 100%; margin-top: auto; height: 13rem; }
+    .waves { position: absolute; bottom: 0; left: 0; width: 100%; height: 7.5rem; display: block; }
+    /* Kapal ada di KANAN BAWAH; ombak digambar setelahnya sehingga lambung tampak tenggelam sedikit */
+    .ship { position: absolute; right: 7%; bottom: 2.75rem; width: var(--ship-w, 8rem);
+      transform-origin: 50% 90%; animation: shipBob 4.5s ease-in-out infinite; }
+    .ship svg { width: 100%; height: auto; display: block; }
+    @keyframes shipBob { 0%,100% { transform: translateY(0) rotate(-2.5deg); } 50% { transform: translateY(-9px) rotate(2.5deg); } }
+    @keyframes seaDrift { from { transform: translateX(0); } to { transform: translateX(-600px); } }
+    .w1 { animation: seaDrift 14s linear infinite; }
+    .w2 { animation: seaDrift 9s linear infinite; }
+    @media (prefers-reduced-motion: reduce) { .ship, .w1, .w2 { animation: none; } }
   </style>
 </head>
 
@@ -215,5 +228,69 @@
     <!-- Footer -->
     <p class="foot">⛵ Dibuat dengan semangat petualangan</p>
   </main>
+
+  <!-- ======================================================================
+       LAUT + KAPAL (dekoratif) — hapus seluruh <div class="sea"> ini bila tak dipakai.
+       Ukuran kapal diatur lewat --ship-w pada .ship.
+       ====================================================================== -->
+  <div class="sea" aria-hidden="true">
+    <!-- KAPAL (vektor, mengapung di kanan bawah) -->
+    <div class="ship">
+      <svg viewBox="0 0 180 200">
+        <g stroke="#43290f" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+          <!-- tiang & sarang gagak -->
+          <rect x="88" y="34" width="7" height="88" fill="#A6702F"/>
+          <path d="M80,40 L84,26 L100,26 L104,40 Z" fill="#F5F1E6"/>
+          <path d="M84,26 L100,26 L98,20 L86,20 Z" fill="#D62828"/>
+          <path d="M92,20 L92,6 L108,10 L92,14" fill="#2b2b2b" stroke-width="3"/>
+          <!-- layar utama -->
+          <path d="M42,54 C68,42 116,42 140,54 C147,80 147,102 142,118 C112,128 70,128 40,118 C36,100 36,76 42,54 Z" fill="#F7F4EA"/>
+          <g stroke="#c9c2ad" stroke-width="2.2"><path d="M66,46 C62,76 62,100 65,124"/><path d="M92,42 C90,76 90,100 92,126"/><path d="M118,46 C122,76 122,100 119,124"/></g>
+          <!-- tulang bersilang -->
+          <g fill="#F7F4EA" stroke-width="3.6">
+            <path d="M58,64 C64,58 72,62 76,68 L110,104 C114,110 122,114 128,108"/>
+            <path d="M128,64 C122,58 114,62 110,68 L76,104 C72,110 64,114 58,108"/>
+            <circle cx="56" cy="62" r="6"/><circle cx="130" cy="62" r="6"/>
+            <circle cx="56" cy="110" r="6"/><circle cx="130" cy="110" r="6"/>
+          </g>
+          <!-- tengkorak + topi jerami -->
+          <circle cx="92" cy="84" r="19" fill="#fff"/>
+          <path d="M83,98 C86,104 98,104 101,98 Z" fill="#fff" stroke-width="3"/>
+          <g fill="#2b2b2b" stroke="none"><ellipse cx="85" cy="82" rx="5" ry="6"/><ellipse cx="99" cy="82" rx="5" ry="6"/></g>
+          <ellipse cx="92" cy="68" rx="24" ry="7" fill="#F2C94C" stroke-width="3"/>
+          <path d="M79,68 C79,56 86,52 92,52 C99,52 106,57 105,68 Z" fill="#F2C94C" stroke-width="3"/>
+          <path d="M79,66 C86,70 99,70 105,66 L105,61 C99,65 86,65 79,61 Z" fill="#E02020" stroke-width="2.4"/>
+          <!-- lambung kayu -->
+          <path d="M14,146 C10,168 26,186 52,192 C92,199 140,192 160,172 C166,166 168,156 167,146 Z" fill="#C08B4A"/>
+          <g stroke="#9a6a30" stroke-width="2.4"><path d="M20,160 C56,172 128,172 164,158"/><path d="M26,174 C60,184 122,184 154,172"/></g>
+          <!-- haluan -->
+          <path d="M14,146 C6,128 8,116 18,110 L30,118 C22,126 20,134 22,146 Z" fill="#C08B4A"/>
+          <!-- pagar merah-putih -->
+          <path d="M18,146 L167,146 L167,120 C120,112 60,112 22,122 Z" fill="#F7F4EA"/>
+          <g fill="#D62828" stroke-width="3">
+            <path d="M44,144 L44,120 C52,118 62,117 70,116 L70,144 Z"/>
+            <path d="M92,144 L92,114 C100,114 110,115 118,116 L118,144 Z"/>
+            <path d="M140,144 L140,118 C148,119 156,121 164,123 L164,144 Z"/>
+          </g>
+          <!-- medali angka 1 -->
+          <circle cx="120" cy="158" r="13" fill="#E8B33A"/>
+          <path d="M120,151 L120,165 M116,154 L120,150" fill="none" stroke="#8a3b12" stroke-width="3.4"/>
+          <!-- kepala singa (figurehead) -->
+          <g transform="translate(30,110)">
+            <path d="M0,-26 L7,-14 L21,-20 L17,-6 L31,0 L17,6 L21,20 L7,14 L0,26 L-7,14 L-21,20 L-17,6 L-31,0 L-17,-6 L-21,-20 L-7,-14 Z" fill="#F07A1E"/>
+            <circle cx="0" cy="0" r="14" fill="#F2C94C"/>
+            <ellipse cx="0" cy="4" rx="7" ry="5" fill="#F9E3A0" stroke-width="2.6"/>
+            <g fill="#43290f" stroke="none"><circle cx="-5" cy="-3" r="2.2"/><circle cx="5" cy="-3" r="2.2"/></g>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <!-- OMBAK LAUT -->
+    <svg class="waves" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <g class="w1" fill="#0b78c4" opacity=".55"><path d="M0,62 q150,-26 300,0 t300,0 t300,0 t300,0 t300,0 t300,0 V120 H0 Z"/></g>
+      <g class="w2" fill="#0a5f9e" opacity=".8"><path d="M0,76 q150,-24 300,0 t300,0 t300,0 t300,0 t300,0 t300,0 V120 H0 Z"/></g>
+      <g fill="#083f6d"><path d="M0,96 q150,-18 300,0 t300,0 t300,0 t300,0 V120 H0 Z"/></g>
+    </svg>
+  </div>
 </body>
 </html>
