@@ -113,29 +113,6 @@
     .socials a:hover { background: rgba(255,255,255,.32); }
     .socials svg { width: 1.35rem; height: 1.35rem; fill: #fff; }
 
-    /* --- LENGAN KARET LUFFY (dekoratif) — memanjang saat halaman di-scroll --- */
-    .arm { position: absolute; left: 6%; top: -2.5rem; z-index: 3; pointer-events: none; --p: 0; }
-    .arm-rot { position: relative; transform: rotate(var(--arm-angle, 60deg)); transform-origin: 0 50%; }
-    /* lengan (karet) — memanjang mengikuti --p */
-    .arm-limb { position: absolute; left: 0; top: -0.85rem; height: 1.7rem; border-radius: 999px;
-      width: calc(var(--arm-len, 0px) * var(--p));
-      background: linear-gradient(180deg, #F7D2A8, #E9B583);
-      border: 3px solid #6B3F1C; border-left: none;
-      transition: width .12s linear; }
-    /* lengan baju merah di pangkal */
-    .arm-sleeve { position: absolute; left: -2.6rem; top: -1.15rem; width: 3rem; height: 2.3rem;
-      background: #E02020; border: 3px solid #6B3F1C; border-radius: .5rem 1.2rem 1.2rem .5rem; }
-    /* tangan di ujung lengan */
-    .arm-hand { position: absolute; left: 0; top: 0; width: 3.6rem;
-      transform: translate(calc(var(--arm-len, 0px) * var(--p) - .85rem), -50%);
-      transition: transform .12s linear; }
-    .arm-hand svg { width: 100%; height: auto; display: block; }
-    .hand-grip { display: none; }
-    /* saat sudah mencengkram: ganti telapak terbuka -> genggaman */
-    .arm.gripped .hand-open { display: none; }
-    .arm.gripped .hand-grip { display: block; }
-    @media (prefers-reduced-motion: reduce) { .arm { display: none; } }
-
     /* --- LAUT + KAPAL (dekoratif, di bawah halaman) --- */
     /* Laut & kapal MENETAP di bawah layar (tidak ikut ter-scroll) */
     .sea { position: fixed; left: 0; bottom: 0; z-index: 0; width: 100%; height: var(--sea-h, 12rem); pointer-events: none; }
@@ -257,42 +234,6 @@
 
     <!-- Footer -->
 
-    <!-- ====================================================================
-         LENGAN KARET LUFFY (dekoratif) — hapus blok <div class="arm"> ini
-         bila tak dipakai. Muncul dari kiri atas, memanjang saat scroll,
-         lalu mencengkram tepi atas tombol pertama.
-         ==================================================================== -->
-    <div class="arm" aria-hidden="true">
-      <div class="arm-rot">
-        <div class="arm-limb"></div>
-        <div class="arm-sleeve"></div>
-        <div class="arm-hand">
-          <!-- TELAPAK TERBUKA (jari mengarah ke ujung lengan) -->
-          <svg class="hand-open" viewBox="0 0 70 62">
-            <g stroke="#6B3F1C" stroke-width="3.4" stroke-linejoin="round" fill="#F7D2A8">
-              <rect x="30" y="5"  width="31" height="11" rx="5.5" transform="rotate(-11 30 10.5)"/>
-              <rect x="33" y="18" width="33" height="11" rx="5.5"/>
-              <rect x="33" y="31" width="31" height="11" rx="5.5" transform="rotate(7 33 36.5)"/>
-              <rect x="31" y="43" width="26" height="10" rx="5" transform="rotate(16 31 48)"/>
-              <path d="M4,9 h22 a11,11 0 0 1 11,11 v22 a11,11 0 0 1 -11,11 h-22 Z"/>
-              <rect x="7" y="40" width="23" height="10" rx="5" transform="rotate(34 7 45)"/>
-            </g>
-          </svg>
-          <!-- GENGGAMAN — jari menekuk mencengkram tepi tombol -->
-          <svg class="hand-grip" viewBox="0 0 70 62">
-            <g stroke="#6B3F1C" stroke-width="3.4" stroke-linejoin="round" fill="#F7D2A8">
-              <path d="M4,9 h26 a17,17 0 0 1 17,17 v10 a17,17 0 0 1 -17,17 h-26 Z"/>
-              <g fill="none" stroke-width="3">
-                <path d="M31,13 a9,9 0 0 1 0,13"/>
-                <path d="M33,26 a9,9 0 0 1 0,13"/>
-                <path d="M31,39 a8,8 0 0 1 0,11"/>
-              </g>
-              <rect x="8" y="38" width="25" height="11" rx="5.5" transform="rotate(20 8 43.5)"/>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </div>
   </main>
 
   <!-- ======================================================================
@@ -380,48 +321,5 @@
     })();
   </script>
 
-  <script>
-    // Lengan karet: memanjang mengikuti scroll, lalu mencengkram tombol pertama.
-    (function () {
-      var arm = document.querySelector('.arm');
-      var page = document.querySelector('.page');
-      var target = document.querySelector('a.link');           // tombol pertama (kuning)
-      if (!arm || !page || !target) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      var rot = arm.querySelector('.arm-rot');
-      var len = 0;
-
-      function measure() {
-        var pr = page.getBoundingClientRect();
-        var ar = arm.getBoundingClientRect();
-        var tr = target.getBoundingClientRect();
-        // titik cengkeraman: tepi ATAS tombol, agak ke kiri
-        var tx = tr.left + tr.width * 0.28 - ar.left;
-        var ty = tr.top + 6 - ar.top;
-        var ang = Math.atan2(ty, tx);
-        len = Math.hypot(tx, ty) - 18;                          // sisakan ruang untuk telapak
-        rot.style.transform = 'rotate(' + ang + 'rad)';
-        arm.style.setProperty('--arm-len', len + 'px');
-      }
-
-      function update() {
-        var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        var denom = Math.max(1, Math.min(maxScroll, 420));      // penuh setelah <=420px scroll
-        var p = Math.max(0, Math.min(1, window.scrollY / denom));
-        arm.style.setProperty('--p', p.toFixed(3));
-        arm.classList.toggle('gripped', p > 0.92);              // telapak menutup saat hampir sampai
-      }
-
-      var ticking = false;
-      function onScroll() {
-        if (!ticking) { ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); }
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', function () { measure(); update(); });
-      window.addEventListener('load', function () { measure(); update(); });
-      measure(); update();
-    })();
-  </script>
 </body>
 </html>
