@@ -116,10 +116,12 @@
       93.75% { transform: translate(6.529rem, -2.456rem) scale(0.793); opacity: 0.69; }
       100% { transform: translate(7.277rem, -1.814rem) scale(0.850); opacity: 0.78; }
     }
-    /* Berpindah ke belakang planet pada separuh lintasan */
+    /* Separuh lintasan 0-50% berada di bagian BAWAH elips, yaitu sisi yang
+       sama dengan busur cincin depan -> bulan harus DI DEPAN planet.
+       Separuh 50-100% ada di bagian atas -> bulan lewat DI BELAKANG planet. */
     @keyframes moonDepth {
-      0%, 49.9%  { z-index: 1; }
-      50%, 100%  { z-index: 3; }
+      0%, 49.9%  { z-index: 3; }
+      50%, 100%  { z-index: 1; }
     }
 
     /* ===================== NEBULA (menetap) ================================= */
@@ -228,7 +230,7 @@
     @media (prefers-reduced-motion: reduce) {
       .nebula span, .stars .tw, .meteors i, .ring, .moon { animation: none; }
       .meteors { display: none; }
-      .moon { transform: translate(7.28rem, -1.82rem); z-index: 3; opacity: 1; }
+      .moon { transform: translate(0.51rem, 2.04rem); z-index: 3; opacity: 1; }
       .s-far, .s-mid, .s-near { transform: none; }
     }
   </style>
