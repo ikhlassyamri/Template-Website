@@ -99,7 +99,10 @@
     @keyframes lineDrift{ 0%   { transform: translateX(-30px); opacity: 0; }
                           20%,80% { opacity: 1; }
                           100% { transform: translateX(60px); opacity: 0; } }
-    @keyframes swayWeed { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+    /* Lentingan rumput laut menjalar dari pangkal ke pucuk: ruas bawah
+       berputar sedikit, ruas atas lebih besar & tertunda fasenya. */
+    @keyframes swayLo   { 0%,100% { transform: rotate(-2.4deg); } 50% { transform: rotate(2.4deg); } }
+    @keyframes swayHi   { 0%,100% { transform: rotate(-7deg); }   50% { transform: rotate(7deg); } }
     @keyframes swim     { 0%   { transform: translateX(112vw) scaleX(1); }
                           49%  { transform: translateX(-34vw) scaleX(1); }
                           50%  { transform: translateX(-34vw) scaleX(-1); }
@@ -129,10 +132,17 @@
     .haze { position: absolute; left: 0; right: 0; bottom: 0; height: 34%;
       background: linear-gradient(180deg, rgba(255,240,220,0), rgba(255,240,220,.55)); }
 
-    /* berkas cahaya dari permukaan (hanya di bawah garis air) */
-    .rays { position: absolute; top: var(--sky-h); left: 0; right: 0; bottom: 0; }
-    .rays i { position: absolute; top: 0; width: 12%; height: 62%;
-      background: linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,0) 78%);
+    /* ===================== BERKAS CAHAYA ==================================== */
+    /* Berkas cahaya BUKAN elemen menetap: pangkalnya dipaku pada garis air di
+       puncak dokumen, jadi ikut naik saat halaman di-scroll. Panjangnya
+       bertambah lewat --ray-grow (diatur skrip di bawah), seolah cahaya
+       matahari menembus makin dalam. */
+    .rays { position: absolute; top: var(--sky-h); left: 0; right: 0; height: 0;
+      z-index: 0; pointer-events: none; }
+    .rays i { position: absolute; top: 0; width: 12%;
+      height: calc(34vh + var(--ray-grow, 0px));
+      background: linear-gradient(180deg, rgba(255,255,255,.42) 0%,
+                  rgba(255,255,255,.18) 45%, rgba(255,255,255,0) 100%);
       filter: blur(7px); animation: shimmer 7s ease-in-out infinite; }
 
     /* garis tipis cahaya di air */
@@ -151,7 +161,11 @@
     .floor { position: fixed; left: 0; bottom: 0; z-index: 0; width: 100%; height: var(--floor-h);
       pointer-events: none; }
     .floor svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
-    .weed path { transform-origin: bottom center; animation: swayWeed 5.5s ease-in-out infinite; }
+    /* Tiap helai dipecah 2 ruas; masing-masing berporos di pangkalnya sendiri
+       (transform-box: view-box -> koordinat px = satuan viewBox SVG). */
+    .weed .lo, .weed .hi { transform-box: view-box; }
+    .weed .lo { animation: swayLo 5.4s ease-in-out infinite; }
+    .weed .hi { animation: swayHi 5.4s ease-in-out infinite; }
 
     /* ===================== IKAN ANGLERFISH ================================== */
     .angler { position: fixed; left: 0; bottom: 1.8rem; z-index: 0;
@@ -168,13 +182,24 @@
     /* --- Foto profil TERAPUNG di permukaan ombak --- */
     /* .avatar-zone menahan posisi; ombak tetap datar sementara foto bergoyang-miring */
     .avatar-zone { position: relative; width: 8.6rem; margin: 0 auto; }
-    /* ombak bergelombang melintas DI DEPAN foto -> foto tampak setengah terendam */
-    .float-wave { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%);
-      width: 100vw; height: 6.5rem; z-index: 2; pointer-events: none; }
-    .float-wave svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-    .fw1 { animation: drift 9s linear infinite; }
+    /* Permukaan air = DUA lapisan yang mengapit foto:
+       .wave-back  -> air BURAM di BELAKANG foto. Ini yang membentuk batas
+                      langit-air yang berombak (menutup tepi lurus .sky).
+       .wave-front -> film air BENING di DEPAN foto. Karena tembus pandang,
+                      bagian foto yang terendam tetap kelihatan, hanya
+                      kebiruan seperti dilihat dari balik air.
+       Keduanya tetap bergelombang & beranimasi. */
+    .wave-back, .wave-front { position: absolute; top: 52%; left: 50%;
+      transform: translate(-50%, -50%); width: 100vw; height: 6.5rem;
+      pointer-events: none; }
+    .wave-back  { z-index: 1; }
+    .wave-front { z-index: 3; }
+    .wave-back svg, .wave-front svg { position: absolute; inset: 0;
+      width: 100%; height: 100%; display: block; }
+    .fw1 { animation: drift  9s linear infinite; }
     .fw2 { animation: drift 15s linear infinite; }
-    .avatar-wrap { position: relative; width: 8.6rem;
+    .fw3 { animation: drift 12s linear infinite; }
+    .avatar-wrap { position: relative; z-index: 2; width: 8.6rem;
       animation: floatTilt 6s ease-in-out infinite; }
     .avatar { width: 8.6rem; height: 8.6rem; border-radius: 50%; object-fit: cover;
       border: 4px solid rgba(255,255,255,.6); background: #0d4e6e;
@@ -198,7 +223,6 @@
       backdrop-filter: blur(4px);
       box-shadow: inset 0 6px 14px rgba(255,255,255,.22), inset 0 -8px 16px rgba(3,30,55,.30),
                   0 10px 22px -10px rgba(2,20,40,.75);
-      animation: bobSoft 6s ease-in-out infinite;
       transition: box-shadow .18s ease, background-color .18s ease, border-color .18s ease; }
     /* kilau gelembung */
     .link::before { content: ""; position: absolute; left: 8%; top: 12%; width: 26%; height: 30%;
@@ -206,12 +230,7 @@
       pointer-events: none; }
     .link::after { content: ""; position: absolute; right: 12%; bottom: 16%; width: 10%; height: 16%;
       border-radius: 50%; background: rgba(255,255,255,.35); pointer-events: none; }
-    /* fase berbeda supaya tidak serempak */
-    .link:nth-child(2) { animation-duration: 7.2s; animation-delay: -2.4s; }
-    .link:nth-child(3) { animation-duration: 6.6s; animation-delay: -4.1s; }
-    .link:nth-child(4) { animation-duration: 7.8s; animation-delay: -1.2s; }
-    .link:nth-child(5) { animation-duration: 6.2s; animation-delay: -3.3s; }
-    .link:hover { animation-play-state: paused; background: rgba(180,235,255,.28);
+    .link:hover { background: rgba(180,235,255,.28);
       border-color: rgba(255,255,255,.85);
       box-shadow: inset 0 6px 14px rgba(255,255,255,.3), inset 0 -8px 16px rgba(3,30,55,.26),
                   0 14px 26px -8px rgba(120,225,255,.5); }
@@ -230,20 +249,19 @@
     .socials { margin-top: 1.8rem; display: flex; justify-content: center; gap: .75rem; }
     .socials a { position: relative; width: 2.9rem; height: 2.9rem; border-radius: 50%;
       background: var(--bubble); border: 1px solid var(--bubble-line);
-      display: grid; place-items: center; animation: bobSoft 5.4s ease-in-out infinite;
+      display: grid; place-items: center;
       box-shadow: inset 0 4px 10px rgba(255,255,255,.25), 0 8px 16px -8px rgba(2,20,40,.7);
       transition: background .18s ease, border-color .18s ease; }
     .socials a::before { content: ""; position: absolute; left: 20%; top: 16%; width: 30%; height: 26%;
       border-radius: 50%; background: linear-gradient(145deg, rgba(255,255,255,.85), rgba(255,255,255,0)); }
-    .socials a:nth-child(2) { animation-duration: 6.4s; animation-delay: -2s; }
-    .socials a:nth-child(3) { animation-duration: 5.8s; animation-delay: -3.6s; }
-    .socials a:hover { animation-play-state: paused; background: rgba(180,235,255,.3);
+    .socials a:hover { background: rgba(180,235,255,.3);
       border-color: rgba(255,255,255,.9); }
     .socials svg { width: 1.3rem; height: 1.3rem; fill: #fff; position: relative; }
 
     @media (prefers-reduced-motion: reduce) {
-      .cloud, .rays i, .caustics span, .bubbles span, .weed path,
-      .angler, .angler-in, .lamp-glow, .fin, .avatar-wrap, .fw1, .fw2, .link, .socials a { animation: none; }
+      .cloud, .rays i, .caustics span, .bubbles span, .weed .lo, .weed .hi,
+      .angler, .angler-in, .lamp-glow, .fin, .avatar-wrap,
+      .fw1, .fw2, .fw3 { animation: none; }
       .bubbles, .caustics { display: none; }
       .angler { left: 8%; }
     }
@@ -268,15 +286,20 @@
     <span class="haze"></span>
   </div>
 
-  <div class="sea" aria-hidden="true">
-    <!-- BERKAS CAHAYA -->
-    <div class="rays">
-      <i style="left:8%;  animation-delay:-1s"></i>
-      <i style="left:31%; animation-delay:-3.5s; width:9%"></i>
-      <i style="left:58%; animation-delay:-2s;  width:14%"></i>
-      <i style="left:80%; animation-delay:-5s;  width:8%"></i>
-    </div>
+  <!-- ======================================================================
+       BERKAS CAHAYA MATAHARI (dekoratif)
+       Pangkalnya menempel di garis air pada puncak dokumen (BUKAN menetap di
+       layar), jadi ikut naik saat halaman di-scroll, sambil memanjang ke
+       kedalaman. Hapus seluruh <div class="rays"> ini bila tak dipakai.
+       ====================================================================== -->
+  <div class="rays" aria-hidden="true">
+    <i style="left:8%;  animation-delay:-1s"></i>
+    <i style="left:31%; animation-delay:-3.5s; width:9%"></i>
+    <i style="left:58%; animation-delay:-2s;  width:14%"></i>
+    <i style="left:80%; animation-delay:-5s;  width:8%"></i>
+  </div>
 
+  <div class="sea" aria-hidden="true">
     <!-- GARIS TIPIS CAHAYA -->
     <div class="caustics">
       <span style="top:576.9px;left:70.6%;width:195.5px;opacity:0.27;animation-duration:12.0s;animation-delay:-11.5s"></span>
@@ -319,7 +342,7 @@
        DASAR LAUT GELAP (menetap di bawah)
        ====================================================================== -->
   <div class="floor" aria-hidden="true">
-    <svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMax slice">
+    <svg viewBox="0 0 800 200" preserveAspectRatio="none">
       <defs>
         <linearGradient id="bed" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#062133"/><stop offset="1" stop-color="#010A12"/>
@@ -331,25 +354,112 @@
       <!-- gundukan pasir gelap -->
       <path d="M0,120 C110,92 210,126 330,112 C450,98 560,124 680,106 C730,99 770,104 800,98 L800,200 L0,200 Z" fill="url(#bed)"/>
       <!-- batu karang -->
-      <ellipse cx="150" cy="132" rx="66" ry="30" fill="url(#stone)"/>
-      <ellipse cx="640" cy="128" rx="80" ry="34" fill="url(#stone)"/>
-      <ellipse cx="410" cy="140" rx="46" ry="20" fill="url(#stone)" opacity=".9"/>
-      <!-- rumput laut -->
+      <ellipse cx="145" cy="136" rx="132" ry="22" fill="url(#stone)"/>
+      <ellipse cx="648" cy="133" rx="150" ry="25" fill="url(#stone)"/>
+      <ellipse cx="408" cy="144" rx="96" ry="15" fill="url(#stone)" opacity=".9"/>
+      <!-- rumput laut: TERTANAM di pasir/batu; tiap helai 2 ruas -->
       <g class="weed">
-          <path d="M777,200 C792,184 763,176 797,168" stroke="#0A3E3C" stroke-width="3.6" fill="none" stroke-linecap="round" style="animation-delay:-3.3s"/>
-          <path d="M557,200 C553,176 562,163 551,151" stroke="#12635A" stroke-width="3.1" fill="none" stroke-linecap="round" style="animation-delay:-3.6s"/>
-          <path d="M745,200 C738,174 751,161 736,148" stroke="#16786A" stroke-width="4.7" fill="none" stroke-linecap="round" style="animation-delay:-1.7s"/>
-          <path d="M476,200 C465,170 486,155 461,140" stroke="#12635A" stroke-width="4.3" fill="none" stroke-linecap="round" style="animation-delay:-3.2s"/>
-          <path d="M383,200 C375,181 390,171 372,162" stroke="#0E4F4A" stroke-width="3.5" fill="none" stroke-linecap="round" style="animation-delay:-2.1s"/>
-          <path d="M32,200 C20,161 43,142 16,122" stroke="#0E4F4A" stroke-width="3.1" fill="none" stroke-linecap="round" style="animation-delay:-4.1s"/>
-          <path d="M605,200 C595,180 615,169 591,159" stroke="#16786A" stroke-width="3.8" fill="none" stroke-linecap="round" style="animation-delay:-5.0s"/>
-          <path d="M478,200 C473,176 484,164 470,152" stroke="#0E4F4A" stroke-width="4.1" fill="none" stroke-linecap="round" style="animation-delay:-1.5s"/>
-          <path d="M376,200 C369,162 384,143 366,124" stroke="#0E4F4A" stroke-width="3.7" fill="none" stroke-linecap="round" style="animation-delay:-0.3s"/>
-          <path d="M605,200 C620,183 591,175 625,166" stroke="#16786A" stroke-width="5.8" fill="none" stroke-linecap="round" style="animation-delay:-2.7s"/>
-          <path d="M64,200 C55,171 72,156 52,141" stroke="#0E4F4A" stroke-width="3.4" fill="none" stroke-linecap="round" style="animation-delay:-3.0s"/>
-          <path d="M72,200 C74,178 69,167 76,155" stroke="#0E4F4A" stroke-width="3.5" fill="none" stroke-linecap="round" style="animation-delay:-3.8s"/>
-          <path d="M505,200 C492,175 518,162 486,150" stroke="#0E4F4A" stroke-width="5.3" fill="none" stroke-linecap="round" style="animation-delay:-1.0s"/>
-          <path d="M495,200 C484,164 506,146 479,129" stroke="#16786A" stroke-width="3.9" fill="none" stroke-linecap="round" style="animation-delay:-0.7s"/>
+        <!-- pangkal: gundukan kecil supaya helai tampak menancap di pasir -->
+        <g fill="#02121A" opacity=".9">
+          <ellipse cx="36.0" cy="113.9" rx="7" ry="3"/>
+          <ellipse cx="86.0" cy="109.7" rx="7" ry="3"/>
+          <ellipse cx="142.0" cy="110.7" rx="7" ry="3"/>
+          <ellipse cx="196.0" cy="114.0" rx="7" ry="3"/>
+          <ellipse cx="258.0" cy="116.5" rx="7" ry="3"/>
+          <ellipse cx="312.0" cy="114.8" rx="7" ry="3"/>
+          <ellipse cx="368.0" cy="109.8" rx="7" ry="3"/>
+          <ellipse cx="424.0" cy="108.7" rx="7" ry="3"/>
+          <ellipse cx="478.0" cy="110.3" rx="7" ry="3"/>
+          <ellipse cx="536.0" cy="112.7" rx="7" ry="3"/>
+          <ellipse cx="592.0" cy="110.8" rx="7" ry="3"/>
+          <ellipse cx="650.0" cy="109.0" rx="7" ry="3"/>
+          <ellipse cx="706.0" cy="104.3" rx="7" ry="3"/>
+          <ellipse cx="764.0" cy="102.3" rx="7" ry="3"/>
+        </g>
+        <g class="lo" style="transform-origin:36.0px 114.9px;animation-delay:-3.27s">
+          <path d="M36.0,114.9 C35.7,109.3 34.7,104.9 33.8,101.0" stroke="#0A3F3B" stroke-width="4.0" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:33.8px 101.0px;animation-delay:-2.62s">
+            <path d="M33.8,101.0 C32.0,96.0 27.2,91.3 28.1,87.2" stroke="#0A3F3B" stroke-width="2.4" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:86.0px 110.7px;animation-delay:-2.92s">
+          <path d="M86.0,110.7 C86.2,102.0 87.2,95.0 88.0,88.8" stroke="#083430" stroke-width="3.3" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:88.0px 88.8px;animation-delay:-2.27s">
+            <path d="M88.0,88.8 C89.5,81.0 93.8,73.5 93.0,66.9" stroke="#083430" stroke-width="2.0" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:142.0px 111.7px;animation-delay:-4.69s">
+          <path d="M142.0,111.7 C142.3,104.6 143.7,99.0 144.9,94.1" stroke="#0D5049" stroke-width="3.1" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:144.9px 94.1px;animation-delay:-4.04s">
+            <path d="M144.9,94.1 C147.1,87.7 153.4,81.8 152.2,76.5" stroke="#0D5049" stroke-width="1.9" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:196.0px 115.0px;animation-delay:-1.63s">
+          <path d="M196.0,115.0 C195.7,108.1 194.3,102.5 193.0,97.7" stroke="#0A3F3B" stroke-width="2.9" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:193.0px 97.7px;animation-delay:-0.98s">
+            <path d="M193.0,97.7 C190.8,91.5 184.3,85.6 185.6,80.4" stroke="#0A3F3B" stroke-width="1.8" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:258.0px 117.5px;animation-delay:-3.86s">
+          <path d="M258.0,117.5 C258.3,113.0 259.5,109.3 260.5,106.1" stroke="#083430" stroke-width="4.2" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:260.5px 106.1px;animation-delay:-3.21s">
+            <path d="M260.5,106.1 C262.4,102.0 267.8,98.2 266.8,94.8" stroke="#083430" stroke-width="2.5" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:312.0px 115.8px;animation-delay:-4.75s">
+          <path d="M312.0,115.8 C312.4,106.9 313.8,99.9 315.1,93.7" stroke="#0D5049" stroke-width="4.0" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:315.1px 93.7px;animation-delay:-4.10s">
+            <path d="M315.1,93.7 C317.5,85.8 324.2,78.3 322.9,71.6" stroke="#0D5049" stroke-width="2.4" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:368.0px 110.8px;animation-delay:-4.21s">
+          <path d="M368.0,110.8 C367.7,105.9 366.5,102.0 365.5,98.6" stroke="#083430" stroke-width="3.3" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:365.5px 98.6px;animation-delay:-3.56s">
+            <path d="M365.5,98.6 C363.5,94.2 358.0,90.1 359.0,86.5" stroke="#083430" stroke-width="2.0" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:424.0px 109.7px;animation-delay:-2.88s">
+          <path d="M424.0,109.7 C424.3,101.2 425.5,94.4 426.6,88.5" stroke="#115F55" stroke-width="3.6" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:426.6px 88.5px;animation-delay:-2.23s">
+            <path d="M426.6,88.5 C428.5,80.8 434.1,73.6 433.1,67.2" stroke="#115F55" stroke-width="2.1" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:478.0px 111.3px;animation-delay:-4.62s">
+          <path d="M478.0,111.3 C477.6,105.0 475.9,99.9 474.5,95.4" stroke="#0A3F3B" stroke-width="4.2" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:474.5px 95.4px;animation-delay:-3.97s">
+            <path d="M474.5,95.4 C471.8,89.7 464.2,84.3 465.6,79.6" stroke="#0A3F3B" stroke-width="2.5" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:536.0px 113.7px;animation-delay:-3.85s">
+          <path d="M536.0,113.7 C535.6,104.6 534.2,97.3 533.0,90.8" stroke="#0A3F3B" stroke-width="3.5" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:533.0px 90.8px;animation-delay:-3.20s">
+            <path d="M533.0,90.8 C530.7,82.6 524.1,74.8 525.3,68.0" stroke="#0A3F3B" stroke-width="2.1" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:592.0px 111.8px;animation-delay:-0.48s">
+          <path d="M592.0,111.8 C592.2,106.4 593.2,102.1 594.0,98.3" stroke="#083430" stroke-width="2.9" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:594.0px 98.3px;animation-delay:0.17s">
+            <path d="M594.0,98.3 C595.6,93.4 600.0,88.8 599.2,84.7" stroke="#083430" stroke-width="1.8" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:650.0px 110.0px;animation-delay:-4.15s">
+          <path d="M650.0,110.0 C650.4,101.8 652.1,95.2 653.5,89.4" stroke="#083430" stroke-width="2.8" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:653.5px 89.4px;animation-delay:-3.50s">
+            <path d="M653.5,89.4 C656.2,82.0 663.8,75.0 662.3,68.8" stroke="#083430" stroke-width="1.7" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:706.0px 105.3px;animation-delay:-3.88s">
+          <path d="M706.0,105.3 C705.7,96.7 704.4,89.8 703.2,83.8" stroke="#083430" stroke-width="4.3" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:703.2px 83.8px;animation-delay:-3.23s">
+            <path d="M703.2,83.8 C701.1,76.0 695.0,68.7 696.1,62.3" stroke="#083430" stroke-width="2.6" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
+        <g class="lo" style="transform-origin:764.0px 103.3px;animation-delay:-0.04s">
+          <path d="M764.0,103.3 C764.3,97.3 765.5,92.5 766.6,88.3" stroke="#115F55" stroke-width="4.8" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          <g class="hi" style="transform-origin:766.6px 88.3px;animation-delay:0.61s">
+            <path d="M766.6,88.3 C768.5,82.9 774.1,77.8 773.0,73.3" stroke="#115F55" stroke-width="2.9" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+        </g>
       </g>
     </svg>
   </div>
@@ -370,15 +480,9 @@
           <linearGradient id="fish" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#2A4A63"/><stop offset="1" stop-color="#0A1C2C"/>
           </linearGradient>
-          <linearGradient id="cone" x1="1" y1="0" x2="0" y2="0">
-            <stop offset="0" stop-color="#FFE9A8" stop-opacity=".38"/>
-            <stop offset="100%" stop-color="#FFE9A8" stop-opacity="0"/>
-          </linearGradient>
         </defs>
 
-        <!-- kerucut cahaya dari lampu -->
-        <path class="lamp-glow" d="M44,40 L-70,-6 L-70,104 Z" fill="url(#cone)"/>
-        <!-- halo cahaya -->
+        <!-- halo cahaya (membaur ke segala arah, tanpa kerucut sorot) -->
         <circle class="lamp-glow" cx="44" cy="40" r="46" fill="url(#lampG)"/>
 
         <!-- ekor -->
@@ -421,32 +525,51 @@
         <!-- [[ FOTO PROFIL: ganti src dengan foto Anda, mis. profil.jpg ]] -->
         <img class="avatar" src="https://placehold.co/240x240/0D4E6E/BEEBFF?text=Foto" alt="Foto profil" />
       </div>
-      <!-- Ombak bergelombang yang melintas di depan foto (dekoratif) -->
-      <!-- Permukaan air bergelombang: BENTUK air berisi (bukan garis), dua lapis
-           dengan irama berbeda supaya batas langit-air tampak berombak. -->
-      <span class="float-wave" aria-hidden="true">
-        <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+      <!-- ====================================================================
+           PERMUKAAN AIR - dua lapisan yang MENGAPIT foto profil.
+           .wave-back  : air buram di BELAKANG foto. Lapisan inilah yang
+                         membentuk batas langit-air yang berombak.
+           .wave-front : film air BENING di DEPAN foto, jadi bagian foto yang
+                         terendam TETAP TERLIHAT, hanya kebiruan seperti
+                         dilihat dari balik air.
+           Keduanya bergelombang dan hanyut dengan irama berbeda.
+           ==================================================================== -->
+      <span class="wave-back" aria-hidden="true">
+        <svg viewBox="0 0 1200 88" preserveAspectRatio="none">
           <defs>
             <linearGradient id="wvBack" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0"   stop-color="#BFF0F7" stop-opacity=".95"/>
-              <stop offset=".55" stop-color="#7FE3EC" stop-opacity=".8"/>
-              <stop offset="1"   stop-color="#7FE3EC" stop-opacity="0"/>
+              <stop offset="0"   stop-color="#CFF4FA" stop-opacity="1"/>
+              <stop offset=".42" stop-color="#86E5EE" stop-opacity="1"/>
+              <stop offset=".78" stop-color="#4FC3D8" stop-opacity=".9"/>
+              <stop offset="1"   stop-color="#2AA7C9" stop-opacity="0"/>
             </linearGradient>
-            <linearGradient id="wvFront" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0"   stop-color="#8FE0EE" stop-opacity="1"/>
-              <stop offset=".5"  stop-color="#48BCD4" stop-opacity=".96"/>
+            <linearGradient id="wvSwell" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#B6EFF8" stop-opacity="1"/>
+              <stop offset=".46" stop-color="#5FCFE2" stop-opacity="1"/>
+              <stop offset=".80" stop-color="#35B0CC" stop-opacity=".92"/>
               <stop offset="1"   stop-color="#2AA7C9" stop-opacity="0"/>
             </linearGradient>
           </defs>
-          <!-- lapis belakang: riak kecil & rapat -->
-          <g class="fw1">
-            <path fill="url(#wvBack)" d="M0,40 q75,-13 150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0
-                                         t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 V80 H0 Z"/>
-          </g>
-          <!-- lapis depan: ombak besar -->
-          <g class="fw2">
-            <path fill="url(#wvFront)" d="M0,34 q150,-18 300,0 t300,0 t300,0 t300,0 t300,0 t300,0 t300,0 t300,0 V80 H0 Z"/>
-          </g>
+          <!-- riak kecil & rapat -->
+          <g class="fw1"><path fill="url(#wvBack)" d="M0,34 q75,-12 150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 V88 H0 Z"/></g>
+          <!-- ombak besar -->
+          <g class="fw2"><path fill="url(#wvSwell)" d="M0,29 q150,-15 300,0 t300,0 t300,0 t300,0 t300,0 t300,0 t300,0 t300,0 V88 H0 Z"/></g>
+        </svg>
+      </span>
+      <span class="wave-front" aria-hidden="true">
+        <svg viewBox="0 0 1200 88" preserveAspectRatio="none">
+          <defs>
+            <!-- Tembus pandang: pekat tipis di garis permukaan, lalu makin
+                 bening ke bawah supaya foto di baliknya tetap terbaca. -->
+            <linearGradient id="wvFilm" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"    stop-color="#EAFDFF" stop-opacity=".92"/>
+              <stop offset=".085" stop-color="#B9F0F9" stop-opacity=".62"/>
+              <stop offset=".38"  stop-color="#6FD6E8" stop-opacity=".34"/>
+              <stop offset=".75"  stop-color="#3FB6D2" stop-opacity=".26"/>
+              <stop offset="1"    stop-color="#2AA7C9" stop-opacity=".16"/>
+            </linearGradient>
+          </defs>
+          <g class="fw3"><path fill="url(#wvFilm)" d="M0,33 q100,-13 200,0 t200,0 t200,0 t200,0 t200,0 t200,0 t200,0 t200,0 t200,0 t200,0 t200,0 t200,0 V88 H0 Z"/></g>
         </svg>
       </span>
     </div>
@@ -491,5 +614,31 @@
       <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 8.2s-.2-1.6-.9-2.3c-.9-.9-1.8-.9-2.3-1C16.5 4.6 12 4.6 12 4.6s-4.5 0-7.8.3c-.5 0-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.8 10 .8 11.9v1.8c0 1.9.2 3.7.2 3.7s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s4.5 0 7.8-.3c.5 0 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.7v-1.8c0-1.9-.2-3.6-.2-3.6ZM9.7 15.3V8.9l5.8 3.2-5.8 3.2Z"/></svg></a>
     </div>
   </main>
+
+  <!-- ======================================================================
+       SKRIP DEKORATIF: memanjangkan berkas cahaya sesuai posisi scroll,
+       supaya cahaya terasa menembus makin dalam (bukan tempelan diam).
+       Hapus seluruh <script> ini bila tak dipakai.
+       ====================================================================== -->
+  <script>
+    (function () {
+      var rays = document.querySelector('.rays');
+      if (!rays) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var queued = false;
+      function apply() {
+        queued = false;
+        var doc = document.documentElement;
+        var max = Math.max(doc.scrollHeight - window.innerHeight, 0);
+        var grow = Math.min(window.pageYOffset, max) * 1.35;
+        rays.style.setProperty('--ray-grow', grow.toFixed(1) + 'px');
+      }
+      window.addEventListener('scroll', function () {
+        if (!queued) { queued = true; requestAnimationFrame(apply); }
+      }, { passive: true });
+      window.addEventListener('resize', apply, { passive: true });
+      apply();
+    })();
+  </script>
 </body>
 </html>
